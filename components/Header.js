@@ -11,8 +11,8 @@ function Header() {
                     src='/favicon-makeitaccessible.svg'
                     alt=''
                     aria-hidden="true"
-                    width={40}
-                    height={40}
+                    width={32}
+                    height={32}
                     className={styles.favicon}/>
                 </div>
                 <div className={styles.logoTextWrapper}>
