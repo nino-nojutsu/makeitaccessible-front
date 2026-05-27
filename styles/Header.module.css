@@ -10,6 +10,19 @@
     margin: 12px 24px;
 }
 
+.favicon {
+    width: 100%;
+    height: auto;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
 .logo {
     display: none !important; 
 }
@@ -30,14 +43,16 @@
 .modalesContainer {
     display: flex;
     align-items: center;
-    gap: 12px; 
+    gap: 12px;
 }
 
+/* -- Buttons: connection & registration -- */
 .btnConnected,
 .btnRegistration {
     border: 0.5px solid var(--color-border);
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 7px 15px;
+    white-space: nowrap;
 }
 
 .btnConnected {
