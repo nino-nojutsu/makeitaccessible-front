@@ -30,7 +30,7 @@ function Analyse() {
   return (
     <div>
       <form className={styles.main}  role="search" aria-label="Tester d'accessibilité">
-        <input type="url" aria-required="true" placeholder="Url de votre site internet" value={url} onChange={(e) => handleInputChange(e.target.value)} />
+        <input id="url-input" name="url" type="url" aria-required="true" placeholder="Url de votre site internet" value={url} onChange={(e) => handleInputChange(e.target.value)} />
         <button onClick={handleSubmit} type="submit"> Analyser mon site → </button>
       </form>
     </div>
