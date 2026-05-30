@@ -13,6 +13,18 @@ function Header() {
 
          const [signIn, setSignIn] = useState(false);
          const [signUp, setSignUp] = useState(false);
+         
+         const [signInModalVisible, setSignInModalVisible] = useState(false);
+         const [signUpModalVisible, setSignUpModalVisible] = useState(false);
+         
+         const handleCancelSignIn = () => {
+            setSignInModalVisible(false);
+        };
+        
+        const handleCancelSignUp = () => {
+            setSignUpModalVisible(false);
+        };
+        
 	return (
 		<header className={styles.header} role="banner">
             <div className={styles.logoWrapper}>
@@ -46,7 +58,7 @@ function Header() {
                             onCancel={() => setSignIn(false)}
                             footer={null} className={styles.modalesSignIn}
                         >
-                            <SignIn />
+                            <SignIn closeModal={handleCancelSignIn} />
                         </Modal>
                         
                     <button className={styles.btnRegistration} onClick={() => setSignUp(true)}>
@@ -59,7 +71,7 @@ function Header() {
                             onCancel={() => setSignUp(false)}
                             footer={null} className={styles.modalesSignUp}
                         >
-                            <SignUp />
+                            <SignUp closeModal={handleCancelSignUp} />
                         </Modal>
 
                 </nav>
