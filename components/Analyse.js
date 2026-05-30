@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from '../styles/Home.module.css';
+import Issue from "./Issue.js";
 
 function Analyse() {
 
