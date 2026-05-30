@@ -1,8 +1,34 @@
 import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import Analyse from './Analyse';
+import Issue from "./Issue.js";
  
 function Home() {
+  const [url, setUrl] = useState("");
+  const [issues, setIssues] = useState([]);
+
+  const handleInputChange = (targetUrl) => {
+    setUrl(targetUrl);
+  };
+
+  const handleSubmit = () => {
+    fetch(`http://localhost:3000/scan`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          const issuesList = data.issues.map((issue) => {
+            return <Issue />;
+          });
+          setIssues([...issues, issuesList]);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
     <>
       {/* ── Hero ── */}
