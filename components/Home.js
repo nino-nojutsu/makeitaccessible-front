@@ -4,36 +4,11 @@ import Analyse from './Analyse';
 import Issue from "./Issue.js";
  
 function Home() {
-  const [url, setUrl] = useState("");
-  const [issues, setIssues] = useState([]);
-
-  const handleInputChange = (targetUrl) => {
-    setUrl(targetUrl);
-  };
-
-  const handleSubmit = () => {
-    fetch(`http://localhost:3000/scan`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          const issuesList = data.issues.map((issue) => {
-            return <Issue />;
-          });
-          setIssues([...issues, issuesList]);
-        }
-      })
-      .catch((error) => console.error(error));
-  };
 
   return (
     <>
       {/* ── Hero ── */}
       <main className={styles.main}>
- 
         {/* Hero - colonne gauche */}
         <section className={styles.heroLeft}>
           <p className={styles.subTitle}>Make It Accessible • Web App</p>
@@ -47,18 +22,10 @@ function Home() {
             <strong>recommandations priorisées</strong>.
             Pour les devs, PO, agences et auditeurs.
           </p>
-          <p className={styles.cta}>
+          <p className={styles.ctaTitle}>
             Saisissez l'URL de votre site internet à auditer gratuitement !
           </p>
             <Analyse />
-          <Image
-            src='/images/illustration_business_analysis.png'
-            alt=''
-            aria-hidden="true"
-            width={150}
-            height={150}
-            className={styles.illustration}
-          />
         </section>
  
         {/* Hero - colonne droite */}
@@ -84,8 +51,9 @@ function Home() {
                 <p className={styles.featureTitle}>Clavier</p>
                 <p className={styles.featureDescription}>Navigation, focus, interactions sans souris</p>
               </div>
-            </div>
-            <div className={styles.boxInfos}>
+            </div> 
+          </div>
+          <div className={styles.boxInfos}>
               <div className={styles.box}>
                 <span className={styles.badgeLabel}>Notre outil d'analyse pour</span>
                 <strong>Les devs, les PO, les chefs de projets, les auditeurs.</strong>
@@ -95,7 +63,6 @@ function Home() {
                 <strong>LaCapsule project 28 juin 2026</strong>
               </div>
             </div>
-          </div>
         </section>
  
       </main>
