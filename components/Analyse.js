@@ -15,7 +15,7 @@ function Analyse() {
 
   // Envoi de l'URL au backend pour lancer l'analyse
   const handleSubmit = () => {
-    fetch(`http://localhost:3000/scan`, {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/scan`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
@@ -30,7 +30,7 @@ function Analyse() {
   return (
     <div>
       <form className={styles.main}  role="search" aria-label="Tester d'accessibilité">
-        <input id="url-input" name="url" type="url" aria-required="true" placeholder="Url de votre site internet" value={url} onChange={(e) => handleInputChange(e.target.value)} />
+        <input className={styles.Search} id="url-input" name="url" type="url" aria-required="true" placeholder="Url de votre site internet" value={url} onChange={(e) => handleInputChange(e.target.value)} />
         <button onClick={handleSubmit} type="submit"> Analyser mon site → </button>
       </form>
     </div>
