@@ -13,6 +13,11 @@ function Header() {
 
          const [signIn, setSignIn] = useState(false);
          const [signUp, setSignUp] = useState(false);
+
+ /* const handleInputChange = (targetUrl) => {
+    setUrl(targetUrl);
+  };*/
+
 	return (
 		<header className={styles.header} role="banner">
             <div className={styles.logoWrapper}>
