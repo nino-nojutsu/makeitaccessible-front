@@ -10,14 +10,14 @@
 
 :root {
   /* Couleurs */
-  --color-primary:       #BD42B2;
-  --color-primary-hover: #DF54D3;
-  --color-border:        rgba(0, 0, 0, 0.15);
-  --color-bg:     #ffffff;
+  --color-primary:#BD42B2;
+  --color-primary-hover:#DF54D3;
+  --color-border:rgba(0, 0, 0, 0.15);
+  --color-bg:#ffffff;
 
   /* Typographie */
-  --font-base:           'Inter', sans-serif;
-  --font-display:        'Space Grotesk', sans-serif;
+  --font-base:'Inter', sans-serif;
+  --font-display:'Space Grotesk', sans-serif;
 }
 
   /* -- Base -- */
@@ -26,6 +26,7 @@ body {
   font-family: var(--font-base);
   font-size: 12px;
   color: #1a1a1a;
+  background-color: #FAF9F7;
 }
 
 button {
