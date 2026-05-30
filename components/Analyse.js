@@ -29,9 +29,9 @@ function Analyse() {
 
   return (
     <div>
-      <form className={styles.main}  role="search" aria-label="Tester d'accessibilité">
-        <input className={styles.Search} id="url-input" name="url" type="url" aria-required="true" placeholder="Url de votre site internet" value={url} onChange={(e) => handleInputChange(e.target.value)} />
-        <button onClick={handleSubmit} type="submit"> Analyser mon site → </button>
+      <form className={styles.mainAnalyse}  role="search" aria-label="Tester d'accessibilité">
+        <input className={styles.search} id="url-input" name="url" type="url" aria-required="true" placeholder="Url de votre site internet..." value={url} onChange={(e) => handleInputChange(e.target.value)} />
+        <button className={styles.ctaSearch} onClick={handleSubmit} type="submit"> Analyser mon site → </button>
       </form>
     </div>
   );
