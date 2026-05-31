@@ -72,3 +72,9 @@ a {
 a:hover {
   color: var(--color-primary-hover) !important;
 }
+
+.container {
+  @media screen and (min-width: 1200px) {
+    max-width: 1440px;
+  }
+}
