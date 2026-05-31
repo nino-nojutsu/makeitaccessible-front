@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import Head from 'next/head'
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 // manage global redux state
 import { Provider } from 'react-redux'
@@ -36,6 +37,7 @@ function App({ Component, pageProps }) {
         </Head>
         <Header />
         <Component {...pageProps} />
+        <Footer />
       </PersistGate>
     </Provider>
   )

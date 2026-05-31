@@ -1,0 +1,29 @@
+.footerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.footer {
+  width: 100%;
+  background-color: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  border: solid 0.5px var(--color-border);
+  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.08);
+  padding: 10px;
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.credit {
+  text-align: center;
+  width: 100%;
+}
+
+.footerImg {
+  margin: 20px;
+}
