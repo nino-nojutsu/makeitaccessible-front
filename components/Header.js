@@ -10,20 +10,6 @@ import SignUp from './SignUp';
 function Header() {
 
         const user = useSelector((state) => state.user.value);
-
-         const [signIn, setSignIn] = useState(false);
-         const [signUp, setSignUp] = useState(false);
-         
-         const [signInModalVisible, setSignInModalVisible] = useState(false);
-         const [signUpModalVisible, setSignUpModalVisible] = useState(false);
-         
-         const handleCancelSignIn = () => {
-            setSignInModalVisible(false);
-        };
-        
-        const handleCancelSignUp = () => {
-            setSignUpModalVisible(false);
-        };
         
 	return (
 		<header className={styles.header} role="banner">

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user';
 
-function SignIn({closeModal}) {
+function SignIn() {
     const dispatch = useDispatch();
     const router = useRouter();
     
@@ -28,7 +28,6 @@ function SignIn({closeModal}) {
             setSignInUsername("");
             setSignInPassword("");
             router.push('/dashboard');
-            closeModal();
             dispatch(login({ token: data.token, username: signInUsername }));
         } else {
           alert(data.error);
