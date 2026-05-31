@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import styles from '../styles/Home.module.css';
+import Issue from "./Issue.js";
 
 function Analyse() {
 
 // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState('');
+  const [issues, setIssues] = useState([]);
 
   // Met à jour l'état à chaque lancement d'analyse
   const handleInputChange = (targetUrl) => {
@@ -20,13 +22,18 @@ function Analyse() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
     })
-       .then((response) => response.json())
-       .then((data) => {
-         console.log("data", data);
-       })
-       .catch((error) => console.error(error));
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          const issuesList = data.issues.map((issue) => {
+            return <Issue />;
+          });
+          setIssues([...issues, issuesList]);
+        }
+      })
+      .catch((error) => console.error(error));
   };
-
+  
   return (
     <div>
       <form className={styles.mainAnalyse}  role="search" aria-label="Tester d'accessibilité">
