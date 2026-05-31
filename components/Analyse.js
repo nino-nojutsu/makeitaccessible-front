@@ -17,7 +17,7 @@ function Analyse() {
 
   // Envoi de l'URL au backend pour lancer l'analyse
   const handleSubmit = () => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/scan`, {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url })
