@@ -10,7 +10,14 @@ import SignUp from './SignUp';
 function Header() {
 
         const user = useSelector((state) => state.user.value);
-        
+
+         const [signIn, setSignIn] = useState(false);
+         const [signUp, setSignUp] = useState(false);
+         
+         const handleCancelSignIn = () => setSignIn(false);
+         const handleCancelSignUp = () => setSignUp(false);
+
+         
 	return (
 		<header className={styles.header} role="banner">
             <div className={styles.logoWrapper}>
@@ -44,7 +51,7 @@ function Header() {
                             onCancel={() => setSignIn(false)}
                             footer={null} className={styles.modalesSignIn}
                         >
-                            <SignIn closeModal={handleCancelSignIn} />
+                            <SignIn closeModal={handleCancelSignIn}/>
                         </Modal>
                         
                     <button className={styles.btnRegistration} onClick={() => setSignUp(true)}>
@@ -57,7 +64,7 @@ function Header() {
                             onCancel={() => setSignUp(false)}
                             footer={null} className={styles.modalesSignUp}
                         >
-                            <SignUp closeModal={handleCancelSignUp} />
+                            <SignUp closeModal={handleCancelSignIn}/>
                         </Modal>
 
                 </nav>

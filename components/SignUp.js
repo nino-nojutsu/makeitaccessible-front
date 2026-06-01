@@ -4,7 +4,7 @@
   import { useDispatch } from 'react-redux';
   import { login } from '../reducers/user';
 
-  function SignUp() {
+  function SignUp({ closeModal }) {
 
       const dispatch = useDispatch();
       const router = useRouter();
@@ -35,8 +35,10 @@
             setSignUpEmail('');
             setSignUpUsername('');
             setSignUpPassword('');
-            router.push('/dashboard');
             dispatch(login({ token: data.token, username: signUpUsername }));
+             closeModal?.();
+            router.push('/dashboard');
+
           } else { 
             alert(data.error);
           }
