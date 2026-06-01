@@ -65,14 +65,18 @@ button:hover {
   cursor: pointer;
 }
 
-a {
+/* a {
   color: var(--color-primary) !important;
 }
 
 a:hover {
   color: var(--color-primary-hover) !important;
-}
+} */
 
+a {
+  text-decoration: none;
+}
+/* sert à enlever le style par défaut des liens HTML. */
 .container {
   @media screen and (min-width: 1200px) {
     max-width: 1440px;
