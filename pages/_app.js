@@ -9,6 +9,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 // Reducers — ajout de nouveaux reducers
 import user from '../reducers/user';
+import audit from '../reducers/audit';
 
 // Persistance du store dans le localStorage pour que les données suivent aux rechargements
 import { persistStore, persistReducer } from 'redux-persist';
@@ -16,7 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
 
 // Combinaison des reducers
-const reducers = combineReducers({ user });
+const reducers = combineReducers({ user, audit });
 // identifier les données dans le localStorage
 const persistConfig = { key: 'makeitaccessible', storage };
 
