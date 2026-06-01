@@ -1,7 +1,8 @@
 /**
  ** Composant Analyse : le champ url est passé dans le body de la requête /audit en POST
  ** Récupère les résultats de l'audit si le backend a bien répondu (data.result à true)
- ** Enregistre les résultats dans la key/propriété 'audit' dans le localStorage (via reduxjs tooltkit et redux-persist)
+ ** Enregistre les résultats de l'audit dans le store grace au reducer audit (grace à redux) 
+ ** Le persisted store est enregistré dans le localStorage sous la cléf 'makeitaccessible' (grace à redux-persist)
  ** Redirige vers la page audit
  **/
 
@@ -25,10 +26,13 @@ function Analyse() {
     event.preventDefault();
     // @nina todo: Open Modale + Loader
 
+    const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
+    const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
+
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
     })
       .then((response) => response.json())
       .then((data) => {
