@@ -4,7 +4,7 @@
 
 import Head from "next/head";
 import Image from "next/image";
-import Issue from "../components/Issue";
+import Test from "../components/Test";
 
 function AuditPage() {
   return (
@@ -25,7 +25,7 @@ function AuditPage() {
         <meta name="robots" content="index, follow" />
         <meta name="language" content="French" />
       </Head>
-      <Issue />
+      <Test />
     </>
   );
 }
