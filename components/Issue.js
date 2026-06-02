@@ -5,16 +5,14 @@ function Issue(props) {
   const [issues, setIssues] = useState([]);
 
   /** comportements **/
-  const issuesList = data.issues.map((issue) => {
-    return <Issue />;
-  });
+  // const issuesList = data.issues.map((issue) => {
+  //   return <Issue />;
+  // });
 
-  setIssues([...issues, issuesList]);
+  // setIssues([...issues, issuesList]);
 
   /** affichage **/
-  return (
-    <div>ISSUE COMPONENT</div>
-  )
+  return <div>ISSUE COMPONENT</div>;
 }
 
 export default Issue;
