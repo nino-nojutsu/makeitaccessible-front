@@ -1,11 +1,11 @@
-import styles from '../styles/Header.module.css';
+import styles from '../../styles/Header.module.css';
 import Image from 'next/image';
 import "antd/dist/antd.css";
 import { Modal } from 'antd';
 import { useState } from 'react';
 import{useSelector} from 'react-redux';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from '../modals/SignIn';
+import SignUp from '../modals/SignUp';
 
 function Header() {
 
