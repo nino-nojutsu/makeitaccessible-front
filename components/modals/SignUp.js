@@ -1,8 +1,8 @@
-  import styles from '../styles/Header.module.css';
-  import { useState } from 'react';
-  import { useRouter } from 'next/router';
-  import { useDispatch } from 'react-redux';
-  import { login } from '../reducers/user';
+import styles from '../../styles/Header.module.css';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { login } from '../../reducers/user';
 
   function SignUp() {
 
