@@ -8,13 +8,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import "antd/dist/antd.css";
+import { Modal } from "antd";
 
 function Analyse() {
   /** state **/
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
+
+  const [analyse, setAnalyse] = useState(false);
+
+  const router = useRouter();
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -41,28 +48,42 @@ function Analyse() {
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
+    // Envoie les informations du site au backend pour lancer l'audit
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // Corps de la requête contenant l'URL saisie : nom et domain du site
       body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
     })
+      // Conversion de la réponse du serveur au format JSON
       .then((response) => response.json())
       .then((data) => {
+        // Si l'audit a été réalisé avec succès
         if (data.result) {
-          // @nina todo: Close Modale
-          router.push("/audit");
+          //ouvre le modale de chargement si analyse ok
+          // finalisation de l'analyse et l'enregistrement dans le store
+          setAnalyse(true);
+          
+          // Redirection vers la page de résultats après 2 secondes
+          setTimeout(() => {
+            router.push("/audit");
+          }, 2000);
         } else {
+          // Affiche le message d'erreur renvoyé par le backend
           setError(data.error || "L'audit a échoué, veuillez réessayer.");
         }
       })
+      // Gestion des erreurs réseau ou serveur
       .catch((error) => {
         console.error(error);
+        // Affiche un message d'erreur générique à l'utilisateur
         setError("Impossible de contacter le serveur, veuillez réessayer.");
       });
-    }
+  }
 
-    /** affichage **/
-    return (
+  /** affichage **/
+  return (
+    <>
       <div>
         <form
           className={styles.mainAnalyse}
@@ -80,13 +101,38 @@ function Analyse() {
             value={url}
             onChange={(e) => handleInputChange(e.target.value)}
           />
+
           {error && <p className={styles.error} role="alert">{error}</p>}
+
           <button className={styles.ctaSearch} type="submit">
             Analyser mon site →
           </button>
         </form>
       </div>
-    );
-  }
 
-  export default Analyse;
+      <Modal
+        open={analyse}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        centered
+        width={400}
+        className={styles.loadingModal}
+      >
+        <div style={{ textAlign: "center" }}>
+          <p>Votre site est entre de bonnes mains 🙂</p>
+          <p>En cours d’analyse...</p>
+
+          <Image
+            src='/images/illustration-recherche.png'
+            alt='Analyse du site en cours'
+            width={150}
+            height={150}
+             />
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+export default Analyse;

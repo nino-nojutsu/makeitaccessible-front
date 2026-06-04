@@ -329,3 +329,11 @@
 .error {
   color:red;
 }
+
+/* -- loading --*/
+
+.loadingModal :global(.ant-modal-content) {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
