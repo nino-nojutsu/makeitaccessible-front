@@ -6,10 +6,10 @@
  ** Redirige vers la page audit
  **/
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
 import "antd/dist/antd.css";
@@ -25,7 +25,26 @@ function Analyse() {
 
   const [analyse, setAnalyse] = useState(false);
 
-  const router = useRouter();
+  const auditData = useSelector((state) => state.audit.value);
+
+// Redirige vers la page audit une fois les données chargées dans le store
+// Minimum 2 secondes d'affichage de la modal
+useEffect(() => {
+  if (analyse && auditData) {
+    // analyse = true : la modal est ouverte
+    // auditData = les données sont bien chargées dans le store
+    // La redirection se déclenche après 2s minimum
+    setTimeout(() => {
+      router.push("/audit");
+    }, 2000); // minimum 2s
+  }
+}, [auditData, analyse]);
+
+// Reset du store au montage du composant
+// Évite une redirection immédiate si des données d'un audit précédent dans le localStorage (redux-persist)
+useEffect(() => {
+  dispatch(loadAudit(null)); // reset au montage
+}, []); // s'exécute une seule fois, à l'initialisation du composant
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -68,7 +87,6 @@ function Analyse() {
            //ouvre le modale de chargement si analyse ok
           // finalisation de l'analyse et l'enregistrement dans le store
           setAnalyse(true);
-
           // Charge les résultats de l'audit dans le store redux (reducer <audit>)
           dispatch(loadAudit({
             website: data.website,
@@ -77,10 +95,6 @@ function Analyse() {
         } else {
           setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
         }
-      })
-      .then(() => {
-        // Redirige vers la page d'un audit
-        router.push("/audit");
       })
       .catch((error) => {
         console.error(error);
