@@ -46,7 +46,7 @@ function Analyse() {
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
-    fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
