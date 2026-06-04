@@ -6,17 +6,21 @@
  ** Redirige vers la page audit
  **/
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
 import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
+import "antd/dist/antd.css";
+import { Modal } from "antd";
 
 function Analyse() {
   /** state **/
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
+  const [modaleVisible, setModaleVisible] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -41,21 +45,27 @@ function Analyse() {
     }
 
     setError("");
+    setTimeout(() => {
+      setModaleVisible(true);
+    }, 2000); // minimum 2s
 
     // .match() = méthode native de String, prend une regex en paramètres et retourne un tableau de type String correspondants aux résultats du match
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
-    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/`, {
+    // Envoie les informations du site au backend pour lancer l'audit
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // Corps de la requête contenant l'URL saisie : nom et domain du site
       body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
     })
+      // Conversion de la réponse du serveur au format JSON
       .then((response) => response.json())
       .then((data) => {
+        // Si l'audit a été réalisé avec succès
         if (data.result) {
-          // @nina todo: Close Modale
-
+          // Finalisation de l'analyse et l'enregistrement dans le store
           // Charge les résultats de l'audit dans le store redux (reducer <audit>)
           dispatch(loadAudit({
             website: data.website,
@@ -64,19 +74,23 @@ function Analyse() {
         } else {
           setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
         }
-      })
-      .then(() => {
-        // Redirige vers la page d'un audit
-        router.push("/audit");
+      }).then(() => {
+        // On redirige sur la page audit
+        router.push('/audit');
       })
       .catch((error) => {
         console.error(error);
+        // Affiche un message d'erreur générique à l'utilisateur
         setError("Impossible de contacter le serveur, veuillez réessayer.");
       });
-    }
+    
+      //Ferme la modale de chargement si analyse ok ou pas ok
+      setModaleVisible(!modaleVisible);
+  }
 
-    /** affichage **/
-    return (
+  /** affichage **/
+  return (
+    <>
       <div>
         <form
           className={styles.mainAnalyse}
@@ -94,13 +108,38 @@ function Analyse() {
             value={url}
             onChange={(e) => handleInputChange(e.target.value)}
           />
+
           {error && <p className={styles.error} role="alert">{error}</p>}
+
           <button className={styles.ctaSearch} type="submit">
             Analyser mon site →
           </button>
         </form>
       </div>
-    );
-  }
 
-  export default Analyse;
+      <Modal
+        open={modaleVisible}
+        footer={null}
+        closable={false}
+        maskClosable={false}
+        centered
+        width={400}
+        className={styles.loadingModal}
+      >
+        <div style={{ textAlign: "center" }}>
+          <p>Votre site est entre de bonnes mains 🙂</p>
+          <p>En cours d’analyse...</p>
+
+          <Image
+            src='/images/illustration-recherche.png'
+            alt='Analyse du site en cours'
+            width={150}
+            height={150}
+             />
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+export default Analyse;
