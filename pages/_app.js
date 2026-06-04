@@ -33,12 +33,14 @@ function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <Head>
-          <title>Make It Accessible</title>
-        </Head>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+        <div className="container">
+          <Head>
+            <title>Make It Accessible</title>
+          </Head>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </div>
       </PersistGate>
     </Provider>
   )

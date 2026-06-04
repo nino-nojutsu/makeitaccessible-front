@@ -9,7 +9,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 12px 50px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 
@@ -190,8 +191,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  margin: 50px;
-  margin-top: 50px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 
 .btnInfo {

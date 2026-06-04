@@ -9,6 +9,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
 import "antd/dist/antd.css";
 import { Modal } from "antd";
@@ -18,6 +20,8 @@ function Analyse() {
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const [analyse, setAnalyse] = useState(false);
 
@@ -45,6 +49,7 @@ function Analyse() {
 
     setError("");
 
+    // .match() = méthode native de String, prend une regex en paramètres et retourne un tableau de type String correspondants aux résultats du match
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
@@ -60,20 +65,23 @@ function Analyse() {
       .then((data) => {
         // Si l'audit a été réalisé avec succès
         if (data.result) {
-          //ouvre le modale de chargement si analyse ok
+           //ouvre le modale de chargement si analyse ok
           // finalisation de l'analyse et l'enregistrement dans le store
           setAnalyse(true);
-          
-          // Redirection vers la page de résultats après 2 secondes
-          setTimeout(() => {
-            router.push("/audit");
-          }, 2000);
+
+          // Charge les résultats de l'audit dans le store redux (reducer <audit>)
+          dispatch(loadAudit({
+            website: data.website,
+            audit: data.audit
+          }));
         } else {
-          // Affiche le message d'erreur renvoyé par le backend
-          setError(data.error || "L'audit a échoué, veuillez réessayer.");
+          setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
         }
       })
-      // Gestion des erreurs réseau ou serveur
+      .then(() => {
+        // Redirige vers la page d'un audit
+        router.push("/audit");
+      })
       .catch((error) => {
         console.error(error);
         // Affiche un message d'erreur générique à l'utilisateur
