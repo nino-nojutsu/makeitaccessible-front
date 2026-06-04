@@ -8,6 +8,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
 
 function Analyse() {
@@ -15,6 +17,8 @@ function Analyse() {
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -50,10 +54,19 @@ function Analyse() {
       .then((data) => {
         if (data.result) {
           // @nina todo: Close Modale
-          router.push("/audit");
+
+          // Charge les résultats de l'audit dans le store redux (reducer <audit>)
+          dispatch(loadAudit({
+            website: data.website,
+            audit: data.audit
+          }));
         } else {
-          setError(data.error || "L'audit a échoué, veuillez réessayer.");
+          setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
         }
+      })
+      .then(() => {
+        // Redirige vers la page d'un audit
+        router.push("/audit");
       })
       .catch((error) => {
         console.error(error);
