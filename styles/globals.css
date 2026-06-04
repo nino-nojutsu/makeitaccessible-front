@@ -19,11 +19,23 @@
   /* Typographie */
   --font-base:'Inter', sans-serif;
   --font-display:'Space Grotesk', sans-serif;
+
+  /* Layout */
+  --grid-gutter-width: 30px;
+ 
+  /* Container widths */
+  --container-mobile:         360px;
+  --container-tablet:         750px;
+  --container-desktop:        970px;
+  --container-lg-desktop:     1230px;
+  --container-xl-desktop:     1470px;
+  --container-xxl-desktop:    1710px;
+  --container-wide:           100vw;
 }
 
-  /* -- Base -- */
+/* -- Base -- */
 
-  #__next {
+#__next {
   background-color: var(--color-bg-primary);
   display: flex;
   flex-direction: column;
@@ -73,12 +85,49 @@ a:hover {
   color: var(--color-primary-hover) !important;
 } */
 
-a {
-  text-decoration: none;
-}
-/* sert à enlever le style par défaut des liens HTML. */
+/* -- Container -- */
 .container {
-  @media screen and (min-width: 1200px) {
-    max-width: 1440px;
+  width: 100%;
+  height: 100vh;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+ 
+@media screen and (min-width: 360px) {
+  .container {
+    max-width: 360px;
   }
 }
+ 
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 750px;
+  }
+}
+ 
+@media screen and (min-width: 992px) {
+  .container {
+    max-width: 970px;
+  }
+}
+ 
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: 1230px;
+  }
+}
+ 
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1470px;
+  }
+}
+ 
+@media screen and (min-width: 1680px) {
+  .container {
+    max-width: 1710px;
+  }
+}
+ 

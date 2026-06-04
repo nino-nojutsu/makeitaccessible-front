@@ -1,18 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: [],
+  value: null,
 };
 
 export const auditSlice = createSlice({
-  name: 'violations',
+  name: 'audit',
   initialState,
   reducers: {
-    loadViolations: (state, action) => {
+    loadAudit: (state, action) => {
       state.value = action.payload;
     },
   },
 });
 
-export const { loadViolations } = auditSlice.actions;
+export const { loadAudit } = auditSlice.actions;
 export default auditSlice.reducer;
