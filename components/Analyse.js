@@ -42,6 +42,7 @@ function Analyse() {
 
     setError("");
 
+    // .match() = méthode native de String, prend une regex en paramètres et retourne un tableau de type String correspondants aux résultats du match
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
