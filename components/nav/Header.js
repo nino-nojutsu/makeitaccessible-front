@@ -26,7 +26,7 @@ function Header() {
         />
       </Link>
       <nav
-        aria-label="S'inscire ou se connecter"
+        aria-label="S'inscrire ou se connecter"
         className={styles.modalesContainer}
       >
         {/* integrate connexion modals */}

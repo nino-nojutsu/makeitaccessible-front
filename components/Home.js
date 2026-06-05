@@ -3,7 +3,7 @@ import HeroHome from './blocks/HeroHome.js';
 import SliceWhy from './blocks/SliceWhy.js';
 import SliceValorisation from './blocks/SliceValorisation.js';
 import SliceModop from './blocks/SliceModop.js';
-import FAQ from './blocks/FAQ.js';
+import Faq from './blocks/Faq.js';
 
 function Home() {
 
@@ -18,8 +18,7 @@ function Home() {
       {/* ── Pourquoi rendre accessible ── */}
       <SliceWhy/>
       {/* ── FAQ ── */}
-      <FAQ />
-     
+      <Faq />
     </>
   );
 }
