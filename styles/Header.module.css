@@ -1,116 +1,87 @@
 .header {
-    background-color: var(--color-bg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 12px;
-    border: solid 0.5px var(--color-border);
-    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.08);
-    padding: 16px;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+  background-color: var(--color-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  border: solid 0.5px var(--color-border);
+  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .favicon {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
-.iconWrapper {
-    display: flex;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
-}
-
-.logo {
-    display: none !important; 
-}
-
-.logoTextWrapper {
-  height: 150px;
-}
-
-@media (min-width: 768px) {
-    .logo {
-        display: block !important; 
-    }
-}
-
-.logoWrapper {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    gap: 8px;
+.logoImage {
+  cursor: pointer;
 }
 
 .modalesContainer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* -- Buttons: connection & registration -- */
 .btnConnected,
 .btnRegistration {
-    border: 0.5px solid var(--color-border);
-    border-radius: 6px;
-    padding: 7px 15px;
-    white-space: nowrap;
+  border: 0.5px solid var(--color-border);
+  border-radius: 6px;
+  padding: 7px 15px;
+  white-space: nowrap;
 }
 
 .btnConnected {
-    background-color: var(--color-bg);
+  background-color: var(--color-bg);
 }
 
 .btnRegistration {
-    color:white;
-    background-color: var(--color-primary);
+  color: white;
+  background-color: var(--color-primary);
 }
 
 .btnRegistration:hover {
-    background-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
 }
 
 .btnConnected:hover {
-    background-color: #E9E9E9;
+  background-color: #e9e9e9;
 }
 
 .modalesSignUp {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--color-bg);
 }
 
 .modalesSignIn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--color-bg);
 }
 
-
 .inputSignIn {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 0.5px solid var(--color-border);
-    border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 0.5px solid var(--color-border);
+  border-radius: 6px;
 }
 
 .inputSignUp {
-     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 0.5px solid var(--color-border);
-    border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 0.5px solid var(--color-border);
+  border-radius: 6px;
 }
-
-
-
