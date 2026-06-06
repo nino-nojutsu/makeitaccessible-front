@@ -46,7 +46,7 @@ function Audit() {
 
   // 1. Filtrer par catégorie
   const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
-  // console.log('filteredByCat', filteredByCat);
+  console.log('filteredByCat', filteredByCat);
 
   // 2. Filtrer par type à partir des catégories filtrées
 
@@ -97,11 +97,11 @@ function Audit() {
           </Space>
           
           {/* Results gère le switch entre les 3 sections selon le filtre sélectionné avec selectedType */}
-          <Results
-            violations={violations}
-            incomplete={incomplete}
-            passes={passes}
-            selectedType={selectedType} />
+          <div className={styles.auditResults}>
+            {violations.length > 0 && incomplete.length > 0 ?
+              <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
+              <div className={styles.noResults}>Pas d'anomalies, Bravo ! 😊</div>}
+          </div>
         </>
       </div>
     </div>
