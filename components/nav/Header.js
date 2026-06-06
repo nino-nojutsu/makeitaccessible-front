@@ -1,7 +1,6 @@
 import styles from "../../styles/Header.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import "antd/dist/antd.css";
 import { Modal } from "antd";
 import { useState } from "react";
 import { useSelector } from "react-redux";
