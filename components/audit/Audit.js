@@ -5,9 +5,10 @@ import Results from './Results.js';
 import Category from './Category.js';
 import Tests from './Tests.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function Audit() {
+  // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const auditData = useSelector((state) => state.audit.value);
   const router = useRouter();
 
@@ -16,7 +17,7 @@ function Audit() {
     router.push('/');
   }
 
-  // Default types
+  // Liste des types par défaut
   const types = [
     { value: 'all', label: 'Tout' },
     { value: 'violations', label: 'Anomalies' },
@@ -24,6 +25,16 @@ function Audit() {
     { value: 'passes', label: 'Validés' },
     { value: 'inapplicable', label: 'Inapplicables' },
   ]
+
+  // Impact de criticité (obligé de traduire car axe-core les envoie en anglais)
+  const impact = {
+    critical: 'Critique',
+    serious:  'Majeur',
+    moderate: 'Modéré',
+    minor:    'Mineur',
+  }
+
+  // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
   const audit = auditData.audit;
   const website = auditData.website;
 
@@ -46,19 +57,21 @@ function Audit() {
   // Depuis un filtrage de cat, récupère les passes (array non vide)
   const passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
 
-  // Select categorie
+  // Fonction de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
   const handleFilteredByCat = (category) => {
     setSelectedCat(category);
   }
 
-  // Select type
+  // Fonction de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd)
   const handleFilteredByType = (value) => {
     setSelectedType(value);
   };
 
   // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat)
   const categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
-    return <Category key={i} category={data.category} handleFilteredByCat={handleFilteredByCat} />
+    // Affiche la class isSelected ou pas
+    const isSelected = data.category === selectedCat;
+    return <Category key={i} category={data.category} handleFilteredByCat={handleFilteredByCat} isSelected={isSelected} />
   });
 
   /** affichage **/
