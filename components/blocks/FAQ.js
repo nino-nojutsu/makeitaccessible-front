@@ -2,7 +2,7 @@ import styles from '../../styles/Home.module.css';
 
 import { useState } from 'react';
 
-function FAQ() {
+function Faq() {
 
     const [faqIndex, setFaqIndex] = useState(0)
 
@@ -58,4 +58,4 @@ function FAQ() {
     );
 }
 
-export default FAQ;
+export default Faq;
