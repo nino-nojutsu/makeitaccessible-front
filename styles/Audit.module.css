@@ -1,5 +1,50 @@
-.container {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
+.auditDetailsContainer {
+  display: grid;
+  grid-template-columns: max-content auto;
+  grid-column-gap: 2vw;
+  width: 100%;
+}
+
+.categoriesList ol {
+  padding-left: unset;
+}
+
+.categoriesList li::marker {
+  color: gray;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  font-weight:normal;
+}
+
+.categoriesList li {
+  list-style-position: inside;
+  color: var(--color-base);
+  background-color: transparent;
+  transition: background-color linear .1s, color linear .1s;
+  width: 100%;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.categoriesList li:hover,
+.categoriesList li:focus {
+  color: white;
+  background-color: var(--color-secondary);
+  transition: background-color linear .1s, color linear .1s;
+}
+
+.categoriesList li:hover span,
+.categoriesList li:focus span {
+  color: white;
+}
+
+.categoriesList li span {
+  display: inline-block;
+  width: calc(100% - 1rem);
+}
+
+.category {
+  cursor: pointer;
 }
