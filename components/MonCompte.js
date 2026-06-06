@@ -2,6 +2,7 @@ import styles from '../styles/MonCompte.module.css';
 import { useState } from 'react';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux';
 
 function MonCompte() {
     
@@ -12,9 +13,41 @@ function MonCompte() {
     const [signUpEmail, setSignUpEmail] = useState('');
     const [signUpUsername, setSignUpUsername] = useState('');
     const [signUpPassword, setSignUpPassword] = useState('');
+
+    const user = useSelector((state) => state.user.value);
     
     const handleSubmit = () => {
+        const body = {
+            firstName: signUpFirstName,
+            lastName: signUpLastName,
+            email: signUpEmail,
+            username: signUpUsername,
+            token: user.token
+        };
         
+        if (signUpPassword) {
+            body.password = signUpPassword;
+        }
+
+        fetch('http://localhost:3000/users/user', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+            })      
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.result) {
+                alert('Compte mis à jour avec succès !');
+            } else {
+                alert('Erreur lors de la mise à jour du compte : ' + data.error);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Une erreur est survenue lors de la mise à jour du compte.');
+        });
     };
 
     return (
