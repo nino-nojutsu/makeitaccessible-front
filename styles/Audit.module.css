@@ -23,6 +23,7 @@
   transition: background-color linear .1s, color linear .1s;
   width: 100%;
   border-radius: var(--border-radius);
+  margin-bottom: .25rem;
   padding: 0.5rem 1rem;
   white-space: nowrap;
   cursor: pointer;
@@ -38,6 +39,11 @@
 .categoriesList li:hover span,
 .categoriesList li:focus span {
   color: white;
+}
+
+.categoriesList li.isSelected {
+  color: white;
+  background-color: var(--color-secondary);
 }
 
 .categoriesList li span {
