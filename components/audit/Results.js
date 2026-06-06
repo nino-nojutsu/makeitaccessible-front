@@ -2,7 +2,7 @@ import styles from "../../styles/Test.module.css";
 import Tests from "./Tests.js";
 
 // Results embarque les 3 tableaux typés (violations, incomplete, passes filtrés en amont ou pas par catégorie depuis le composant Audit)
-// selectedType va nous permettre d'afficher le type tests filtré et affichera la section correspondante au filtre de type sélectionné
+// selectedType va nous permettre d'afficher le type de tests filtrés et affichera la section correspondante selon le filtre du type sélectionné
 function Results({ violations, incomplete, passes, selectedType }) {
   /** comportements **/
   const violationsTestsList = violations.map((test, i) => {
