@@ -4,7 +4,8 @@ import Tests from "./Tests.js";
 // Results embarque les 3 tableaux typés (violations, incomplete, passes filtrés en amont ou pas par catégorie depuis le composant Audit)
 // selectedType va nous permettre d'afficher le type de tests filtrés et affichera la section correspondante selon le filtre du type sélectionné
 function Results({ violations, incomplete, passes, selectedType, selectedImpact }) {
-  console.log('violations', violations);
+  // console.log('violations', violations);
+  // console.log('selectedImpact', selectedImpact);
   /** comportements **/
   const violationsTestsList = violations?.length > 0 && violations.map((test, i) => {
     return <Tests key={i} category={test.category} rules={test.violations} selectedImpact={selectedImpact} />;

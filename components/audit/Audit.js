@@ -42,17 +42,19 @@ function Audit() {
   // Depuis un filtrage de cat, récupère les passes (array non vide)
   const passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
 
-  // Fonction de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
+  // Fonction (idf) de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
   const handleFilteredByCat = (category) => {
     category === 'allCats' ? setSelectedCat('') : setSelectedCat(category);
+    setSelectedType('all');
+    setSelectedImpact('all');
   }
 
-  // Fonction de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd) : maj du state selectedType
+  // Fonction (idf) de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd) : maj du state selectedType
   const handleFilteredByType = (value) => {
     setSelectedType(value);
   };
 
-  // Fonction de filtrage par criticité qui récupère le type de criticité souhaité via l'event onChange du Select (antd) : maj du state selectedImpact
+  // Fonction (idf) de filtrage par criticité qui récupère le type de criticité souhaité via l'event onChange du Select (antd) : maj du state selectedImpact
   const handleFilteredByImpact = (value) => {
     setSelectedImpact(value);
   }
@@ -100,13 +102,13 @@ function Audit() {
         {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
         {
           (violations.length > 0 || incomplete.length > 0) &&
-          <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} />
+          <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
         }
           
         {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
         {
           violations.length > 0 || incomplete.length > 0 ?
-          <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
+          <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} /> :
           <>
             <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
             <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />

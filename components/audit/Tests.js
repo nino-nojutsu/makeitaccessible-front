@@ -4,18 +4,25 @@ import Test from './Test.js';
 
 // Tests reçoit une catégorie et ses règles axe-core filtrées par type (rules)
 // Affiche le titre de la catégorie + la liste des règles (liste composants Test)
-function Tests({ category, rules }) {
+function Tests({ category, rules, selectedImpact}) {
   // console.log('rules', rules);
-  const testsList = rules.map((test, i) => {
+  // console.log('selectedImpact', selectedImpact);
+
+  const filteredByImpact = selectedImpact !== 'all' ? rules.filter(rule => rule.impact === selectedImpact) : rules;
+  const testsList = filteredByImpact.map((test, i) => {
     return <Test key={i} {...test} />
-  })
+  });
   /** affichage **/
   return (
     <>
-      <h4 className={styles.testsListTitle}>Thématique — {category}</h4>
-      <div className={styles.testsListTile}>
-        {testsList.length > 0 && testsList}
-      </div>
+      { testsList.length > 0 &&
+        <>
+          <h4 className={styles.testsListTitle}>Thématique — {category}</h4>
+          <div className={styles.testsListTile}>
+            {testsList}
+          </div>
+        </>
+      }
     </>
   );
 }
