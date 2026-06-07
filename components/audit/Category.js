@@ -2,7 +2,7 @@
 import styles from '../../styles/Categories.module.css';
 
 function Category(props) {
-  console.log('props', props);
+  // console.log('props', props);
   // Inverse data flow : pattern React où un composant enfant remonte une action vers le parent via une prop fonction
   // Ici on a besoin, lors de l'event onClick sur Category de déclencher la fonction handleFilterByCat passée en props depuis le parent 
   // pour pourvoir mettre à jour le selectedCat seulement disponible dans Audit car seul Audit à accès aux données (audit.tests, selectedCat, displayTests)
