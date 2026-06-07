@@ -14,7 +14,7 @@ function Category(props) {
 
   /** affichage **/
   return (
-    <li className={props.isSelected && styles.isSelected}>
+    <li className={props.className}>
       <span className={styles.category} onClick={() => handleClickCategory()}>
         {props.category}
       </span>

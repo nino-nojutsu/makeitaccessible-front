@@ -65,6 +65,16 @@
   color: var(--color-secondary);
 }
 
+.categoriesList li.isSelected {
+  color: white;
+  background-color: var(--color-secondary);
+}
+
+.categoriesList li.isSelected > strong {
+  color: var(--color-secondary);
+  background-color: white;
+}
+
 .noResults {
   background-color: white;
   box-shadow: var(--box-shadow-small);

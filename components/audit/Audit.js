@@ -73,7 +73,12 @@ function Audit() {
     const isSelected = data.category === selectedCat;
     // Compte le nombre total d'anomalie : incomplete + violations
     const totalIssues = data.incomplete.length + data.violations.length;
-    return <Category key={i} category={data.category} handleFilteredByCat={handleFilteredByCat} isSelected={isSelected} totalIssues={totalIssues} />
+    return <Category
+      key={i}
+      category={data.category}
+      handleFilteredByCat={handleFilteredByCat}
+      className={isSelected ? styles.isSelected : null}
+      totalIssues={totalIssues} />
   });
 
   /** affichage **/
@@ -100,7 +105,7 @@ function Audit() {
           
           {/* Results gère le switch entre les 3 sections selon le filtre sélectionné avec selectedType */}
           <div className={styles.auditResults}>
-            {violations.length > 0 && incomplete.length > 0 ?
+            {violations.length > 0 || incomplete.length > 0 ?
               <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
               <div className={styles.noResults}>Pas d'anomalies, Bravo ! 😊</div>}
           </div>

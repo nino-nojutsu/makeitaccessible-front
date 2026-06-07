@@ -28,8 +28,3 @@
   background-color: var(--color-bg-success);
   color: var(--color-success);
 }
-
-.isSelected {
-  color: white;
-  background-color: var(--color-secondary);
-}
