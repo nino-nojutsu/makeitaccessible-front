@@ -112,7 +112,7 @@ function Audit() {
           <div className={styles.auditResults}>
             {violations.length > 0 || incomplete.length > 0 ?
               <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
-              <div className={styles.noResults}>Pas d'anomalies, Bravo ! 😊</div>}
+              <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>}
           </div>
         </>
       </div>
