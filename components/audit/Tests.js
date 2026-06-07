@@ -1,4 +1,4 @@
-import styles from '../../styles/Test.module.css';
+import styles from '../../styles/Tests.module.css';
 import { useState } from "react";
 import Test from './Test.js';
 
@@ -12,7 +12,7 @@ function Tests({ category, rules }) {
   /** affichage **/
   return (
     <>
-      <h5>{category}</h5>
+      <h4 className={styles.testsListTitle}>Thématique — {category}</h4>
       <div className={styles.testsListTile}>
         {testsList.length > 0 && testsList}
       </div>

@@ -1,19 +1,19 @@
-import styles from "../../styles/Test.module.css";
+import styles from "../../styles/Tests.module.css";
 import Tests from "./Tests.js";
 
 // Results embarque les 3 tableaux typés (violations, incomplete, passes filtrés en amont ou pas par catégorie depuis le composant Audit)
 // selectedType va nous permettre d'afficher le type de tests filtrés et affichera la section correspondante selon le filtre du type sélectionné
 function Results({ violations, incomplete, passes, selectedType }) {
   /** comportements **/
-  const violationsTestsList = violations.map((test, i) => {
+  const violationsTestsList = violations?.length > 0 && violations.map((test, i) => {
     return <Tests key={i} category={test.category} rules={test.violations} />;
   });
 
-  const incompleteTestsList = incomplete.map((test, i) => {
+  const incompleteTestsList = incomplete?.length > 0 && incomplete.map((test, i) => {
     return <Tests key={i} category={test.category} rules={test.incomplete} />;
   });
 
-  const passesTestsList = passes.map((test, i) => {
+  const passesTestsList = passes?.length > 0 && passes.map((test, i) => {
     return <Tests key={i} category={test.category} rules={test.passes} />;
   });
 
@@ -22,35 +22,44 @@ function Results({ violations, incomplete, passes, selectedType }) {
     case "violations":
       return (
         <>
-          <h3>Anomalies</h3> {violationsTestsList}
+          <h3>Anomalies</h3> 
+          {violationsTestsList}
         </>
       )
       break;
     case "incomplete":
       return (
         <>
-          <h3>Anomalies incomplètes</h3> {incompleteTestsList}
+          <h3>Anomalies incomplètes</h3> 
+          {incompleteTestsList}
         </>
       )
       break;
     case "passes":
       return (
         <>
-          <h3>Validées</h3> {passesTestsList}
+          <h3>Validées</h3> 
+          {passesTestsList}
         </>
       )
       break;
     default:
       return (
         <>
-          <h3>Anomalies</h3>
-          {violationsTestsList}
+          {
+            violations?.length > 0 && 
+            <><h3>Anomalies</h3> {violationsTestsList}</>
+          }
 
-          <h3>Anomalies incomplètes</h3>
-          {incompleteTestsList}
+          {
+            incomplete?.length > 0 &&
+            <><h3>Anomalies incomplètes</h3> {incompleteTestsList}</>
+          }
 
-          <h3>Validées</h3>
-          {passesTestsList}
+          {
+            passes?.length > 0 &&
+            <><h3>Validées</h3> {passesTestsList}</>
+          }
         </>
       )
       break;

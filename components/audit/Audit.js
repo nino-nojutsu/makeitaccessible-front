@@ -37,12 +37,11 @@ function Audit() {
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
   const audit = auditData.audit;
   const website = auditData.website;
+  console.log('audit.tests', audit.tests);
 
   /** state **/
   const [selectedCat, setSelectedCat] = useState(''); // Images | Cadres | Couleurs | Tableaux | etc...
   const [selectedType, setSelectedType] = useState('all'); // all | inapplicable | passes | incompleted | violations
-
-  console.log('selectedCat', selectedCat);
 
   /** comportements **/
 
@@ -69,18 +68,24 @@ function Audit() {
     setSelectedType(value);
   };
 
-  // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat)
+  // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
   const categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
     // Affiche la class isSelected ou pas
     const isSelected = data.category === selectedCat;
     // Compte le nombre total d'anomalie : incomplete + violations
     const totalIssues = data.incomplete.length + data.violations.length;
+    // Récupère le nombre de tests validés
+    const totalPasses = data.passes.length;
+    // A uniquement des non applicables dans les résultats
+    const hasInapplicable = data.inapplicable.length > 0 && totalIssues + totalPasses === 0;
     return <Category
       key={i}
       category={data.category}
       handleFilteredByCat={handleFilteredByCat}
       className={isSelected ? styles.isSelected : null}
-      totalIssues={totalIssues} />
+      totalIssues={totalIssues}
+      totalPasses={totalPasses}
+      hasInapplicable={hasInapplicable} />
   });
 
   /** affichage **/
@@ -91,30 +96,48 @@ function Audit() {
           <ol className={styles.listGroup}>
             {categoriesList}
           </ol>
-          {selectedCat && <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>Voir toutes les catégories</span>}
+          {selectedCat && <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>Afficher tous les résultats</span>}
         </aside>
       )}
       
-      <div className={styles.auditWrapper}>
-        <>
-          <Space wrap>
-            <Select
-              defaultValue="all"
-              style={{ width: 220, marginBottom: '12px' }}
-              allowClear
-              onChange={handleFilteredByType}
-              options={types}
-              placeholder="Filtrer par type d'anomalie"
-            />
-          </Space>
-          
-          {/* Results gère le switch entre les 3 sections selon le filtre sélectionné avec selectedType */}
-          <div className={styles.auditResults}>
-            {violations.length > 0 || incomplete.length > 0 ?
-              <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
-              <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>}
+      <div className={styles.auditResults}>
+        {(violations.length > 0 || incomplete.length > 0) &&
+          <div className={styles.auditActionsTools}>
+            <Space wrap direction="vertical">
+              <span>Filtrer par type d'anomalie</span>
+              <Select
+                defaultValue="all"
+                style={{ width: 220, marginBottom: '12px', marginRight: '12px' }}
+                allowClear
+                onChange={handleFilteredByType}
+                options={types}
+                placeholder="Filtrer par type d'anomalie"
+              />
+            </Space>
+
+            <Space wrap direction="vertical">
+              <span>Filtrer par criticité</span>
+              <Select
+                defaultValue="all"
+                style={{ width: 220, marginBottom: '12px' }}
+                allowClear
+                onChange={handleFilteredByType}
+                options={types}
+                placeholder="Filtrer par criticité"
+              />
+            </Space>
           </div>
-        </>
+        }
+          
+        {/* Results gère le switch entre les 3 sections selon le filtre sélectionné avec selectedType */}
+        {
+          violations.length > 0 || incomplete.length > 0 ?
+          <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} /> :
+          <>
+            <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
+            <Results passes={passes} selectedType={selectedType} />
+          </>
+        }
       </div>
     </div>
   )

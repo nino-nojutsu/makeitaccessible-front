@@ -13,19 +13,48 @@
 }
 
 .auditResults {
-  height: 100vh;
+  height: 100%;
+}
+
+.auditResults h3 {
+  display: flex;
+  align-items: center;
+  column-gap: 1.5rem;
+  font-size: 1.65rem;
+  white-space: nowrap;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.auditResults h3:first-of-type {
+  margin-top: unset;
+}
+
+.auditResults h3:after {
+  content: '';
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0,0,0,0.1);
+  margin-top: 5px;
 }
 
 .noResults {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   text-align: center;
   background-color: white;
   box-shadow: var(--box-shadow-small);
   border-radius: var(--border-radius);
   border: 1px solid var(--color-border);
   width: 100%;
-  padding: 4rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.auditActionsTools {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .categoriesList {
@@ -41,6 +70,7 @@
   color: gray;
   font-family: sans-serif;
   font-size: 0.8rem;
+  line-height: 1;
   font-weight:normal;
 }
 
@@ -69,16 +99,6 @@
   transition: background-color linear .1s, color linear .1s;
 }
 
-.categoriesList li:hover span,
-.categoriesList li:focus span {
-  color: white;
-}
-
-.categoriesList li span {
-  display: inline-block;
-  width: calc(100% - 1rem);
-}
-
 .categoriesList li:hover strong,
 .categoriesList li:focus strong {
   background-color: white;
@@ -93,6 +113,26 @@
 .categoriesList li.isSelected > strong {
   color: var(--color-secondary);
   background-color: white;
+}
+
+.categoriesList li[disabled],
+.categoriesList li[disabled]:hover,
+.categoriesList li[disabled]:focus {
+  color: var(--color-base);
+  background-color: transparent;
+  color: rgb(0,0,0,.35);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.categoriesList li > span {
+  display: inline-block;
+  width: calc(100% - 1rem);
+}
+
+.categoriesList li:hover > span,
+.categoriesList li:focus > span {
+  color: white;
 }
 
 .categoriesList .showAll {
