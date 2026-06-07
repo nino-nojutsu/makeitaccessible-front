@@ -97,9 +97,11 @@ function Audit() {
           <Space wrap>
             <Select
               defaultValue="all"
-              style={{ width: 180, marginBottom: '12px' }}
+              style={{ width: 220, marginBottom: '12px' }}
+              allowClear
               onChange={handleFilteredByType}
               options={types}
+              placeholder="Filtrer par type d'anomalie"
             />
           </Space>
           
