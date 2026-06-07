@@ -46,7 +46,7 @@ function Audit() {
 
   // 1. Filtrer par catégorie
   const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
-  console.log('filteredByCat', filteredByCat);
+  // console.log('filteredByCat', filteredByCat);
 
   // 2. Filtrer par type à partir des catégories filtrées
 
@@ -71,12 +71,14 @@ function Audit() {
   const categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
     // Affiche la class isSelected ou pas
     const isSelected = data.category === selectedCat;
-    return <Category key={i} category={data.category} handleFilteredByCat={handleFilteredByCat} isSelected={isSelected} />
+    // Compte le nombre total d'anomalie : incomplete + violations
+    const totalIssues = data.incomplete.length + data.violations.length;
+    return <Category key={i} category={data.category} handleFilteredByCat={handleFilteredByCat} isSelected={isSelected} totalIssues={totalIssues} />
   });
 
   /** affichage **/
   return (
-    <div className={styles.auditDetailsContainer}>
+    <div className={styles.auditContainer}>
       { categoriesList.length > 0 && (
         <aside role="navigation" className={styles.categoriesList}>
           <ol className={styles.listGroup}>

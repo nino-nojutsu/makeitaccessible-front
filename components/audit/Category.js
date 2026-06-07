@@ -1,5 +1,5 @@
 // import Link from 'next/link';
-import styles from '../../styles/Audit.module.css';
+import styles from '../../styles/Categories.module.css';
 
 function Category(props) {
   // Inverse data flow : pattern React où un composant enfant remonte une action vers le parent via une prop fonction
@@ -18,6 +18,9 @@ function Category(props) {
       <span className={styles.category} onClick={() => handleClickCategory()}>
         {props.category}
       </span>
+      <strong className={`${styles.bulletIssue} ${props.totalIssues > 0 ? styles.hasIssues : styles.hasNoIssues}`}>
+        {props.totalIssues}
+      </strong>
     </li>
   )
 }

@@ -1,8 +1,19 @@
-.auditDetailsContainer {
+.auditContainer {
   display: grid;
-  grid-template-columns: max-content auto;
-  grid-column-gap: 2vw;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+  align-items: start;
   width: 100%;
+
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: minmax(18vw, max-content) auto;
+    grid-column-gap: 2vw;
+  }
+}
+
+.categoriesList {
+  position: sticky;
+  top: 1rem;
 }
 
 .categoriesList ol {
@@ -17,14 +28,16 @@
 }
 
 .categoriesList li {
+  font-family: var(--font-display);
+  position: relative;
   list-style-position: inside;
   color: var(--color-base);
   background-color: transparent;
   transition: background-color linear .1s, color linear .1s;
   width: 100%;
-  border-radius: var(--border-radius);
+  border-radius: calc(var(--border-radius) + 1px);
   margin-bottom: .25rem;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1rem;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -41,18 +54,15 @@
   color: white;
 }
 
-.categoriesList li.isSelected {
-  color: white;
-  background-color: var(--color-secondary);
-}
-
 .categoriesList li span {
   display: inline-block;
   width: calc(100% - 1rem);
 }
 
-.category {
-  cursor: pointer;
+.categoriesList li:hover strong,
+.categoriesList li:focus strong {
+  background-color: white;
+  color: var(--color-secondary);
 }
 
 .noResults {

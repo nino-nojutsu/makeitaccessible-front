@@ -1,0 +1,35 @@
+.category {
+  cursor: pointer;
+}
+
+.bulletIssue {
+  display: inline-block;
+  background-color: var(--color-secondary);
+  color: white;
+  padding: .075rem;
+  align-content: center;
+  font-weight: 600;
+  border-radius: calc(var(--border-radius) + 4px);
+  width: 28px;
+  height: 24px;
+  font-size: var(--font-size-small);
+  line-height: 1;
+  text-align: center;
+  position: absolute;
+  right: 1rem;
+}
+
+.bulletIssue.hasIssues {
+  background-color: var(--color-bg-error);
+  color: var(--color-error);
+}
+
+.bulletIssue.hasNoIssues {
+  background-color: var(--color-bg-success);
+  color: var(--color-success);
+}
+
+.isSelected {
+  color: white;
+  background-color: var(--color-secondary);
+}
