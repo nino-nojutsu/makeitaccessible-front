@@ -77,16 +77,8 @@ button:hover {
   cursor: pointer;
 }
 
-/* a {
-  color: var(--color-primary) !important;
-}
-
-a:hover {
-  color: var(--color-primary-hover) !important;
-} */
-
 /* -- Container -- */
-.container {
+.pagecontainer {
   width: 100%;
   height: 100vh;
   margin-right: auto;
@@ -96,37 +88,37 @@ a:hover {
 }
  
 @media screen and (min-width: 360px) {
-  .container {
+  .pagecontainer {
     max-width: 360px;
   }
 }
  
 @media screen and (min-width: 768px) {
-  .container {
+  .pagecontainer {
     max-width: 750px;
   }
 }
  
 @media screen and (min-width: 992px) {
-  .container {
+  .pagecontainer {
     max-width: 970px;
   }
 }
  
 @media screen and (min-width: 1200px) {
-  .container {
+  .pagecontainer {
     max-width: 1230px;
   }
 }
  
 @media screen and (min-width: 1440px) {
-  .container {
+  .pagecontainer {
     max-width: 1470px;
   }
 }
  
 @media screen and (min-width: 1680px) {
-  .container {
+  .pagecontainer {
     max-width: 1710px;
   }
 }

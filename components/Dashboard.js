@@ -14,6 +14,11 @@ function Dashboard() {
         <Link href="/parametres" className={styles.navLink}>Paramètres</Link>
         </div>
 
+        <div className={styles.rightSection}>
+          <h2 className={styles.title}>Bienvenue sur votre tableau de bord</h2>
+          <p>Depuis cet espace, vous pouvez accéder à vos audits, gérer votre compte et configurer vos paramètres.</p>
+        </div>
+
       </div>          
   );
 }
