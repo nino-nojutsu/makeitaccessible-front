@@ -42,6 +42,8 @@ function Audit() {
   const [selectedCat, setSelectedCat] = useState(''); // Images | Cadres | Couleurs | Tableaux | etc...
   const [selectedType, setSelectedType] = useState('all'); // all | inapplicable | passes | incompleted | violations
 
+  console.log('selectedCat', selectedCat);
+
   /** comportements **/
 
   // 1. Filtrer par catégorie
@@ -59,7 +61,7 @@ function Audit() {
 
   // Fonction de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
   const handleFilteredByCat = (category) => {
-    setSelectedCat(category);
+    category === 'allCats' ? setSelectedCat('') : setSelectedCat(category);
   }
 
   // Fonction de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd)
@@ -87,8 +89,9 @@ function Audit() {
       { categoriesList.length > 0 && (
         <aside role="navigation" className={styles.categoriesList}>
           <ol className={styles.listGroup}>
-            { categoriesList }
+            {categoriesList}
           </ol>
+          {selectedCat && <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>Voir toutes les catégories</span>}
         </aside>
       )}
       

@@ -27,7 +27,8 @@
   font-weight:normal;
 }
 
-.categoriesList li {
+.categoriesList li, 
+.categoriesList .showAll {
   font-family: var(--font-display);
   position: relative;
   list-style-position: inside;
@@ -43,7 +44,9 @@
 }
 
 .categoriesList li:hover,
-.categoriesList li:focus {
+.categoriesList li:focus,
+.categoriesList .showAll:hover,
+.categoriesList .showAll:focus {
   color: white;
   background-color: var(--color-secondary);
   transition: background-color linear .1s, color linear .1s;
@@ -73,6 +76,17 @@
 .categoriesList li.isSelected > strong {
   color: var(--color-secondary);
   background-color: white;
+}
+
+.categoriesList .showAll {
+  display: flex;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  justify-content: center;
+  color: var(--color-base);
+  background-color: rgba(0, 0, 0, .055);
 }
 
 .noResults {
