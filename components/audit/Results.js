@@ -6,6 +6,7 @@ import Tests from "./Tests.js";
 function Results({ violations, incomplete, passes, selectedType, selectedImpact }) {
   // console.log('violations', violations);
   // console.log('selectedImpact', selectedImpact);
+  
   /** comportements **/
   const violationsTestsList = violations?.length > 0 && violations.map((test, i) => {
     return <Tests key={i} category={test.category} rules={test.violations} selectedImpact={selectedImpact} />;

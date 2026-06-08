@@ -29,11 +29,11 @@ function Audit() {
 
   /** comportements **/
 
-  // 1. Filtrer par catégorie
+  // 1. Filtrer par catégorie ou pas : soit on récupère les tests d'une catégorie si un catégorie est séléctionnée soit on stock tous les tests (ternaire)
   const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
   // console.log('filteredByCat', filteredByCat);
 
-  // 2. Filtrer par type à partir des catégories filtrées
+  // 2. Pré-filtrage par type à partir des catégories filtrées (par catégorie sélectionnée ou toutes catégories confondues)
 
   // Depuis un filtrage de cat, récupère les violations (array non vide)
   const violations = filteredByCat.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
@@ -45,8 +45,9 @@ function Audit() {
   // Fonction (idf) de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
   const handleFilteredByCat = (category) => {
     category === 'allCats' ? setSelectedCat('') : setSelectedCat(category);
-    setSelectedType('all');
-    setSelectedImpact('all');
+    // @todo charles: à voir si je reset les filtres quand une catégorie est sélectionnée (nécessité d'update les Select aussi à 'all')
+    // setSelectedType('all');
+    // setSelectedImpact('all');
   }
 
   // Fonction (idf) de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd) : maj du state selectedType
