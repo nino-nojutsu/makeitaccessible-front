@@ -56,20 +56,20 @@ function MonCompte() {
             <div className={styles.leftSection}>
                 <div className={styles.logoWrapper}>
                     <Image
-                    src='/favicon-makeitaccessible.svg'
-                    alt=''
-                    aria-hidden="true"
+                    src="/favicon-makeitaccessible.svg"
+                    alt="logo"
                     width={32}
                     height={32}
                     />
+                
+
                     <div className={styles.logoTextWrapper}>
-                        <Image
-                        src='/images/logo-MakeItAccessible.svg'
-                        alt='logo MakeItAccessible'
-                        width={150}
-                        height={150}
-                        />
+                       
                         </div>
+                        <div className={styles.logoContainer}>
+                            <span className={styles.logoFirstText}>MakeIt</span>
+                            <span className={styles.logoSecondText}>Accessible</span>
+                            </div>
                     </div>
                     <Link href="/mes-audits" className={styles.navLink}>Mes audits</Link>
                     <Link href="/mon-compte" className={styles.navLink}>Mon compte</Link>

@@ -67,3 +67,24 @@
 .button:hover {
   background-color: #121f3d;
 }
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logoFirstText {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.logoSecondText {
+  color: var(--color-primary);
+  font-size: 16px;
+  font-weight: 600;
+}

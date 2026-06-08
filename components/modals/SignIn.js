@@ -55,11 +55,21 @@ function SignIn({ closeModal }) {
         className={styles.inputSignIn}
       />
       <button onClick={() => handleSubmit()}  className={styles.btnSubmitSignIn}>Se connecter</button>
-      <button onClick={() => window.location.href = 'http://localhost:3000/auth/google'} className={styles.btnSubmitGoogleSignIn}>Se connecter avec Google</button>
-      </div>
-    </>
-  );
-}
+      <button 
+      onClick={() => window.location.href = 'http://localhost:3000/auth/google'} 
+      className={styles.btnSubmitGoogleSignIn}
+      >
+        <img
+        src="/google-logo.png"
+        alt="Google"
+        className={styles.googleIcon}
+        />
+        Se connecter avec Google
+        </button>
+        </div>
+        </>
+        );
+      }
 
 export default SignIn;
 

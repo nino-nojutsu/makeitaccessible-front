@@ -19,27 +19,22 @@
 .logoWrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.logoText {
-  filter: brightness(0) invert(1); /* rend le logo blanc sur fond sombre */
+.logoFirstText {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.logoTextWrapper {
-   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.logoTextWrapper .logoText {
-  filter: brightness(0) invert(1);
+.logoSecondText {
+  color: var(--color-primary);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .rightSection {

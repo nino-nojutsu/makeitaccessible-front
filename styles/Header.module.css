@@ -142,5 +142,41 @@
     border-radius: 6px;
 }
 
+.btnSubmitGoogleSignIn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
 
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+
+    background-color: white;
+    color: #3c4043;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-weight: 500;
+}
+
+.btnSubmitGoogleSignIn:hover {
+    background-color: #f7f8f8;
+}
+
+.btnSubmitGoogleSignIn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.googleIcon {
+   width: 20px;
+   height: 20px;
+}
 
