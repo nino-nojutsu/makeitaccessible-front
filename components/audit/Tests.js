@@ -19,9 +19,7 @@ function Tests({ category, rules, selectedImpact, status }) {
       { testsList.length > 0 &&
         <>
           <h4 className={styles.testsListTitle}>Thématique — {category}</h4>
-          <div className={styles.testsListTile}>
-            {testsList}
-          </div>
+          {testsList}
         </>
       }
     </>

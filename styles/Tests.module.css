@@ -13,11 +13,21 @@
   margin-bottom: 1rem;
 }
 
+/* -- Status -- */
+
 .status {
   border-left-width: 6px;
   border-left-style: solid;
 }
 
+.status-error {
+  border-left-color: var(--color-error);
+}
+
+.status-warning {
+  border-left-color: var(--color-warning);
+}
+
 .status-success {
-  border-left-color: red;
+  border-left-color: var(--color-success);
 }

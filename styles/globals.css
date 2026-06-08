@@ -44,8 +44,8 @@
   --color-info-bg: #addaff;
 
   /* State impact */
-  --color-critical: #700101;
-  --color-critical-bg: #ffa3a3;
+  --color-critical: #700000;
+  --color-critical-bg: #ee7878;
   --color-serious: var(--color-error);
   --color-serious-bg: var(--color-error-bg);
   --color-moderate: #D97706;

@@ -10,14 +10,11 @@ const impactLabel = {
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
 function Test({ status, description, help, impact, html, tags }) {
-  console.log('status', status);
   /** affichage **/
   return (
-    <div className={`${styles.testTile} status status-${status}`}>
+    <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]}`}>
       {status === 'success' &&
-        <span className="badge badge-success">
-          Validé
-        </span>
+        <span className="badge badge-success">Validé</span>
       } &nbsp;
       <span className={`badge badge-${impact === null ? 'nc' : impact}`}>
         {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
