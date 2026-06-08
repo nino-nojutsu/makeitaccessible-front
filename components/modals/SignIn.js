@@ -7,7 +7,6 @@ import { login } from '../../reducers/user';
 function SignIn({ closeModal }) {
     const dispatch = useDispatch();
     const router = useRouter();
-    
 
     const [signInUsername, setSignInUsername] = useState("");
     const [signInPassword, setSignInPassword] = useState("");

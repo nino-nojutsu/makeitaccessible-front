@@ -13,9 +13,6 @@ function Header() {
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
 
-  const [signIn, setSignIn] = useState(false);
-  const [signUp, setSignUp] = useState(false);
-
   const handleCancelSignIn = () => setSignIn(false);
   const handleCancelSignUp = () => setSignUp(false);
 
