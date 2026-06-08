@@ -1,6 +1,7 @@
 import "antd/dist/antd.css";
 import "../styles/antd.css";
 import '../styles/globals.css'
+import { useRouter } from 'next/router';
 import Head from 'next/head'
 import Header from '../components/nav/Header';
 import Footer from '../components/nav/Footer';
@@ -31,7 +32,12 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
+const dashboardRoutes = ['/mes-audits', '/mon-compte', '/parametres'];
+
 function App({ Component, pageProps }) {
+   const router = useRouter(); // ← ajouté
+  const isDashboard = dashboardRoutes.includes(router.pathname); // ← ajouté
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -39,9 +45,9 @@ function App({ Component, pageProps }) {
           <Head>
             <title>Make It Accessible</title>
           </Head>
-          <Header />
+          {!isDashboard && <Header />} {/* Affiche le Header uniquement si on n'est pas sur une page du dashboard */}
           <Component {...pageProps} />
-          <Footer />
+           {!isDashboard && <Footer />} {/* Affiche le Footer uniquement si on n'est pas sur une page du dashboard */}
         </div>
       </PersistGate>
     </Provider>

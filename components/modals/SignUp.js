@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { login } from '../../reducers/user';
 
-  function SignUp() {
+  function SignUp({ closeModal }) {
 
       const dispatch = useDispatch();
       const router = useRouter();
@@ -35,8 +35,10 @@ import { login } from '../../reducers/user';
             setSignUpEmail('');
             setSignUpUsername('');
             setSignUpPassword('');
-            router.push('/dashboard');
             dispatch(login({ token: data.token, username: signUpUsername }));
+             closeModal?.();
+            router.push('/dashboard');
+
           } else { 
             alert(data.error);
           }
@@ -81,7 +83,7 @@ import { login } from '../../reducers/user';
           onChange={(e) => setSignUpPassword(e.target.value)}
           value={signUpPassword} className={styles.inputSignUp}
         />
-        <button onClick={handleRegister}>S'inscrire</button>
+        <button onClick={handleRegister} className={styles.btnSubmitSignUp}>S'inscrire</button>
         </div>
       </>
     );

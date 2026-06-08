@@ -13,6 +13,12 @@ function Header() {
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
 
+  const [signIn, setSignIn] = useState(false);
+  const [signUp, setSignUp] = useState(false);
+
+  const handleCancelSignIn = () => setSignIn(false);
+  const handleCancelSignUp = () => setSignUp(false);
+
   return (
     <header className={styles.header} role="banner">
       <Link href="/">
@@ -45,7 +51,7 @@ function Header() {
           footer={null}
           className={styles.modalesSignIn}
         >
-          <SignIn />
+          <SignIn closeModal={handleCancelSignIn} />
         </Modal>
 
         <button
@@ -54,6 +60,16 @@ function Header() {
         >
           S'inscrire
         </button>
+
+        <Modal
+          title="Créer votre compte"
+          open={signUp}
+          onCancel={() => setSignUp(false)}
+          footer={null}
+          className={styles.modalesSignUp}
+        >
+          <SignUp closeModal={handleCancelSignUp} />
+        </Modal>
 
         <Modal
           title="Créer votre compte"

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { login } from '../../reducers/user';
 
-function SignIn() {
+function SignIn({ closeModal }) {
     const dispatch = useDispatch();
     const router = useRouter();
     
@@ -27,8 +27,10 @@ function SignIn() {
         if (data.result) {
             setSignInUsername("");
             setSignInPassword("");
-            router.push('/dashboard');
             dispatch(login({ token: data.token, username: signInUsername }));
+             closeModal?.();
+            router.push('/dashboard');
+
         } else {
           alert(data.error);
         }
@@ -52,11 +54,22 @@ function SignIn() {
         value={signInPassword}
         className={styles.inputSignIn}
       />
-      <button onClick={() => handleSubmit()}>Se connecter</button>
-      </div>
-    </>
-  );
-}
+      <button onClick={() => handleSubmit()}  className={styles.btnSubmitSignIn}>Se connecter</button>
+      <button 
+      onClick={() => window.location.href = 'http://localhost:3000/auth/google'} 
+      className={styles.btnSubmitGoogleSignIn}
+      >
+        <img
+        src="/google-logo.png"
+        alt="Google"
+        className={styles.googleIcon}
+        />
+        Se connecter avec Google
+        </button>
+        </div>
+        </>
+        );
+      }
 
 export default SignIn;
 
