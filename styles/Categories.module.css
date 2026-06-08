@@ -29,11 +29,11 @@
 }
 
 .bulletIssue.hasIssues {
-  background-color: var(--color-bg-error);
+  background-color: var(--color-error-bg);
   color: var(--color-error);
 }
 
 .bulletIssue.hasNoIssues {
-  background-color: var(--color-bg-success);
+  background-color: var(--color-success-bg);
   color: var(--color-success);
 }
