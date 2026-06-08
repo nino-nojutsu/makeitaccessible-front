@@ -15,7 +15,7 @@ function Test({ status, description, help, impact, html, tags }) {
     <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]}`}>
       {status === 'success' &&
         <span className="badge badge-success">Validé</span>
-      } &nbsp;
+      }
       <span className={`badge badge-${impact === null ? 'nc' : impact}`}>
         {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
       </span>
