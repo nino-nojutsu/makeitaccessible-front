@@ -26,7 +26,7 @@ function Results({ violations, incomplete, passes, selectedType, selectedImpact 
       return (
         <>
           <h3>Anomalies</h3> 
-          {violationsTestsList}
+          {violationsTestsList ? violationsTestsList : 'Pas de résultats'}
         </>
       )
       break;
@@ -34,7 +34,7 @@ function Results({ violations, incomplete, passes, selectedType, selectedImpact 
       return (
         <>
           <h3>Anomalies incomplètes</h3> 
-          {incompleteTestsList}
+          {incompleteTestsList ? incompleteTestsList : 'Pas de résultats'}
         </>
       )
       break;
@@ -42,7 +42,7 @@ function Results({ violations, incomplete, passes, selectedType, selectedImpact 
       return (
         <>
           <h3>Validées</h3> 
-          {passesTestsList}
+          {passesTestsList ? passesTestsList : 'Pas de résultats'}
         </>
       )
       break;
