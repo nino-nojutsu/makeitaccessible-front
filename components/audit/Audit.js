@@ -47,6 +47,7 @@ function Audit() {
     setSelectedImpact(value);
   }
 
+  let categoriesList, violations, incomplete, passes;
   if (user.token) {
     // 1. Filtrer par catégorie ou pas : soit on récupère les tests d'une catégorie si un catégorie est séléctionnée soit on stock tous les tests (ternaire)
     const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
@@ -55,14 +56,14 @@ function Audit() {
     // 2. Pré-filtrage par type à partir des catégories filtrées (par catégorie sélectionnée ou toutes catégories confondues)
 
     // Depuis un filtrage de cat, récupère les violations (array non vide)
-    const violations = filteredByCat.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
+    violations = filteredByCat.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
     // Depuis un filtrage de cat, récupère les incomplete (array non vide)
-    const incomplete = filteredByCat.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
+    incomplete = filteredByCat.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
     // Depuis un filtrage de cat, récupère les passes (array non vide)
-    const passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
+    passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
 
     // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
-    const categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
+    categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
       // Affiche la class isSelected ou pas
       const isSelected = data.category === selectedCat;
       // Compte le nombre total d'anomalie : incomplete + violations
