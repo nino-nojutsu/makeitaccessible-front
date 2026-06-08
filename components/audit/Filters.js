@@ -8,7 +8,6 @@ function Filters(props) {
     { value: 'violations', label: 'Anomalies' },
     { value: 'incomplete', label: 'Anomalies incomplètes' },
     { value: 'passes', label: 'Validés' },
-    { value: 'inapplicable', label: 'Inapplicables' },
   ]
 
   // Liste des criticité par défaut pour le Select (state selectedImpact se mettront à jour dans Audit via idf)
