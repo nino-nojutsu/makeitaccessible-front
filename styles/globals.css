@@ -123,3 +123,10 @@ button:hover {
   }
 }
  
+:global(.ant-modal-footer) {
+  display: none !important;
+}
+
+:global(.ant-modal-content) {
+  padding-bottom: 24px; 
+}

@@ -54,7 +54,8 @@ function SignIn({ closeModal }) {
         value={signInPassword}
         className={styles.inputSignIn}
       />
-      <button onClick={() => handleSubmit()}>Se connecter</button>
+      <button onClick={() => handleSubmit()}  className={styles.btnSubmitSignIn}>Se connecter</button>
+      <button onClick={() => window.location.href = 'http://localhost:3000/auth/google'} className={styles.btnSubmitGoogleSignIn}>Se connecter avec Google</button>
       </div>
     </>
   );

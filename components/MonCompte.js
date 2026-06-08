@@ -62,6 +62,14 @@ function MonCompte() {
                     width={32}
                     height={32}
                     />
+                    <div className={styles.logoTextWrapper}>
+                        <Image
+                        src='/images/logo-MakeItAccessible.svg'
+                        alt='logo MakeItAccessible'
+                        width={150}
+                        height={150}
+                        />
+                        </div>
                     </div>
                     <Link href="/mes-audits" className={styles.navLink}>Mes audits</Link>
                     <Link href="/mon-compte" className={styles.navLink}>Mon compte</Link>

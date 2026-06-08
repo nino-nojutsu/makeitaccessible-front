@@ -11,6 +11,7 @@ function Header() {
 
         const user = useSelector((state) => state.user.value);
 
+
          const [signIn, setSignIn] = useState(false);
          const [signUp, setSignUp] = useState(false);
          
@@ -49,22 +50,21 @@ function Header() {
                             title="Se connecter à votre compte"
                             open={signIn}
                             onCancel={() => setSignIn(false)}
-                            footer={null} className={styles.modalesSignIn}
-                        >
+                            footer={null} className={styles.modalesSignIn} >
                             <SignIn closeModal={handleCancelSignIn}/>
                         </Modal>
                         
                     <button className={styles.btnRegistration} onClick={() => setSignUp(true)}>
                         S'inscrire
                     </button>
+                
                     
                     <Modal
                             title="Créer votre compte"
                             open={signUp}
                             onCancel={() => setSignUp(false)}
-                            footer={null} className={styles.modalesSignUp}
-                        >
-                            <SignUp closeModal={handleCancelSignIn}/>
+                            footer={null} className={styles.modalesSignUp} >
+                            <SignUp closeModal={handleCancelSignUp}/>
                         </Modal>
 
                 </nav>

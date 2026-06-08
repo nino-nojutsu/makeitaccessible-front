@@ -83,7 +83,7 @@ import { login } from '../../reducers/user';
           onChange={(e) => setSignUpPassword(e.target.value)}
           value={signUpPassword} className={styles.inputSignUp}
         />
-        <button onClick={handleRegister}>S'inscrire</button>
+        <button onClick={handleRegister} className={styles.btnSubmitSignUp}>S'inscrire</button>
         </div>
       </>
     );

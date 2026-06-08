@@ -58,6 +58,7 @@
     border-radius: 6px;
     padding: 7px 15px;
     white-space: nowrap;
+    border-radius: 999px;
 }
 
 .btnConnected {
@@ -95,6 +96,35 @@
     background-color: var(--color-bg);
 }
 
+.btnSubmitSignIn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+
+    background-color: var(--color-primary);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btnSubmitSignUp {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+
+    background-color: var(--color-primary);
+    color: white;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
 
 .inputSignIn {
     width: 100%;

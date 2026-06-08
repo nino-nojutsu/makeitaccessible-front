@@ -29,6 +29,19 @@
   filter: brightness(0) invert(1); /* rend le logo blanc sur fond sombre */
 }
 
+.logoTextWrapper {
+   display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logoTextWrapper .logoText {
+  filter: brightness(0) invert(1);
+}
+
 .rightSection {
   flex: 1;
   display: flex;
