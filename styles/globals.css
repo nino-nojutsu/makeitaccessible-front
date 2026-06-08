@@ -10,7 +10,7 @@
   --color-primary-bg:#ffe0fc;
   --color-secondary:#111827;
   --color-secondary-hover:#283552;
-  --color-secondary-bg:#aebddd;
+  --color-secondary-bg:#e2ebff;
   --color-border:rgba(0, 0, 0, 0.05);
   --color-base: #1a1a1a;
   --color-bg:#ffffff;
@@ -35,13 +35,27 @@
 
   /* State */
   --color-error: #DC2626;
-  --color-error-bg: #FFC4C4;
+  --color-error-bg: #ffd0d0;
   --color-warning: #F59E0B;
   --color-warning-bg: #ffdfa8;
   --color-success: #159F02;
   --color-success-bg: #d1f0cd;
   --color-info: #419AE3;
   --color-info-bg: #addaff;
+
+  /* State impact */
+  --color-critical: #700101;
+  --color-critical-bg: #ffa3a3;
+  --color-serious: var(--color-error);
+  --color-serious-bg: var(--color-error-bg);
+  --color-moderate: #D97706;
+  --color-moderate-bg: #FEF3C7;
+  --color-minor: #d9b206;
+  --color-minor-bg: #fffbd8;
+  --color-validated: var(--color-success);
+  --color-validated-bg: var(--color-success-bg);
+  --color-nc: var(--color-secondary);
+  --color-nc-bg: var(--color-secondary-bg);
 
   /* Layout */
   --grid-gutter-width: 15px;
@@ -112,6 +126,7 @@ a:hover {
   border-radius: var(--border-radius-large);
   background-color: var(--color-secondary-bg);
   color: var(--color-secondary);
+  font-size: var(--font-size-small);
   margin-bottom: .5rem;
   padding: .15rem .5rem;
 }
@@ -160,6 +175,61 @@ a:hover {
 
 .badge-info:before {
   background-color: var(--color-info);
+}
+
+/* -- Impact -- */
+.badge-critical {
+  background-color: var(--color-critical-bg);
+  color: var(--color-critical)
+}
+
+.badge-critical:before {
+  background-color: var(--color-critical);
+}
+
+.badge-serious  {
+  background-color: var(--color-serious-bg);
+  color: var(--color-serious)
+}
+
+.badge-serious:before {
+  background-color: var(--color-serious);
+}
+
+.badge-moderate  {
+  background-color: var(--color-moderate-bg);
+  color: var(--color-moderate)
+}
+
+.badge-moderate:before {
+  background-color: var(--color-moderate);
+}
+
+.badge-minor  {
+  background-color: var(--color-minor-bg);
+  color: var(--color-minor)
+}
+
+.badge-minor:before {
+  background-color: var(--color-minor);
+}
+
+.badge-validated  {
+  background-color: var(--color-validated-bg);
+  color: var(--color-validated)
+}
+
+.badge-validated:before {
+  background-color: var(--color-validated);
+}
+
+.badge-nc  {
+  background-color: var(--color-nc-bg);
+  color: var(--color-nc)
+}
+
+.badge-nc:before {
+  background-color: var(--color-nc);
 }
 
 /* -- Containers -- */

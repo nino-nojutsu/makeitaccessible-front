@@ -6,18 +6,18 @@ import Tests from "./Tests.js";
 function Results({ violations, incomplete, passes, selectedType, selectedImpact }) {
   // console.log('violations', violations);
   // console.log('selectedImpact', selectedImpact);
-  
+
   /** comportements **/
   const violationsTestsList = violations?.length > 0 && violations.map((test, i) => {
-    return <Tests key={i} category={test.category} rules={test.violations} selectedImpact={selectedImpact} />;
+    return <Tests key={i} category={test.category} rules={test.violations} selectedImpact={selectedImpact} status={'error'} />;
   });
 
   const incompleteTestsList = incomplete?.length > 0 && incomplete.map((test, i) => {
-    return <Tests key={i} category={test.category} rules={test.incomplete} selectedImpact={selectedImpact} />;
+    return <Tests key={i} category={test.category} rules={test.incomplete} selectedImpact={selectedImpact} status={'warning'} />;
   });
 
   const passesTestsList = passes?.length > 0 && passes.map((test, i) => {
-    return <Tests key={i} category={test.category} rules={test.passes} selectedImpact={selectedImpact} />;
+    return <Tests key={i} category={test.category} rules={test.passes} selectedImpact={selectedImpact} status={'success'} />;
   });
 
   /** affichage **/

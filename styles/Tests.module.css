@@ -12,3 +12,12 @@
   width: 100%;
   margin-bottom: 1rem;
 }
+
+.status {
+  border-left-width: 6px;
+  border-left-style: solid;
+}
+
+.status-success {
+  border-left-color: red;
+}
