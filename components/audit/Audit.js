@@ -86,7 +86,7 @@ function Audit() {
   /** affichage **/
   return (
     <>
-      {user.token &&
+      {user.token ?
       <div className={styles.auditContainer}>
         {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
         { categoriesList.length > 0 && (
@@ -120,7 +120,7 @@ function Audit() {
               </>
             }
         </div>
-      </div>}
+      </div> : 'Todo: Afficher le block Hero du résume + Input Analyse Component + 5 blocs par criticité'}
     </>
   )
 }
