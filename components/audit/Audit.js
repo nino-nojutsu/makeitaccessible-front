@@ -32,9 +32,8 @@ function Audit() {
   // Fonction (idf) de filtrage par categorie déclenché un click sur une cat (composant Catégorie + idf)
   const handleFilteredByCat = (category) => {
     category === 'allCats' ? setSelectedCat('') : setSelectedCat(category);
-    // @todo charles: à voir si je reset les filtres quand une catégorie est sélectionnée (nécessité d'update les Select aussi à 'all')
-    // setSelectedType('all');
-    // setSelectedImpact('all');
+    setSelectedType('all');
+    setSelectedImpact('all');
   }
 
   // Fonction (idf) de filtrage par type qui récupère le type souhaité via l'event onChange du Select (antd) : maj du state selectedType
