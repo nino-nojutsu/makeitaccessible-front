@@ -58,7 +58,6 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: var(--color-bg);
 }
 
 .modalesSignIn {
@@ -67,37 +66,36 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: var(--color-bg);
 }
 
 .btnSubmitSignIn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
 
-    background-color: var(--color-primary);
-    color: white;
+  background-color: var(--color-primary);
+  color: white;
 
-    cursor: pointer;
-    transition: 0.2s ease;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .btnSubmitSignUp {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
 
-    background-color: var(--color-primary);
-    color: white;
+  background-color: var(--color-primary);
+  color: white;
 
-    cursor: pointer;
-    transition: 0.2s ease;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
 .inputSignIn {
@@ -117,40 +115,39 @@
 }
 
 .btnSubmitGoogleSignIn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 
-    border: 1px solid #dadce0;
-    border-radius: 12px;
+  border: 1px solid #dadce0;
+  border-radius: 12px;
 
-    background-color: white;
-    color: #3c4043;
+  background-color: white;
+  color: #3c4043;
 
-    cursor: pointer;
-    transition: 0.2s ease;
+  cursor: pointer;
+  transition: 0.2s ease;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .btnSubmitGoogleSignIn:hover {
-    background-color: #f7f8f8;
+  background-color: #f7f8f8;
 }
 
 .btnSubmitGoogleSignIn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .googleIcon {
-   width: 20px;
-   height: 20px;
+  width: 20px;
+  height: 20px;
 }
-
