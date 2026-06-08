@@ -34,6 +34,7 @@ function Analyse() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    // Vérifie que l'URL commence par "https://" et contient au moins un point (ex: https://exemple.com)
     const urlCheck = /^https:\/\/.+\..+/;
 
     // !url = true si url est undefined, null
@@ -50,7 +51,10 @@ function Analyse() {
     }, 2000); // minimum 2s
 
     // .match() = méthode native de String, prend une regex en paramètres et retourne un tableau de type String correspondants aux résultats du match
+
+    // Extrait le nom de domaine principal (ex: "example" depuis "https://www.exemple.com")
     const siteDomain = url.match(/https?:\/\/(?:www\.)?([^.]+)\./);
+    // Extrait le nom d'hôte complet sans le protocole ni le slash final (ex: "example.com" depuis "https://www.exemple.com/page")
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
     // Envoie les informations du site au backend pour lancer l'audit
