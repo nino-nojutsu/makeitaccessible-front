@@ -9,10 +9,12 @@ const impactLabel = {
 }
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ status, description, help, impact, html, tags }) {
+function Test({ status, description, impact, tags, nodes }) {
   /** comportements **/
   // console.log('tags', tags);
 
+  // Affichage du numéro de la règle RGAA
+  //
   // Recherche tout ce qui commence par RGAA- (^... operator : commence par)
   const rgaaFound = /^RGAA-/;
   const rgaaTag = tags.find(tag => rgaaFound.test(tag));
@@ -21,6 +23,9 @@ function Test({ status, description, help, impact, html, tags }) {
   const rgaaNumberFound = /[^RGAA-]+/;
   const rgaaTabNumer = rgaaTag.match(rgaaNumberFound)
 
+  // Affichage du nombre d'occurences (c'est à dire le nombre d'éléments html concernés par le test remonté)
+  const totalNodes = nodes.length;
+
   /** affichage **/
   return (
     <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]} ${styles[`impact-${impact}`]}`}>
@@ -28,13 +33,19 @@ function Test({ status, description, help, impact, html, tags }) {
         {rgaaTabNumer}
       </div>
       <div className={styles.testContent}>
-        {status === 'success' &&
-          <span className="badge badge-success">Validé</span>
-        }
-        <span className={`badge badge-${impact === null ? 'nc' : impact}`}>
-          {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
+        <span className={styles.testStatus}>
+          {/*{status === 'success' &&
+            <span className="badge badge-success">Validé</span>
+          }*/}
+          <span className={`badge badge-${impact === null ? 'nc' : impact}`}>
+            {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
+          </span>
+          <p>{description}.</p>
         </span>
-        <p>{description}</p>
+        <span className={styles.testActions}>
+          <span className={styles.totalNodesTest}>{totalNodes} élément(s) concerné(s)</span>
+          <button className="button-action">Détails</button>
+        </span>
       </div>
     </div>
   );
