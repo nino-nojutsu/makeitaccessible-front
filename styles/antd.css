@@ -1,4 +1,11 @@
 /* CSS override for AntDesign librarie */
+:global(.ant-modal-footer) {
+  display: none !important;
+}
+
+:global(.ant-modal-content) {
+  padding-bottom: 24px; 
+}
 
 /* Form */
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {

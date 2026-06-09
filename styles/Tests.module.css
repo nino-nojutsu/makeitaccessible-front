@@ -4,6 +4,9 @@
 }
 
 .testTile {
+  display: flex;
+  align-items: flex-start;
+  column-gap: 2rem;
   background-color: white;
   box-shadow: var(--box-shadow-small);
   border-radius: var(--border-radius);
@@ -11,6 +14,37 @@
   padding: 1rem;
   width: 100%;
   margin-bottom: 1rem;
+}
+
+.rgaaTagTest {
+  align-content: center;
+  background-color: var(--color-secondary-bg);
+  color: var(--color-secondary);
+  padding: .5rem;
+  border-radius: var(--border-radius);
+  width: 4rem;
+  height: 3rem;
+  text-align: center;
+}
+
+.impact-critical .rgaaTagTest {
+  background-color: var(--color-critical-bg);
+  color: var(--color-critical);
+}
+
+.impact-serious .rgaaTagTest {
+  background-color: var(--color-serious-bg);
+  color: var(--color-serious);
+}
+
+.impact-moderate .rgaaTagTest {
+  background-color: var(--color-moderate-bg);
+  color: var(--color-moderate);
+}
+
+.impact-minor .rgaaTagTest {
+  background-color: var(--color-minor-bg);
+  color: var(--color-minor);
 }
 
 /* -- Status -- */
