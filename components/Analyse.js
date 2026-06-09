@@ -23,6 +23,7 @@ function Analyse() {
   const [modaleVisible, setModaleVisible] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const user = useSelector((state) => state.user.value);
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -62,7 +63,7 @@ function Analyse() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // Corps de la requête contenant l'URL saisie : nom et domain du site
-      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
+      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1], token: user?.token }),
     })
       // Conversion de la réponse du serveur au format JSON
       .then((response) => response.json())
