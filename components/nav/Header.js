@@ -75,11 +75,6 @@ function Header() {
         >
           <SignUp closeModal={handleCancelSignUp} />
         </Modal>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c54d4b5f8c19b569f5b3d99975105cd984955c27
       </nav>
     </header>
   );
