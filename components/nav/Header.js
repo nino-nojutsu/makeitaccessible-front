@@ -67,16 +67,7 @@ function Header() {
         >
           <SignUp closeModal={handleCancelSignUp} />
         </Modal>
-
-        <Modal
-          title="Créer votre compte"
-          open={signUp}
-          onCancel={() => setSignUp(false)}
-          footer={null}
-          className={styles.modalesSignUp}
-        >
-          <SignUp />
-        </Modal>
+        
       </nav>
     </header>
   );
