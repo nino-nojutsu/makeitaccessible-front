@@ -3,18 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { Modal } from "antd";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // ← ajout useDispatch
+import { logout } from "../../reducers/user"; // ← ajout logout
 import SignIn from "../modals/SignIn";
 import SignUp from "../modals/SignUp";
 
 function Header() {
   const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch(); // ← ajout
 
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
 
   const handleCancelSignIn = () => setSignIn(false);
   const handleCancelSignUp = () => setSignUp(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <header className={styles.header} role="banner">
@@ -27,20 +33,29 @@ function Header() {
           className={styles.logoImage}
         />
       </Link>
-      <nav
-        aria-label="S'inscrire ou se connecter"
-        className={styles.modalesContainer}
-      >
-        {/* integrate connexion modals */}
-        <button
-          className={styles.btnConnected}
-          onClick={() => {
-            setSignIn(true);
-          }}
-        >
-          Se connecter
-        </button>
+      <nav aria-label="Navigation utilisateur" className={styles.modalesContainer}>
 
+        {user.token ? (
+          // Connecté
+          <>
+            <span className={styles.username}>{user.username} |</span> 
+            <button className={styles.btnConnected} onClick={handleLogout}>
+              Se déconnecter
+            </button>
+          </>
+        ) : (
+          // Non connecté
+          <>
+            <button className={styles.btnConnected} onClick={() => setSignIn(true)}>
+              Se connecter
+            </button>
+            <button className={styles.btnRegistration} onClick={() => setSignUp(true)}>
+              S'inscrire
+            </button>
+          </>
+        )}
+
+        {/* Les modales restent toujours dans le DOM — elles s'ouvrent via open={signIn/signUp} */}
         <Modal
           title="Se connecter à votre compte"
           open={signIn}
@@ -50,13 +65,6 @@ function Header() {
         >
           <SignIn closeModal={handleCancelSignIn} />
         </Modal>
-
-        <button
-          className={styles.btnRegistration}
-          onClick={() => setSignUp(true)}
-        >
-          S'inscrire
-        </button>
 
         <Modal
           title="Créer votre compte"
@@ -68,15 +76,6 @@ function Header() {
           <SignUp closeModal={handleCancelSignUp} />
         </Modal>
 
-        <Modal
-          title="Créer votre compte"
-          open={signUp}
-          onCancel={() => setSignUp(false)}
-          footer={null}
-          className={styles.modalesSignUp}
-        >
-          <SignUp />
-        </Modal>
       </nav>
     </header>
   );
