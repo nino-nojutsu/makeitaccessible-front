@@ -1,5 +1,6 @@
 // import Link from 'next/link';
 import styles from '../../styles/Categories.module.css';
+import { Tooltip } from 'antd';
 
 function Category(props) {
   // console.log('props', props);
@@ -13,6 +14,9 @@ function Category(props) {
     props.handleFilteredByCat(props.category);
   }
 
+  const totalIssuesTooltipTitle = `${props.totalIssues} règle(s) en anomalie(s)`;
+  const totalPassesTooltipTitle = `${props.totalPasses} règle(s) validée(s)`;
+
   /** affichage **/
   return (
     <li className={props.className} onClick={() => handleClickCategory()} disabled={props.hasInapplicable}>
@@ -22,12 +26,16 @@ function Category(props) {
       <em className={styles.bulletStatus}>
         {props.totalIssues > 0 &&
           <span className={`${styles.bulletIssue} ${styles.hasIssues}`}>
-            {props.totalIssues}
+            <Tooltip title={totalIssuesTooltipTitle}>
+              <span>{props.totalIssues}</span>
+            </Tooltip>
           </span>
         }
         {props.totalPasses > 0 &&
           <span className={`${styles.bulletIssue} ${styles.hasNoIssues}`}>
-            {props.totalPasses}
+            <Tooltip title={totalPassesTooltipTitle}>
+              <span>{props.totalPasses}</span>
+            </Tooltip>
           </span>
         }
         {
