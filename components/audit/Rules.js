@@ -1,10 +1,10 @@
-import styles from '../../styles/Tests.module.css';
+import styles from '../../styles/Rules.module.css';
 import { useState } from "react";
 import Test from './Test.js';
 
 // Tests reçoit une catégorie et ses règles axe-core filtrées par type (rules)
 // Affiche le titre de la catégorie + la liste des règles (liste composants Test)
-function Tests({ category, rules, selectedImpact, status, nodes }) {
+function Rules({ category, rules, selectedImpact, status, nodes }) {
   // console.log('status', status);
   console.log('rules', rules);
   // console.log('selectedImpact', selectedImpact);
@@ -18,7 +18,7 @@ function Tests({ category, rules, selectedImpact, status, nodes }) {
     <>
       { testsList.length > 0 &&
         <>
-          <h4 className={styles.testsListTitle}>Thématique — {category}</h4>
+          <h4 className={styles.categoryRulesTitle}>Thématique — {category}</h4>
           {testsList}
         </>
       }
@@ -26,4 +26,4 @@ function Tests({ category, rules, selectedImpact, status, nodes }) {
   );
 }
 
-export default Tests;
+export default Rules;

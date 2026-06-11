@@ -2,7 +2,6 @@ import styles from '../../styles/Audit.module.css';
 import { useRouter } from "next/router";
 import Results from './Results.js';
 import Category from './Category.js';
-import Tests from './Tests.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Filters from './Filters.js';
