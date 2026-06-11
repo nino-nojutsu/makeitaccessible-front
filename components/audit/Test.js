@@ -1,4 +1,5 @@
 import styles from '../../styles/Tests.module.css';
+import { useState } from 'react';
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -9,7 +10,7 @@ const impactLabel = {
 }
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ status, description, help, impact, html, tags }) {
+function Test({ status, description, help, impact, html, tags, id }) {
   /** affichage **/
   return (
     <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]}`}>
