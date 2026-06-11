@@ -1,4 +1,7 @@
-import styles from '../../styles/Tests.module.css';
+import styles from '../../styles/Test.module.css';
+import { Modal } from 'antd';
+import TestDetails from './TestDetails.js';
+import { useState } from 'react';
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -9,9 +12,20 @@ const impactLabel = {
 }
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ status, description, impact, tags, nodes }) {
-  /** comportements **/
+function Test({ status, description, impact, tags, nodes, html }) {
   // console.log('tags', tags);
+
+  /** state **/
+  const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
+
+  /** comportements **/
+  const showTestDetailsModal = () => {
+    setTestDetailsModalVisible(true);
+  };
+
+  const handleCancelTestDetailsModal = () => {
+    setTestDetailsModalVisible(false);
+  };
 
   // Affichage du numéro de la règle RGAA
   //
@@ -21,7 +35,7 @@ function Test({ status, description, impact, tags, nodes }) {
 
   // Recherche tout sauf RGAA- ([^...] not operator) suivi de 1 ou plusieurs caractères pour ignore RGAA- et extraire uniquement les numéro 1.1.1
   const rgaaNumberFound = /[^RGAA-]+/;
-  const rgaaTabNumer = rgaaTag.match(rgaaNumberFound)
+  const rgaaTagNumber = rgaaTag.match(rgaaNumberFound)
 
   // Affichage du nombre d'occurences (c'est à dire le nombre d'éléments html concernés par le test remonté)
   const totalNodes = nodes.length;
@@ -30,8 +44,10 @@ function Test({ status, description, impact, tags, nodes }) {
   return (
     <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]} ${styles[`impact-${impact}`]}`}>
       <div className={styles.rgaaTagTest}>
-        {rgaaTabNumer}
+        {rgaaTagNumber}<br />
+        <span>RGAA</span>
       </div>
+
       <div className={styles.testContent}>
         <span className={styles.testStatus}>
           {/*{status === 'success' &&
@@ -44,9 +60,13 @@ function Test({ status, description, impact, tags, nodes }) {
         </span>
         <span className={styles.testActions}>
           <span className={styles.totalNodesTest}>{totalNodes} élément(s) concerné(s)</span>
-          <button className="button-action">Détails</button>
+          <button className="button-action" onClick={showTestDetailsModal}>Détails</button>
         </span>
       </div>
+
+      <Modal onCancel={() => handleCancelTestDetailsModal()} visible={testDetailsModalVisible} footer={null}>
+        <TestDetails nodes={nodes} html={html} />
+      </Modal>
     </div>
   );
 }
