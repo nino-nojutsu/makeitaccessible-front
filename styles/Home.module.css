@@ -351,3 +351,46 @@
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
+
+
+@media (max-width: 768px) {
+
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .heroRight {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .boxInfos {
+    flex-direction: column;
+  }
+
+  .sliceValorisation {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  .whyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stepsList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sliceSteps,
+  .sliceWhy,
+  .sliceFaq {
+    margin: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepsList {
+    grid-template-columns: 1fr;
+  }
+}
