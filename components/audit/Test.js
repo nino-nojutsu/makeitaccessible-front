@@ -1,6 +1,8 @@
 import styles from '../../styles/Tests.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faComment } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { Modal } from 'antd';
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -13,13 +15,47 @@ const impactLabel = {
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
 function Test({ status, description, help, impact, html, tags, id }) {
   /** affichage **/
+  
+  const [modalComment, setModalComment] = useState(false);
+  const [modalRemove, setModalRemove] = useState(false);
+  const [comment, setComment] = useState('');
 
-  const [retirerUnCritere, setRetirerUnCritere] = useState('');
-  const [ajouterUnCommentaire, setAjouterUnCommentaire] = useState('');
+  const openRemoveModal = () => {
+    setModalRemove(true);
+  };
 
-   const handleSubmit = () => {
-   
+  const openCommentModal = () => {
+    setModalComment(true);
+  };
+
+  const handleCancelRemove = () => {
+    setModalRemove(false);
+  };
+
+  const handleCancelComment = () => {
+    setModalComment(false);
+  };
+
+   const handleCommentSubmit = async () => {
+    await fetch(`/commented/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ comments: comment })
+  });
+
+  setModalComment(false);
+  setComment('');
  };
+
+ const handleRemoveSubmit = async () => {
+  await fetch(`/removed/${id}`, {
+    method: "PUT"
+  });
+  
+  setModalRemove(false);
+  
+  window.location.reload();
+ }
 
   return (
     <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]}`}>
@@ -30,17 +66,27 @@ function Test({ status, description, help, impact, html, tags, id }) {
         {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
       </span>
       <p>{description}</p>
+
       <div>
-        <input type="checkbox" id={id} name={id} value={id} onChange={(e) => setRetirerUnCritere(e.target.value)} />
-        <button className="btn btn-primary" onClick={() => setRetirerUnCritere(html)}>
-          <FontAwesomeIcon icon="trash-alt" />
-        </button>
-        <div>
-          <input type="text" id={`comment-${id}`} name={`comment-${id}`} value={ajouterUnCommentaire} onChange={(e) => setAjouterUnCommentaire(e.target.value)} />
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            <FontAwesomeIcon icon="comment-dots" />
-          </button>
-        </div>
+        <FontAwesomeIcon icon={faComment} onClick={openCommentModal} className={styles.icon} />
+        <FontAwesomeIcon icon={faTrashAlt} onClick={openRemoveModal} className={styles.icon} />
+
+        
+
+        <Modal open={modalRemove} onCancel={handleCancelRemove} footer={null}>
+          <h2>Retirer ce critère</h2>
+          <input type="text" placeholder="Ecrivez le motif de votre retrait ici..." onChange={(e) => setComment(e.target.value)} value={comment} />
+          <button onClick={handleCancelRemove}>Annuler</button>
+          <button className="btn btn-danger" onClick={handleRemoveSubmit}>Valider</button>
+        </Modal>
+
+          <Modal open={modalComment} onCancel={handleCancelComment} footer={null}>
+            <h2>Ecrire un commentaire</h2>
+            <input type="text" placeholder="Détaillez et annoté ce critère" onChange={(e) => setComment(e.target.value)} value={comment} />
+            <button className="btn btn-primary" onClick={handleCommentSubmit}>
+              Valider
+            </button>
+            </Modal>
       </div>
     </div>
   );
