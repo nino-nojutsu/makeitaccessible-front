@@ -22,3 +22,26 @@
 .ant-modal-content {
   border-radius: var(--border-radius);
 }
+
+/* Tabs */
+.ant-tabs-tab {
+  max-width: 10rem;
+}
+
+.ant-tabs-tab-btn {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ant-tabs-tab + .ant-tabs-tab {
+  margin: 0 0 0 22px;
+}
+
+.ant-tabs-dropdown {
+  max-width: 10%;
+}
+
+.ant-tabs-dropdown-menu-item > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

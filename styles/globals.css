@@ -121,16 +121,34 @@ a:hover {
 }
 
 /* -- Buttons -- */
+.button {
+  color: var(--color-base);
+  background-color: lightgrey;
+  border: 1px solid grey;
+  transition: background-color linear .1s, color linear .1s;
+}
+
+.button:hover, .button:focus {
+  background-color: grey;
+  transition: background-color linear .1s, color linear .1s;
+}
+
+.button-with-fa-icon {
+  .svg-inline--fa {
+    margin-right: .25rem;
+  }
+}
+
+/* Action button */
 .button-action {
   display: inline-flex;
   align-items: center;
   column-gap: .5rem;
   background-color: transparent;
   border: 1px solid var(--color-secondary);
-  padding: .5rem 1rem;
   border-radius: calc(var(--border-radius-large) * 2);
   font-size: var(--font-size-base);
-  transition: background-color linear .1s, color linear .1s;
+  padding: .5rem 1rem;
 }
 
 .button-action:after {
@@ -148,12 +166,24 @@ a:hover {
 .button-action:focus {
   background-color: var(--color-secondary);
   color: white;
-  transition: background-color linear .1s, color linear .1s;
 }
 
 .button-action:hover:after,
 .button-action:focus:after {
   background-image: url('../public/images/icon-right-arrow-white.svg');
+}
+
+/* Success button */
+.button-success {
+  color: white;
+  background-color: var(--color-success);
+  border: 1px solid var(--color-success);
+}
+
+.button-success:hover,
+.button-success:focus {
+  background-color: color-mix(in oklab, var(--color-success), black 10%);
+  border-color: color-mix(in oklab, var(--color-success), black 10%);
 }
 
 /* -- Badges -- */
@@ -165,8 +195,6 @@ a:hover {
   background-color: var(--color-secondary-bg);
   color: var(--color-secondary);
   font-size: var(--font-size-small);
-  margin-right: 0.5rem;
-  margin-bottom: .5rem;
   padding: .15rem .5rem;
 }
 

@@ -6,7 +6,7 @@ import Test from './Test.js';
 // Affiche le titre de la catégorie + la liste des règles (liste composants Test)
 function Rules({ category, rules, selectedImpact, status, nodes }) {
   // console.log('status', status);
-  console.log('rules', rules);
+  // console.log('rules', rules);
   // console.log('selectedImpact', selectedImpact);
 
   const filteredByImpact = selectedImpact !== 'all' ? rules.filter(rule => rule.impact === selectedImpact) : rules;
