@@ -165,7 +165,7 @@
 }
 
 .ctaSearch {
-  background-color: #111827;
+  background-color: var(--color-base);
   color: white;
   width: max-content;
   border-radius: 5px;
