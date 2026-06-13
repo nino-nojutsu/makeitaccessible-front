@@ -103,15 +103,6 @@ h3 {
   line-height: 40px;
 }
 
-button {
-  all: unset;
-  padding: 8px;
-}
-
-button:hover {
-  cursor: pointer;
-}
-
 a {
   color: var(--color-primary);
 }
