@@ -23,7 +23,7 @@ function HeroAudit() {
 
 
   return (
-    <section className={styles.analyseHero} aria-label="Relancer un audit et voir score global de mon audit">
+    <section className={styles.analyseHero} aria-label="Relancer un audit et voir le score global de mon audit">
 
       {/* Barre de recherche => appel composant analyse */}
       <div className={styles.analyseWrapper}>
@@ -35,11 +35,11 @@ function HeroAudit() {
         <Score />
         <section className={styles.centerSection}>
           <time className={styles.date}>
-            Audit du {new Date(audit?.audit?.results?.createdAt).toLocaleDateString("fr-FR", {
+            Audit du {new Date(audit?.results?.createdAt).toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "long",
               year: "numeric"
-            })} • {new Date(audit?.audit?.results?.createdAt).toLocaleTimeString("fr-FR", {
+            })} • {new Date(audit?.results?.createdAt).toLocaleTimeString("fr-FR", {
               hour: "2-digit",
               minute: "2-digit"
             })}
