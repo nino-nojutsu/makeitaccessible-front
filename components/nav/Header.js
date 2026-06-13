@@ -34,6 +34,10 @@ function Header() {
         />
       </Link>
       <nav aria-label="Navigation utilisateur" className={styles.modalesContainer}>
+        {/* integrate connexion modals */}
+        <button className={styles.btnConnected} onClick={() => {setSignIn(true)}}>
+          Se connecter
+        </button>
 
         {user.token ? (
           // Connecté
@@ -59,7 +63,7 @@ function Header() {
         <Modal
           title="Se connecter à votre compte"
           open={signIn}
-          onCancel={() => setSignIn(false)}
+          onCancel={() => handleCancelSignIn()}
           footer={null}
           className={styles.modalesSignIn}
         >
@@ -69,7 +73,7 @@ function Header() {
         <Modal
           title="Créer votre compte"
           open={signUp}
-          onCancel={() => setSignUp(false)}
+          onCancel={() => handleCancelSignUp()}
           footer={null}
           className={styles.modalesSignUp}
         >

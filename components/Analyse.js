@@ -20,6 +20,7 @@ function Analyse() {
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [modaleVisible, setModaleVisible] = useState(false);
+  const user = useSelector(state => state.user.value);
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.user.value);
