@@ -6,14 +6,13 @@
  ** Redirige vers la page audit
  **/
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
 import "antd/dist/antd.css";
-import { Modal } from "antd";
+import LoadingModal from "./modals/Loader.js";
 
 function Analyse() {
   /** state **/
@@ -23,6 +22,7 @@ function Analyse() {
   const [modaleVisible, setModaleVisible] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
+  const user = useSelector((state) => state.user.value);
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -30,7 +30,6 @@ function Analyse() {
     setUrl(targetUrl);
   };
 
-  // Envoi de l'URL au backend en webservice pour lancer l'analyse
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -46,9 +45,8 @@ function Analyse() {
     }
 
     setError("");
-    setTimeout(() => {
-      setModaleVisible(true);
-    }, 2000); // minimum 2s
+    // Ouvre la modale dès le submit
+    setModaleVisible(true);
 
     // .match() = méthode native de String, prend une regex en paramètres et retourne un tableau de type String correspondants aux résultats du match
 
@@ -57,12 +55,12 @@ function Analyse() {
     // Extrait le nom d'hôte complet sans le protocole ni le slash final (ex: "example.com" depuis "https://www.exemple.com/page")
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
-    // Envoie les informations du site au backend pour lancer l'audit
+    // Envoie les informations du site au backend en webservice pour lancer l'analyse
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // Corps de la requête contenant l'URL saisie : nom et domain du site
-      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1] }),
+      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1], token: user?.token }),
     })
       // Conversion de la réponse du serveur au format JSON
       .then((response) => response.json())
@@ -75,21 +73,19 @@ function Analyse() {
             website: data.website,
             audit: data.audit
           }));
+          router.push('/audit');
         } else {
+          // Ferme la modale et affiche l'erreur
+          setModaleVisible(false);
           setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
         }
-      }).then(() => {
-        // On redirige sur la page audit
-        router.push('/audit');
       })
       .catch((error) => {
         console.error(error);
-        // Affiche un message d'erreur générique à l'utilisateur
+        // Ferme la modale et affiche un message d'erreur générique à l'utilisateur
+        setModaleVisible(false);
         setError("Impossible de contacter le serveur, veuillez réessayer.");
       });
-    
-      //Ferme la modale de chargement si analyse ok ou pas ok
-      setModaleVisible(!modaleVisible);
   }
 
   /** affichage **/
@@ -121,27 +117,8 @@ function Analyse() {
         </form>
       </div>
 
-      <Modal
-        open={modaleVisible}
-        footer={null}
-        closable={false}
-        maskClosable={false}
-        centered
-        width={400}
-        className={styles.loadingModal}
-      >
-        <div style={{ textAlign: "center" }}>
-          <p>Votre site est entre de bonnes mains 🙂</p>
-          <p>En cours d’analyse...</p>
+      <LoadingModal isVisible={modaleVisible} />
 
-          <Image
-            src='/images/illustration-recherche.png'
-            alt='Analyse du site en cours'
-            width={150}
-            height={150}
-             />
-        </div>
-      </Modal>
     </>
   );
 }
