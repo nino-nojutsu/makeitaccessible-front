@@ -23,7 +23,7 @@ function HeroAudit() {
 
 
   return (
-    <section className={styles.analyseHero}>
+    <section className={styles.analyseHero} aria-label="Relancer un audit et voir score global de mon audit">
 
       {/* Barre de recherche => appel composant analyse */}
       <div className={styles.analyseWrapper}>
@@ -31,10 +31,10 @@ function HeroAudit() {
       </div>
 
       {/* Carte score global */}
-      <div className={styles.scoreCard}>
+      <div className={styles.scoreCard} aria-label="Score global et export">
         <Score />
         <section className={styles.centerSection}>
-          <p className={styles.date}>
+          <time className={styles.date}>
             Audit du {new Date(audit?.audit?.results?.createdAt).toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "long",
@@ -43,26 +43,26 @@ function HeroAudit() {
               hour: "2-digit",
               minute: "2-digit"
             })}
-          </p>
-          <p className={styles.url}>{audit.audit.results.url}</p>
-          {user.token && <button className={styles.auditButton}>Voir audit complet</button>}
+          </time>
+          <p className={styles.url}  aria-label={`Site audité : ${audit.audit.results.url}`}>{audit.audit.results.url}</p>
+          {user.token && <button className={styles.auditButton}  type="button">Voir audit complet</button>}
         </section>
 
         {user.token ? (
-          <section className={styles.download}>
-            <button className={styles.downloadPDF}>Télécharger au format PDF</button>
+          <section  aria-label="Options d'export" className={styles.download}>
+            <button className={styles.downloadPDF}  type="button">Télécharger au format PDF</button>
             <p>— OU —</p>
-            <button className={styles.downloadCSV}>Télécharger au format CSV</button>
+            <button className={styles.downloadCSV}  type="button">Télécharger au format CSV</button>
           </section>
         ) : (
           // Non connecté
-          <section className={styles.download}>
+          <section aria-label="Connexion ou inscription" className={styles.download}>
           <p>Vous souhaitez exporter votre projet ?</p>
-            <button className={headerStyles.btnConnected} onClick={() => setSignIn(true)}>
+            <button type="button" aria-haspopup="dialog" aria-expanded={signIn} className={headerStyles.btnConnected} onClick={() => setSignIn(true)}>
               Se connecter
             </button>
             <p>Vous n’avez pas encore encore de compte ?</p>
-            <button className={headerStyles.btnRegistration} onClick={() => setSignUp(true)}>
+            <button  type="button" aria-haspopup="dialog" aria-expanded={signUp} className={headerStyles.btnRegistration} onClick={() => setSignUp(true)}>
               S'inscrire
             </button>
           </section>
