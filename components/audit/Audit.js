@@ -6,6 +6,7 @@ import Tests from './Tests.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Filters from './Filters.js';
+import HeroAudit from './HeroAudit.js';
 
 function Audit() {
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
@@ -86,6 +87,7 @@ function Audit() {
   /** affichage **/
   return (
     <>
+    <HeroAudit/>
       {user.token ?
       <div className={styles.auditContainer}>
         {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
@@ -120,7 +122,7 @@ function Audit() {
               </>
             }
         </div>
-      </div> : 'Todo: Afficher le block Hero du résume + Input Analyse Component + 5 blocs par criticité'}
+      </div> : 'Todo: Input Analyse Component + 5 blocs par criticité'}
     </>
   )
 }
