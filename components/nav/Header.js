@@ -34,11 +34,6 @@ function Header() {
         />
       </Link>
       <nav aria-label="Navigation utilisateur" className={styles.modalesContainer}>
-        {/* integrate connexion modals */}
-        <button className={styles.btnConnected} onClick={() => {setSignIn(true)}}>
-          Se connecter
-        </button>
-
         {user.token ? (
           // Connecté
           <>
