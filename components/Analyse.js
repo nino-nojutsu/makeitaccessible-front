@@ -23,7 +23,6 @@ function Analyse() {
   const user = useSelector(state => state.user.value);
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector((state) => state.user.value);
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
