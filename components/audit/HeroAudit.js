@@ -9,9 +9,9 @@ import SignIn from "../modals/SignIn";
 import SignUp from "../modals/SignUp";
 
 function HeroAudit() {
-
-  const audit = useSelector((state) => state.audit.value);
   const user = useSelector((state) => state.user.value);
+  const auditData = useSelector((state) => state.audit.value);
+  const audit = auditData.audit;
 
   // ouvrir/fermer les modales
   const [signIn, setSignIn] = useState(false);
@@ -35,16 +35,16 @@ function HeroAudit() {
         <Score />
         <section className={styles.centerSection}>
           <time className={styles.date}>
-            Audit du {new Date(audit?.audit?.results?.createdAt).toLocaleDateString("fr-FR", {
+            Audit du {new Date(audit?.createdAt).toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "long",
               year: "numeric"
-            })} • {new Date(audit?.audit?.results?.createdAt).toLocaleTimeString("fr-FR", {
+            })} • {new Date(audit?.createdAt).toLocaleTimeString("fr-FR", {
               hour: "2-digit",
               minute: "2-digit"
             })}
           </time>
-          <p className={styles.url} aria-label={`Site audité : ${audit.audit.results.url}`}>{audit.audit.results.url}</p>
+          <p className={styles.url} aria-label={`Site audité : ${audit.url}`}>{audit.url}</p>
           {user.token && <button className={styles.auditButton} type="button">Voir audit complet</button>}
         </section>
 

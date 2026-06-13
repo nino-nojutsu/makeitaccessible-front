@@ -17,6 +17,7 @@ function Audit() {
   // Si un audit n'existe pas on redirige vers la home
   if (auditData === null) {
     router.push('/');
+    return;
   }
 
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website

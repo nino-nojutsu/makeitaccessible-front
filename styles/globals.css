@@ -70,6 +70,10 @@
   --container-xl-desktop:     1470px;
   --container-xxl-desktop:    1710px;
   --container-wide:           100vw;
+
+  /* -- FontAwesome -- */
+  --fa-width: 1em;
+  --fa-display: 'block';
 }
 
 /* -- Base -- */
@@ -360,4 +364,14 @@ a:hover {
   .container-medium {
     max-width: var(--container-lg-desktop);
   }
+}
+
+/* -- FontAwesome -- */
+.svg-inline--fa {
+  box-sizing: content-box;
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+  width: var(--fa-width, 1.25em);
 }
