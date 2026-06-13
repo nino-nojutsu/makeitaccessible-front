@@ -169,7 +169,7 @@
   width: 100%;
   background: white;        
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow-small);
+  box-shadow: var( --box-shadow-large);
   border: 1px solid var(--color-border);
 }
 
@@ -319,42 +319,57 @@
   font-weight: 700;
 }
 
-/* -- SECTION DROITE -- */
+/* -- SECTION DROITE : export -- */
 
 .download {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;     
   align-items: center;
-  margin: 20px;
   gap: 10px;
-  margin-left: 50px;
+  margin: 20px 20px 20px 50px;  
+}
+
+.downloadPDF,
+.downloadCSV {
+  display: flex;            
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  border-radius: var(--border-radius);
+  text-align: center;
+  padding: 10px 15px;
+  width: 100%;
+}
+
+.downloadPDF:hover,
+.downloadCSV:hover {
+  font-weight: 700;
 }
 
 .downloadPDF {
   background-color: var(--color-base);
   color: white;
-  width: max-content;
-  border-radius: var( --border-radius);
-  text-align: center;
-  padding: 10px 15px;
-  margin: 10px;
-}
-
-.downloadPDF:hover {
-  font-weight: 700;
 }
 
 .downloadCSV {
   background-color: var(--color-bg-primary);
-  color: rgb(17, 17, 17);
-  border:rgb(17, 17, 17), solid, 1px;
-  width: max-content;
-  border-radius: var(--border-radius);
-  text-align: center;
-  padding: 10px 15px;
-  margin: 10px;
+  color: var(--color-base);
+  border: 1px solid rgb(17, 17, 17);
 }
 
-.downloadCSV:hover {
-  font-weight: 700;
+
+
+/* PAS CONNECTE ? afficher modale */
+
+.mainAnalysePartielle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;  
+  text-align: center;
+  margin: 50px auto; 
+  padding: 50px;
+  border-radius: var(--border-radius-large);
+  box-shadow: var( --box-shadow-large);
+  width: 50%;
 }
