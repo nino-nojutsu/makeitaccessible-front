@@ -339,11 +339,6 @@
   cursor: pointer;
 }
 
-/* -- Message erreur --*/
-.error {
-  color: red;
-}
-
 /* -- loading --*/
 
 .loadingModal :global(.ant-modal-content) {
