@@ -9,10 +9,11 @@ import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
 
 function Audit() {
+  const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const auditData = useSelector((state) => state.audit.value);
-  const router = useRouter();
+  console.log('auditData', auditData);
 
   // Si un audit n'existe pas on redirige vers la home
   if (auditData === null) {

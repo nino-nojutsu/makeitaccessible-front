@@ -19,8 +19,8 @@ function SignUp({ closeModal }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        lastName: signUpLastName,
         firstName: signUpFirstName,
+        lastName: signUpLastName,
         email: signUpEmail,
         username: signUpUsername,
         password: signUpPassword,

@@ -1,15 +1,24 @@
 import styles from "../../styles/Header.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../reducers/user";
 
 function SignIn({ closeModal }) {
-  const dispatch = useDispatch();
+  const [url, setUrl] = useState('');
   const router = useRouter();
+
+  const auditData = useSelector((store) => store.audit.value);
+  const audit = auditData?.audit;
+  const website = auditData?.website;
+  const dispatch = useDispatch();
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+
+  useEffect(() => {
+    setUrl(window.location);
+  }, []);
 
   const handleSubmit = () => {
     fetch("http://localhost:3000/users/signin", {
@@ -18,6 +27,8 @@ function SignIn({ closeModal }) {
       body: JSON.stringify({
         username: signInUsername,
         password: signInPassword,
+        auditId: audit?.results?._id,
+        websiteId: website?._id
       }),
     })
       .then((response) => response.json())
@@ -25,13 +36,16 @@ function SignIn({ closeModal }) {
         console.log(data);
 
         if (data.result) {
-          dispatch(login({ token: data.token, username: signInUsername }));
+          dispatch(login({ token: data.token, firstName: data.firstName, username: data.username }));
           
           setSignInUsername("");
           setSignInPassword("");
 
-          router.push("/dashboard");
-          closeModal?.();
+          if (!data.websiteId && !data.auditId && url.pathname !== '/audit') {
+            router.push("/dashboard");
+          }
+
+          closeModal();
         } else {
           alert(data.error);
         }

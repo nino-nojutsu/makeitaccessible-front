@@ -6,8 +6,8 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 function Score() {
   const auditData = useSelector((state) => state.audit.value);
-  const audit = auditData.audit;
-  const score = audit.results.summary.score;
+  const audit = auditData?.audit;
+  const score = audit?.results?.summary?.score;
 
     /* applique la couleur en fonction du style */
     function getScoreColor(score) {
