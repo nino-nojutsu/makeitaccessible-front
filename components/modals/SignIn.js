@@ -11,9 +11,11 @@ function SignIn({ closeModal }) {
   const dispatch = useDispatch();
 
   const auditData = useSelector((store) => store.audit.value);
+  console.log('auditData from SignIn', auditData);
   const audit = auditData?.audit;
-  console.log('audit', audit);
+  console.log('audit from SignIn', audit);
   const website = auditData?.website;
+  console.log('website from SignIn', website);
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
@@ -29,13 +31,12 @@ function SignIn({ closeModal }) {
       body: JSON.stringify({
         username: signInUsername,
         password: signInPassword,
+        websiteId: website?._id,
         auditId: audit?.results?._id,
-        websiteId: website?._id
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('data', data);
         if (data.result) {
           // On enregistre dans le store redux (reducer <users>) les infos du user : le token, le firstName et le username
           dispatch(login({ token: data.token, firstName: data.firstName, username: data.username }));
@@ -44,19 +45,20 @@ function SignIn({ closeModal }) {
           setSignInUsername("");
           setSignInPassword("");
           
-          // Va chercher l'audit lié à l'utilisateur pour afficher tous les résultats et les enregister dans le store redux (reducer <audit>)
-          fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
-             .then((response) => response.json())
-            .then((data) => {
-               console.log('data', data);
-               if (data.result) {
-                 // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
-                dispatch(loadAudit({
-                  website: data.website,
-                  audit: data.audit
-                }));
-               }
-             }).catch((error) => console.error(error));
+          if (data.auditId) {
+            // Va chercher l'audit lié à l'utilisateur pour afficher tous les résultats et les enregister dans le store redux (reducer <audit>)
+            fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.result) {
+                  // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
+                  dispatch(loadAudit({
+                    website: website,
+                    audit: data.audit
+                  }));
+                }
+              }).catch((error) => console.error(error));
+          }
           
           // Si nous ne sommes sur la page /audit => redirection vers le dashboard
           if (url.pathname !== '/audit') {

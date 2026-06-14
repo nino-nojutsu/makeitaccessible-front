@@ -13,7 +13,6 @@ function Audit() {
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const auditData = useSelector((state) => state.audit.value);
-  console.log('auditData', auditData);
 
   // Si un audit n'existe pas on redirige vers la home
   if (auditData === null) {
@@ -24,7 +23,6 @@ function Audit() {
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
   const audit = auditData.audit;
   const website = auditData.website;
-  // console.log('audit.tests', audit.tests);
 
   /** state **/
   const [selectedCat, setSelectedCat] = useState(''); // Images | Cadres | Couleurs | Tableaux | etc...

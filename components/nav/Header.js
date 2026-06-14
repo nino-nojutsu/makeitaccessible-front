@@ -45,10 +45,24 @@ function Header() {
         ) : (
           // Non connecté
           <>
-            <button className={styles.btnConnected} onClick={() => setSignIn(true)}>
+            <button
+              type="button"
+              aria-controls="modal-signin"
+              aria-haspopup="dialog"
+              aria-expanded={signIn}
+              className={styles.btnConnected}
+              onClick={() => setSignIn(true)}
+            >
               Se connecter
             </button>
-            <button className={styles.btnRegistration} onClick={() => setSignUp(true)}>
+            <button
+                type="button"
+                aria-controls="modal-signup"
+                aria-haspopup="dialog"
+                aria-expanded={signUp}
+                className={styles.btnRegistration}
+                onClick={() => setSignUp(true)}
+              >
               S'inscrire
             </button>
           </>

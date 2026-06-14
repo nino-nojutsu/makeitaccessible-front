@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../reducers/user";
+import { loadAudit } from "../../reducers/audit";
 
 function SignUp({ closeModal }) {
   const [url, setUrl] = useState('');
@@ -24,7 +25,7 @@ function SignUp({ closeModal }) {
   }, []);
 
   const handleRegister = () => {
-    fetch("http://localhost:3000/users/signup", {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -40,7 +41,7 @@ function SignUp({ closeModal }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          dispatch(login({ token: data.token, username: signUpUsername }));
+          dispatch(login({ token: data.token, username: signUpUsername, firstName: signUpFirstName}));
 
           setSignUpLastName("");
           setSignUpFirstName("");
@@ -48,10 +49,25 @@ function SignUp({ closeModal }) {
           setSignUpUsername("");
           setSignUpPassword("");
 
-          if (!data.websiteId && !data.auditId && url.pathname !== '/audit') {
+          if (data.auditId) {
+            // Va chercher l'audit lié à l'utilisateur pour afficher tous les résultats et les enregister dans le store redux (reducer <audit>)
+            fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.result) {
+                  // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
+                  dispatch(loadAudit({
+                    website: website,
+                    audit: data.audit
+                  }));
+                }
+              }).catch((error) => console.error(error));
+          }
+          
+          // Si nous ne sommes sur la page /audit => redirection vers le dashboard
+          if (url.pathname !== '/audit') {
             router.push("/dashboard");
           }
-
           closeModal();
         }
       }).catch(error => {
