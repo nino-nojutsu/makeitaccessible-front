@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../reducers/user";
+import { loadAudit } from "../../reducers/audit";
 
 function SignIn({ closeModal }) {
   const [url, setUrl] = useState('');
@@ -11,6 +12,7 @@ function SignIn({ closeModal }) {
 
   const auditData = useSelector((store) => store.audit.value);
   const audit = auditData?.audit;
+  console.log('audit', audit);
   const website = auditData?.website;
 
   const [signInUsername, setSignInUsername] = useState("");
@@ -21,7 +23,7 @@ function SignIn({ closeModal }) {
   }, []);
 
   const handleSubmit = () => {
-    fetch("http://localhost:3000/users/signin", {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -33,24 +35,40 @@ function SignIn({ closeModal }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-
+        console.log('data', data);
         if (data.result) {
+          // On enregistre dans le store redux (reducer <users>) les infos du user : le token, le firstName et le username
           dispatch(login({ token: data.token, firstName: data.firstName, username: data.username }));
           
+          // On vide les champs username et password
           setSignInUsername("");
           setSignInPassword("");
-
-          if (!data.websiteId && !data.auditId && url.pathname !== '/audit') {
+          
+          // Va chercher l'audit lié à l'utilisateur pour afficher tous les résultats et les enregister dans le store redux (reducer <audit>)
+          fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
+             .then((response) => response.json())
+            .then((data) => {
+               console.log('data', data);
+               if (data.result) {
+                 // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
+                dispatch(loadAudit({
+                  website: data.website,
+                  audit: data.audit
+                }));
+               }
+             }).catch((error) => console.error(error));
+          
+          // Si nous ne sommes sur la page /audit => redirection vers le dashboard
+          if (url.pathname !== '/audit') {
             router.push("/dashboard");
           }
-
           closeModal();
         }
       }).catch(error => {
         console.error(error);
       });
   };
+
   return (
     <>
       <div>
