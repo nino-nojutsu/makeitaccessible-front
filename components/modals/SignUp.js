@@ -1,18 +1,27 @@
 import styles from "../../styles/Header.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../reducers/user";
 
 function SignUp({ closeModal }) {
-  const dispatch = useDispatch();
+  const [url, setUrl] = useState('');
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const auditData = useSelector((store) => store.audit.value);
+  const audit = auditData?.audit;
+  const website = auditData?.website;
 
   const [signUpLastName, setSignUpLastName] = useState("");
   const [signUpFirstName, setSignUpFirstName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
+
+  useEffect(() => {
+    setUrl(window.location);
+  }, []);
 
   const handleRegister = () => {
     fetch("http://localhost:3000/users/signup", {
@@ -24,6 +33,8 @@ function SignUp({ closeModal }) {
         email: signUpEmail,
         username: signUpUsername,
         password: signUpPassword,
+        auditId: audit?.results?._id,
+        websiteId: website?._id
       }),
     })
       .then((response) => response.json())
@@ -37,11 +48,14 @@ function SignUp({ closeModal }) {
           setSignUpUsername("");
           setSignUpPassword("");
 
-          router.push("/dashboard");
-          closeModal?.();
-        } else {
-          alert(data.error);
+          if (!data.websiteId && !data.auditId && url.pathname !== '/audit') {
+            router.push("/dashboard");
+          }
+
+          closeModal();
         }
+      }).catch(error => {
+        console.error(error);
       });
   };
 
@@ -55,7 +69,7 @@ function SignUp({ closeModal }) {
         onChange={(e) => setSignUpLastName(e.target.value)}
         value={signUpLastName}
         className={styles.inputSignUp}
-        autocomplete="on"
+        autoComplete="on"
       />
 
       <label for="signUpFirstname">Prénom</label>
@@ -66,7 +80,7 @@ function SignUp({ closeModal }) {
         onChange={(e) => setSignUpFirstName(e.target.value)}
         value={signUpFirstName}
         className={styles.inputSignUp}
-        autocomplete="on"
+        autoComplete="on"
       />
 
       <label for="signUpEmail">Email</label>
@@ -77,7 +91,7 @@ function SignUp({ closeModal }) {
         onChange={(e) => setSignUpEmail(e.target.value)}
         value={signUpEmail}
         className={styles.inputSignUp}
-        autocomplete="on"
+        autoComplete="on"
       />
 
       <label for="signUpUsername">Nom d'utilisateur</label>
@@ -88,7 +102,7 @@ function SignUp({ closeModal }) {
         onChange={(e) => setSignUpUsername(e.target.value)}
         value={signUpUsername}
         className={styles.inputSignUp}
-        autocomplete="on"
+        autoComplete="on"
       />
 
       <label for="signUpPassword">Mot de passe</label>

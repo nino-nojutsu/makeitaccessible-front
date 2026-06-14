@@ -7,11 +7,11 @@ import { login } from "../../reducers/user";
 function SignIn({ closeModal }) {
   const [url, setUrl] = useState('');
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const auditData = useSelector((store) => store.audit.value);
   const audit = auditData?.audit;
   const website = auditData?.website;
-  const dispatch = useDispatch();
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
@@ -46,9 +46,9 @@ function SignIn({ closeModal }) {
           }
 
           closeModal();
-        } else {
-          alert(data.error);
         }
+      }).catch(error => {
+        console.error(error);
       });
   };
   return (
@@ -62,7 +62,7 @@ function SignIn({ closeModal }) {
           onChange={(e) => setSignInUsername(e.target.value)}
           value={signInUsername}
           className={styles.inputSignIn}
-          autocomplete="on"
+          autoComplete="on"
         />
         <label for="signInPassword">Mot de passe</label>
         <input
