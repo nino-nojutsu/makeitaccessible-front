@@ -1,125 +1,91 @@
-import styles from "../../styles/Test.module.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { Modal, Button } from "antd";
-import TestDetails from "./TestDetails.js";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { validateTest } from "../../reducers/audit";
+import styles from '../../styles/Tests.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faComment } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
+import { Modal } from 'antd';
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
-  critical: "Critique",
-  serious: "Majeur",
-  moderate: "Modéré",
-  minor: "Mineur",
-};
+  critical: 'Critique',
+  serious:  'Majeur',
+  moderate: 'Modéré',
+  minor:    'Mineur',
+}
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) {
-  const user = (state) => state.user.value;
-  const dispatch = useDispatch();
-
-  /** state **/
-  const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
-
-  /** comportements **/
-  const handleTestValidation = () => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/test/validate`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: user.token, testId: _id }),
-    }).then(response => response.json())
-      .then(data => {
-        console.log('data', data);
-        if (data.result) {
-          dispatch(validateTest(data.test));
-        }
-      });
-  }
-  // Affichage du numéro de la règle RGAA
-  //
-  // Recherche tout ce qui commence par RGAA- (^... operator : commence par)
-  const rgaaFound = /^RGAA-/;
-  const rgaaTag = tags.find((tag) => rgaaFound.test(tag));
-
-  // Recherche tout sauf RGAA- ([^...] not operator) suivi de 1 ou plusieurs caractères pour ignore RGAA- et extraire uniquement les numéro 1.1.1
-  const rgaaNumberFound = /[^RGAA-]+/;
-  const rgaaTagNumber = rgaaTag.match(rgaaNumberFound);
-
-  // Affichage du nombre d'occurences (c'est à dire le nombre d'éléments html concernés par le test remonté)
-  const totalNodes = nodes.length;
-
+function Test({ status, description, help, impact, html, tags, id }) {
   /** affichage **/
+  
+  const [modalComment, setModalComment] = useState(false);
+  const [modalRemove, setModalRemove] = useState(false);
+  const [comment, setComment] = useState('');
+
+  const openRemoveModal = () => {
+    setModalRemove(true);
+  };
+
+  const openCommentModal = () => {
+    setModalComment(true);
+  };
+
+  const handleCancelRemove = () => {
+    setModalRemove(false);
+  };
+
+  const handleCancelComment = () => {
+    setModalComment(false);
+  };
+
+   const handleCommentSubmit = async () => {
+    await fetch(`/commented/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ comments: comment })
+  });
+
+  setModalComment(false);
+  setComment('');
+ };
+
+ const handleRemoveSubmit = async () => {
+  await fetch(`/removed/${id}`, {
+    method: "PUT"
+  });
+  
+  setModalRemove(false);
+  
+  window.location.reload();
+ }
+
   return (
-    <div
-      className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]} ${styles[`impact-${impact}`]}`}
-    >
-      <div className={styles.rgaaTagTest}>
-        {rgaaTagNumber}
-        <br />
-        <span>RGAA</span>
-      </div>
+    <div className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]}`}>
+      {status === 'success' &&
+        <span className="badge badge-success">Validé</span>
+      }
+      <span className={`badge badge-${impact === null ? 'nc' : impact}`}>
+        {impact === null ? 'Impact non communiqué' : impactLabel[impact]}
+      </span>
+      <p>{description}</p>
 
-      <div className={styles.testContent}>
-        <span className={styles.testStatus}>
-          {/*{status === 'success' &&
-            <span className="badge badge-success">Validé</span>
-          }*/}
-          <span className={`badge badge-${impact === null ? "nc" : impact}`}>
-            {impact === null ? "Impact non communiqué" : impactLabel[impact]}
-          </span>
-          <p>{description}.</p>
-        </span>
-        <span className={styles.testActions}>
-          <span className={styles.totalNodesTest}>
-            {totalNodes} élément(s) concerné(s)
-          </span>
-          <div className={styles.testActionsButtons}>
-            <button 
-              className="button button-action" onClick={handleTestValidation}>
-              <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
-            </button>
-            <button 
-              type="button"
-              aria-controls="modal-test-details"
-              aria-haspopup="dialog"
-              aria-expanded={testDetailsModalVisible}
-              className="button button-action" onClick={() => setTestDetailsModalVisible(true)}>
-              Détails
-            </button>
-          </div>
-        </span>
-      </div>
+      <div>
+        <FontAwesomeIcon icon={faComment} onClick={openCommentModal} className={styles.icon} />
+        <FontAwesomeIcon icon={faTrashAlt} onClick={openRemoveModal} className={styles.icon} />
+        
+        <Modal open={modalRemove} onCancel={handleCancelRemove} footer={null}>
+          <h2>Retirer ce critère</h2>
+          <input type="text" placeholder="Ecrivez le motif de votre retrait ici..." onChange={(e) => setComment(e.target.value)} value={comment} />
+          <button onClick={handleCancelRemove}>Annuler</button>
+          <button className="btn btn-danger" onClick={handleRemoveSubmit}>Valider</button>
+        </Modal>
 
-      <Modal
-        onConfirm={() => setTestDetailsModalVisible(false)}
-        onCancel={() => setTestDetailsModalVisible(false)}
-        open={testDetailsModalVisible}
-        footer={[
-          <Button key="submit" type="primary" className="button button-success button-with-fa-icon" onClick={() => handleTestValidation}>
-            <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} /> Marqué comme résolu
-          </Button>,
-          <Button key="back" aria-label="Fermer" onClick={() => setTestDetailsModalVisible(false)}>
-            Fermer
-          </Button>,
-        ]}
-        centered
-        width={800}
-      >
-        <TestDetails
-          status={status}
-          impact={impact}
-          tags={tags}
-          description={description}
-          nodes={nodes}
-          help={help}
-          helpUrl={helpUrl}
-          impactLabel={impactLabel}
-          rgaaTagNumber={rgaaTagNumber}
-          totalNodes={totalNodes}
-        />
-      </Modal>
+          <Modal open={modalComment} onCancel={handleCancelComment} footer={null}>
+            <h2>Ecrire un commentaire</h2>
+            <input type="text" placeholder="Détaillez et annoté ce critère" onChange={(e) => setComment(e.target.value)} value={comment} />
+            <button className="btn btn-primary" onClick={handleCommentSubmit}>
+              Valider
+            </button>
+            </Modal>
+      </div>
     </div>
   );
 }

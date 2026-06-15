@@ -20,8 +20,17 @@ function Results({ violations, incomplete, passes, selectedType, selectedImpact 
     return <Rules key={i} category={test.category} rules={test.passes} selectedImpact={selectedImpact} status={'success'} />;
   });
 
+  const
+
   /** affichage **/
   switch (selectedType) {
+    case "":
+      return (
+        <>
+        <h3>Processed</h3>
+        {}
+        </>
+      )
     case "violations":
       return (
         <>

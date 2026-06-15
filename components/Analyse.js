@@ -73,6 +73,7 @@ function Analyse() {
             website: data.website,
             audit: data.audit
           }));
+          setModaleVisible(false);
           router.push('/audit');
         } else {
           // Ferme la modale et affiche l'erreur
