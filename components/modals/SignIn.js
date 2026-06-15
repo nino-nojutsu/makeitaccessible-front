@@ -1,42 +1,76 @@
 import styles from "../../styles/Header.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../reducers/user";
+import { loadAudit } from "../../reducers/audit";
 
 function SignIn({ closeModal }) {
-  const dispatch = useDispatch();
+  const [url, setUrl] = useState('');
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  const auditData = useSelector((store) => store.audit.value);
+  console.log('auditData from SignIn', auditData);
+  const audit = auditData?.audit;
+  console.log('audit from SignIn', audit);
+  const website = auditData?.website;
+  console.log('website from SignIn', website);
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
 
+  useEffect(() => {
+    setUrl(window.location);
+  }, []);
+
   const handleSubmit = () => {
-    fetch("http://localhost:3000/users/signin", {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: signInUsername,
         password: signInPassword,
+        websiteId: website?._id,
+        auditId: audit?.results?._id,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-
         if (data.result) {
-          dispatch(login({ token: data.token, username: signInUsername }));
+          // On enregistre dans le store redux (reducer <users>) les infos du user : le token, le firstName et le username
+          dispatch(login({ token: data.token, firstName: data.firstName, username: data.username }));
           
+          // On vide les champs username et password
           setSignInUsername("");
           setSignInPassword("");
-
-          router.push("/dashboard");
-          closeModal?.();
-        } else {
-          alert(data.error);
+          
+          if (data.auditId) {
+            // Va chercher l'audit lié à l'utilisateur pour afficher tous les résultats et les enregister dans le store redux (reducer <audit>)
+            fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.result) {
+                  // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
+                  dispatch(loadAudit({
+                    website: website,
+                    audit: data.audit
+                  }));
+                }
+              }).catch((error) => console.error(error));
+          }
+          
+          // Si nous ne sommes sur la page /audit => redirection vers le dashboard
+          if (url.pathname !== '/audit') {
+            router.push("/dashboard");
+          }
+          closeModal();
         }
+      }).catch(error => {
+        console.error(error);
       });
   };
+
   return (
     <>
       <div>
@@ -48,7 +82,7 @@ function SignIn({ closeModal }) {
           onChange={(e) => setSignInUsername(e.target.value)}
           value={signInUsername}
           className={styles.inputSignIn}
-          autocomplete="on"
+          autoComplete="on"
         />
         <label for="signInPassword">Mot de passe</label>
         <input
