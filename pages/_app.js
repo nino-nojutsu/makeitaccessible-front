@@ -43,7 +43,8 @@ function App({ Component, pageProps }) {
       <PersistGate persistor={persistor}>
         <div className="container">
           <Head>
-            <title>Make It Accessible</title>
+            <title>MakeItAccessible</title>
+            <link rel="icon" href="/favicon-makeitaccessible.svg" type="image/svg" sizes="32x32" />
           </Head>
           {!isDashboard && <Header />} {/* Affiche le Header uniquement si on n'est pas sur une page du dashboard */}
           <Component {...pageProps} />

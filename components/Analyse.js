@@ -5,13 +5,13 @@
  ** Le persisted store est enregistré dans le localStorage sous la cléf 'makeitaccessible' (grace à redux-persist)
  ** Redirige vers la page audit
  **/
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
-import "antd/dist/antd.css";
 import LoadingModal from "./modals/Loader.js";
 
 function Analyse() {
@@ -22,7 +22,7 @@ function Analyse() {
   const [modaleVisible, setModaleVisible] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector(state => state.user.value);
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -73,6 +73,7 @@ function Analyse() {
             website: data.website,
             audit: data.audit
           }));
+          setModaleVisible(false);
           router.push('/audit');
         } else {
           // Ferme la modale et affiche l'erreur
@@ -109,7 +110,12 @@ function Analyse() {
             onChange={(e) => handleInputChange(e.target.value)}
           />
 
-          {error && <p className={styles.error} role="alert">{error}</p>}
+          {error &&
+            <div className="alert alert-error" role="alert">
+              <FontAwesomeIcon aria-hidden="true" icon={faExclamationTriangle} size="sm" />
+              {error}
+            </div>
+          }
 
           <button className={styles.ctaSearch} type="submit">
             Analyser mon site →

@@ -2,26 +2,27 @@ import styles from '../../styles/Audit.module.css';
 import { useRouter } from "next/router";
 import Results from './Results.js';
 import Category from './Category.js';
-import Tests from './Tests.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Filters from './Filters.js';
+import HeroAudit from './HeroAudit.js';
+import AnalysePartielle from './AnalysePartielle.js';
 
 function Audit() {
+  const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const auditData = useSelector((state) => state.audit.value);
-  const router = useRouter();
 
   // Si un audit n'existe pas on redirige vers la home
   if (auditData === null) {
     router.push('/');
+    return;
   }
 
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
   const audit = auditData.audit;
   const website = auditData.website;
-  // console.log('audit.tests', audit.tests);
 
   /** state **/
   const [selectedCat, setSelectedCat] = useState(''); // Images | Cadres | Couleurs | Tableaux | etc...
@@ -86,43 +87,47 @@ function Audit() {
   /** affichage **/
   return (
     <>
-      {user.token ?
-      <div className={styles.auditContainer}>
-        {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
-        { categoriesList.length > 0 && (
-          <aside role="navigation" className={styles.categoriesList}>
-            <ol className={styles.listGroup}>
-              {categoriesList}
-            </ol>
-            {
-              selectedCat &&
-              <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>
-                Afficher tous les résultats
-              </span>
-            }
-          </aside>
-        )}
-      
-        <div className={styles.auditResults}>
+      <HeroAudit />
+      {user.token ? (
+        <div className={styles.auditContainer}>
+          {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
+          {categoriesList.length > 0 && (
+            <aside role="navigation" className={styles.categoriesList}>
+              <ol className={styles.listGroup}>
+                {categoriesList}
+              </ol>
+              {
+                selectedCat &&
+                <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>
+                  Afficher tous les résultats
+                </span>
+              }
+            </aside>
+          )}
+
+          <div className={styles.auditResults}>
             {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
             {
               (violations.length > 0 || incomplete.length > 0) &&
               <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
             }
-              
+
             {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
             {
               violations.length > 0 || incomplete.length > 0 ?
-              <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} /> :
-              <>
-                <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
-                <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />
-              </>
+                <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} /> :
+                <>
+                  <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
+                  <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />
+                </>
             }
+          </div>
         </div>
-      </div> : 'Todo: Afficher le block Hero du résume + Input Analyse Component + 5 blocs par criticité'}
-    </>
-  )
-}
+      ) : (
+      <AnalysePartielle />
+    )}
+  </>
+);
+}               
 
 export default Audit;
