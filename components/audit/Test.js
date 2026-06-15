@@ -14,11 +14,21 @@ const impactLabel = {
 };
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ status, impact, tags, description, nodes, help, helpUrl }) {
+function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) {
   /** state **/
   const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
 
   /** comportements **/
+  const handleTestValidation = () => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/test/validate`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: user.token, testId: _id }),
+    }).then(response => response.json())
+      .then(data => {
+        console.log('data', data);
+      });
+  }
   // Affichage du numéro de la règle RGAA
   //
   // Recherche tout ce qui commence par RGAA- (^... operator : commence par)
@@ -57,9 +67,20 @@ function Test({ status, impact, tags, description, nodes, help, helpUrl }) {
           <span className={styles.totalNodesTest}>
             {totalNodes} élément(s) concerné(s)
           </span>
-          <button className="button button-action" onClick={() => setTestDetailsModalVisible(true)}>
-            Détails
-          </button>
+          <div className={styles.testActionsButtons}>
+            <button 
+              className="button button-action" onClick={handleTestValidation}>
+              <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
+            </button>
+            <button 
+              type="button"
+              aria-controls="modal-test-details"
+              aria-haspopup="dialog"
+              aria-expanded={testDetailsModalVisible}
+              className="button button-action" onClick={() => setTestDetailsModalVisible(true)}>
+              Détails
+            </button>
+          </div>
         </span>
       </div>
 
@@ -68,7 +89,7 @@ function Test({ status, impact, tags, description, nodes, help, helpUrl }) {
         onCancel={() => setTestDetailsModalVisible(false)}
         open={testDetailsModalVisible}
         footer={[
-          <Button key="submit" type="primary" className="button button-success button-with-fa-icon" onClick={() => setTestDetailsModalVisible(false)}>
+          <Button key="submit" type="primary" className="button button-success button-with-fa-icon" onClick={() => handleTestValidation}>
             <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} /> Marqué comme résolu
           </Button>,
           <Button key="back" aria-label="Fermer" onClick={() => setTestDetailsModalVisible(false)}>

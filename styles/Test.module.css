@@ -21,6 +21,7 @@
 
 .testStatus {
   display: flex;
+  row-gap: .5rem;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
@@ -32,7 +33,13 @@
   align-items: baseline;
   row-gap: 1rem;
   margin-left: auto;
-  min-width: 10vw;
+}
+
+.testActionsButtons {
+  display: flex;
+  column-gap: .5rem;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .totalNodesTest {

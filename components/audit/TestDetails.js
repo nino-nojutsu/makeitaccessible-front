@@ -33,7 +33,6 @@ function TestDetails({ status, impact, tags, description, nodes, help, helpUrl, 
         {description}
       </section>
 
-      
       <section className={styles.tabsContainer}>
         <h4>{totalNodes} élément(s) HTML concerné(s)</h4>
         
