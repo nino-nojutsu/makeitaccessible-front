@@ -7,6 +7,8 @@ import Score from './Score';
 import { Modal } from "antd";
 import SignIn from "../modals/SignIn";
 import SignUp from "../modals/SignUp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 function HeroAudit() {
   const user = useSelector((state) => state.user.value);
@@ -46,6 +48,10 @@ function HeroAudit() {
           </time>
           <p className={styles.url} aria-label={`Site audité : ${audit.results.url}`}>{audit.results.url}</p>
           {user.token && <button className={styles.auditButton} type="button">Voir audit complet</button>}
+                          <div className={styles.tooltip} aria-label="En savoir plus sur le score" type="button">
+                    <FontAwesomeIcon icon={faCircleInfo} aria-hidden="true" />
+                    <p className={styles.tooltipText} role="tooltip">l'audit ne porte jamais sur toutes les pages d'un site, mais sur un échantillon représentatif de 15 à 20 pages minimum (plus sur les sites complexes). Pour des sites plus volumineux/complexes, on monte à un échantillon de 40 à 80 pages.</p>
+                </div>
         </section>
 
         {user.token ? (
