@@ -115,6 +115,11 @@ a:hover {
   color: var(--color-primary-hover);
 }
 
+button,
+a {
+  cursor: pointer;
+}
+
 /* -- Buttons -- */
 .button {
   color: var(--color-base);
