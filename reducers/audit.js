@@ -11,8 +11,10 @@ export const auditSlice = createSlice({
     loadAudit: (state, action) => {
       state.value = action.payload;
     },
+    validateTest: (state, action) => {
+    }
   },
 });
 
-export const { loadAudit } = auditSlice.actions;
+export const { loadAudit, validateTest } = auditSlice.actions;
 export default auditSlice.reducer;

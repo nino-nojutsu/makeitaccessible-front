@@ -4,6 +4,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from "antd";
 import TestDetails from "./TestDetails.js";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { validateTest } from "../../reducers/audit";
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -15,6 +17,9 @@ const impactLabel = {
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
 function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) {
+  const user = (state) => state.user.value;
+  const dispatch = useDispatch();
+
   /** state **/
   const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
 
@@ -27,6 +32,9 @@ function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) 
     }).then(response => response.json())
       .then(data => {
         console.log('data', data);
+        if (data.result) {
+          dispatch(validateTest(data.test));
+        }
       });
   }
   // Affichage du numéro de la règle RGAA
