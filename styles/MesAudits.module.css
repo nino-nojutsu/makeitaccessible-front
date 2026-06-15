@@ -5,27 +5,32 @@
 }
 
 .leftSection {
-  width: 220px;
-  background-color: #081226;
+  width: 280px;
+  min-height: 100vh;
+  background-color: #0f172a;
   display: flex;
   flex-direction: column;
-  padding: 30px 20px;
-  gap: 15px;
+  padding: 20px;
+  gap: 10px;
+  color: #ffffff;
 }
 
 .navLink {
   text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: block;
+  width: 100%;
+
   color: white;
-  padding: 12px 15px;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
 .navLink:hover {
-  background-color: white;
+  background-color: #ffffff;
   color: black;
 }
+
 
 .rightSection {
   flex: 1;
@@ -42,15 +47,7 @@
   margin-bottom: 40px;
 }
 
-.inputAudit {
-  width: 250px;
-  height: 40px;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  padding: 0 10px;
-  background-color: white;
-  margin-bottom: 80px;
-}
+
 
 .button {
   width: 300px;
@@ -87,4 +84,41 @@
   color: var(--color-primary);
   font-size: 16px;
   font-weight: 600;
+}
+
+.label {
+   font-weight: 600;
+}
+
+.helperText {
+  margin-top: 8px; 
+}
+
+.image {
+  width: 80px;
+  height: auto;
+}
+
+.inputAudit {
+  width: 250px;
+  height: 40px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 0 10px 0 32px; 
+  background-color: white;
+  margin-bottom: 80px;
+}
+
+.searchBox {
+  position: relative;
+  width: 250px;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
 }

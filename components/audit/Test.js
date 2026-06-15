@@ -70,9 +70,7 @@ function Test({ status, description, help, impact, html, tags, id }) {
       <div>
         <FontAwesomeIcon icon={faComment} onClick={openCommentModal} className={styles.icon} />
         <FontAwesomeIcon icon={faTrashAlt} onClick={openRemoveModal} className={styles.icon} />
-
         
-
         <Modal open={modalRemove} onCancel={handleCancelRemove} footer={null}>
           <h2>Retirer ce critère</h2>
           <input type="text" placeholder="Ecrivez le motif de votre retrait ici..." onChange={(e) => setComment(e.target.value)} value={comment} />
