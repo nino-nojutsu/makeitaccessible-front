@@ -1,9 +1,9 @@
 import styles from '../styles/Home.module.css';
-import HeroHome from './blocks/HeroHome.js'; 
-import SliceWhy from './blocks/SliceWhy.js';
-import SliceValorisation from './blocks/SliceValorisation.js';
-import SliceModop from './blocks/SliceModop.js';
-import Faq from './blocks/Faq.js';
+import HeroHome from './HomeBlocks/HeroHome.js'; 
+import SliceWhy from './HomeBlocks/SliceWhy.js';
+import SliceValorisation from './HomeBlocks/SliceValorisation.js';
+import SliceModop from './HomeBlocks/SliceModop.js';
+import Faq from './HomeBlocks/Faq.js';
 
 function Home() {
 
