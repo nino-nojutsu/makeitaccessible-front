@@ -32,3 +32,12 @@
 .footerImg {
   margin: 20px;
 }
+
+.footerDashboard {
+  margin-top: auto;
+  padding: 20px 40px;
+  text-align: right;
+  border-top: 1px solid var(--color-border);
+  width: 100%;
+  margin-left: 240px;
+}

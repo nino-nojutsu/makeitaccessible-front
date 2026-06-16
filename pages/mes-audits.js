@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import MesAudits from '../components/MesAudits';
+import MesAudits from '../components/EspaceMembre/MesAudits';
 
 function MesAuditsPage() {
   return (

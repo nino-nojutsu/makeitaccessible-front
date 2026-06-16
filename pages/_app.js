@@ -32,7 +32,7 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-const dashboardRoutes = ['/mes-audits', '/mon-compte', '/parametres'];
+const dashboardRoutes = ['/dashboard', '/mes-audits', '/mon-compte', '/parametres'];
 
 function App({ Component, pageProps }) {
    const router = useRouter(); // ← ajouté
@@ -41,7 +41,7 @@ function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <div className="container">
+        <div className={isDashboard ? '' : 'container'}>
           <Head>
             <title>MakeItAccessible</title>
             <link rel="icon" href="/favicon-makeitaccessible.svg" type="image/svg" sizes="32x32" />

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Parametres from '../components/Parametres';
+import Parametres from '../components/Dashboard/Parametres';
 
 function ParametresPage() {
   return (
