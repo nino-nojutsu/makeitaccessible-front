@@ -3,14 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Modal } from "antd";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux"; // ← ajout useDispatch
-import { logout } from "../../reducers/user"; // ← ajout logout
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../reducers/user"; 
+import { useRouter } from "next/router";
 import SignIn from "../modals/SignIn";
 import SignUp from "../modals/SignUp";
 
 function Header() {
     const user = useSelector((state) => state.user.value);
-    const dispatch = useDispatch(); // ← ajout
+    const dispatch = useDispatch(); 
+    const router = useRouter();
 
     const [signIn, setSignIn] = useState(false);
     const [signUp, setSignUp] = useState(false);
@@ -19,6 +21,7 @@ function Header() {
     const handleCancelSignUp = () => setSignUp(false);
 
     const handleLogout = () => {
+        router.push('/');
         dispatch(logout());
     };
 

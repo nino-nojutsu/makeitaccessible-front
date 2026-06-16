@@ -16,10 +16,12 @@
   --color-bg:#ffffff;
   --color-bg-primary: #FAF9F7;
 
+
   /* Typography */
   --font-base:'Inter', sans-serif;
   --font-display:'Space Grotesk', sans-serif;
   --font-size-body: 1rem;
+  --font-size-xxl: 4rem;
   --font-size-large: 1.25rem;
   --font-size-medium: 1.065rem;
   --font-size-base: 1rem;
@@ -105,14 +107,6 @@ h2 {
 h3 {
   font-size: 1.25rem;
   line-height: 40px;
-}
-
-a {
-  color: var(--color-primary);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
 }
 
 button,
