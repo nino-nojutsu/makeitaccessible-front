@@ -12,6 +12,8 @@ export const auditSlice = createSlice({
       state.value = action.payload;
     },
     validateTest: (state, action) => {
+      // Mets à jour le tableau tests d'un audit (attention !! state.value = state audit qui contient une propriété audit => à ne pas)
+      state.value.audit.tests.map(test => test._id === action.payload);
     }
   },
 });

@@ -8,16 +8,17 @@ function Results({ violations, incomplete, passes, selectedType, selectedImpact 
   // console.log('selectedImpact', selectedImpact);
 
   /** comportements **/
-  const violationsRulesList = violations?.length > 0 && violations.map((test, i) => {
-    return <Rules key={i} category={test.category} rules={test.violations} selectedImpact={selectedImpact} status={'error'} />;
+  const violationsRulesList = violations?.length > 0 && violations.map((testDoc, i) => {
+    //console.log('testDoc', testDoc);
+    return <Rules key={i} testId={testDoc._id} category={testDoc.category} rules={testDoc.violations} selectedImpact={selectedImpact} status={'error'} />;
   });
 
-  const incompleteRulesList = incomplete?.length > 0 && incomplete.map((test, i) => {
-    return <Rules key={i} category={test.category} rules={test.incomplete} selectedImpact={selectedImpact} status={'warning'} />;
+  const incompleteRulesList = incomplete?.length > 0 && incomplete.map((testDoc, i) => {
+    return <Rules key={i} testId={testDoc._id} category={testDoc.category} rules={testDoc.incomplete} selectedImpact={selectedImpact} status={'warning'} />;
   });
 
-  const passesRulesList = passes?.length > 0 && passes.map((test, i) => {
-    return <Rules key={i} category={test.category} rules={test.passes} selectedImpact={selectedImpact} status={'success'} />;
+  const passesRulesList = passes?.length > 0 && passes.map((testDoc, i) => {
+    return <Rules key={i} testId={testDoc._id} category={testDoc.category} rules={testDoc.passes} selectedImpact={selectedImpact} status={'success'} />;
   });
 
   /** affichage **/

@@ -23,6 +23,7 @@ function Audit() {
 
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
   const audit = auditData.audit;
+  console.log('audit', audit);
   const website = auditData.website;
 
   /** state **/

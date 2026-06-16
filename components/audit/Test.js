@@ -2,10 +2,10 @@ import styles from "../../styles/Test.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from "antd";
-import TestDetails from "./TestDetails.js";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { validateTest } from "../../reducers/audit";
+import TestDetails from "./TestDetails.js";
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -16,9 +16,12 @@ const impactLabel = {
 };
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) {
-  const user = (state) => state.user.value;
+function Test({ testId, status, impact, tags, description, nodes, help, helpUrl }) {
+  const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+
+  // console.log('user.token', user.token);
+  // console.log('_id', _id);
 
   /** state **/
   const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
@@ -28,12 +31,11 @@ function Test({ _id, status, impact, tags, description, nodes, help, helpUrl }) 
     fetch(`${process.env.NEXT_PUBLIC_URL}/test/validate`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: user.token, testId: _id }),
+      body: JSON.stringify({ token: user.token, testId }),
     }).then(response => response.json())
       .then(data => {
-        console.log('data', data);
         if (data.result) {
-          dispatch(validateTest(data.test));
+          dispatch(validateTest(testId));
         }
       });
   }
