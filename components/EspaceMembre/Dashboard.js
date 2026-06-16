@@ -7,26 +7,32 @@ import Footer from '../nav/Footer.js';
 import Link from 'next/link';
 import Analyse from '../Analyse.js';
 
-
+/**
+ * Dashboard => Composant principal de l'espace membre
+ * Précisions => Props : passage de variant à <Analyse> et <Footer>
+ */
 function Dashboard() {
 
-  /** store **/
-  // Récupère les infos de l'utilisateur connecté depuis le store Redux (token, firstName, username)
+  /** store Redux **/
+  // useSelector lit l'état global du store Redux
+  // Rappel => user est persisté dans le localStorage via redux-persist
   const user = useSelector((state) => state.user.value);
 
   const router = useRouter();
 
-  /** state **/
-  // Tableau de tous les audits de l'utilisateur (une entrée par page auditée)
+  /** state local **/
+  // useState => leur changement déclenche un re-rendu automatique
   const [audits, setAudits] = useState([]);
-  // Tableau des résumés par site (score global + détail des pages)
   const [siteSummaries, setSiteSummaries] = useState([]);
 
-  // 1. Récupère tous les audits de l'utilisateur connecté
-  // Si pas de token (utilisateur non connecté)... On ne fait rien
+  /**
+   * 1. Récupère tous les audits de l'utilisateur
+   * useEffect #1 => Se déclenche au montage + à chaque fois que user.token change
+   * => Si user.token est null (non connecté), on sort immédiatement
+   */
   useEffect(() => {
     if (!user.token) return;
-    // ... Puis appeler la route avec tous les audits
+
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit/all`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -34,75 +40,85 @@ function Dashboard() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('audits reçus', data);
-        // Si la requête a réussi, on met à jour le state audits
-        // ce qui va déclencher le useEffect suivant via son seter dédié
+        // On appelle le setter pour mettre à jour le state
+        // => React détecte le changement et re-rend le composant
+        // => Ce changement déclenche aussi useEffect #2
         if (data.result) setAudits(data.audits);
       });
-
   }, [user.token]);
 
-  // 2. Pour chaque site unique, récupère le score global (fusion de toutes ses pages)
-  // Déclenché automatiquement quand le state audits change (rempli par l'étape 1)
+  /**
+   * 2. Pour chaque site unique, récupère le score global
+   * useEffect #2 :
+   * => Se déclenche automatiquement quand audits change (rempli par useEffect #1)
+   */
   useEffect(() => {
-    // Si pas de token ou pas d'audits, on ne fait rien
     if (!user.token || audits.length === 0) return;
 
-    // Déduplique les sites : un audit = une page, plusieurs pages peuvent appartenir au même site
-    // On utilise une Map pour ne garder qu'une entrée par site (on pointe la clé = _id du site)
-    const uniqueSitesMap = new Map();
-    audits.forEach(audit => {
-      if (audit.site && !uniqueSitesMap.has(audit.site._id)) {
-        uniqueSitesMap.set(audit.site._id, audit.site);
+    // 3. On évite de dupliquer les sites
+    // reduce construit un tableau en n'ajoutant un site QUE s'il n'est pas déjà présent
+    // Précision => acc = accumulateur (tableau en cours de construction)
+    // Pour chaque audit, on cherche si son site._id est déjà dans acc
+    const uniqueSites = audits.reduce((acc, audit) => {
+      if (
+        audit.site &&
+        !acc.find(site => site._id === audit.site._id)
+      ) {
+        acc.push(audit.site);
       }
-    });
+      return acc;
+    }, []);
 
+    // On extrait uniquement les _id pour les passer aux requêtes suivantes
+    const uniqueSiteIds = uniqueSites.map(site => site._id);
 
-    // Extrait uniquement les _id des sites uniques pour les passer aux requêtes suivantes
-    const uniqueSiteIds = Array.from(uniqueSitesMap.keys());
-
-    // Pour chaque site unique, appelle POST /sites/:siteId/audit-summary
-    // Promise.all lance toutes les requêtes en parallèle et attend qu'elles soient toutes résolues
+    // Promise.all => lance toutes les requêtes en parallèle
     Promise.all(
       uniqueSiteIds.map(siteId =>
         fetch(`${process.env.NEXT_PUBLIC_URL}/sites/${siteId}/audit-summary`, {
-
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: user.token }),
-
         }).then(res => res.json())
-
       )
     ).then(results => {
-      console.log('résultats sites', results);
-      // On ne garde que les résultats valides (result: true)
-      // Un résultat peut être invalide si l'utilisateur n'a pas accès au site (403)
+      // .filter() ne garde que les résultats valides (result: true)
+      // Précisions => si une requête échoue (403, erreur réseau), elle n'affecte pas les autres
       setSiteSummaries(results.filter(r => r.result));
     });
   }, [audits, user.token]);
 
-  /** données de l'utilisateur pour meubler **/
-  // Calculées à la volée depuis le state audits, sans useState redondant
+  /**
+   * Données pour meubler
+   * Pas de useState redondant => recalculées à chaque re-rendu automatiquement
+   */
 
-  // Nombre de sites uniques suivis (dédupliqués par _id)
-  const uniqueSites = [...new Set(audits.map(a => a.site?._id))];
+  // Déduplication des sites pour le compteur => même logique que dans useEffect #2
+  const uniqueSites = audits.reduce((acc, audit) => {
+    if (audit.site && !acc.find(s => s._id === audit.site._id)) {
+      acc.push(audit.site);
+    }
+    return acc;
+  }, []);
 
-  // Score moyen des sites (basé sur le score global fusionné de chaque site)
-  // siteSummaries est rempli par l'étape 2 — un objet par site avec son score global
+  // Score moyen des sites (basé sur les scores globaux fusionnés, pas les pages individuelles)
   const averageScore = siteSummaries.length > 0
-    ? Math.round(siteSummaries.reduce((sum, s) => sum + (s.summary?.score || 0), 0) / siteSummaries.length)
+    ? Math.round(
+        siteSummaries.reduce((sum, s) => sum + (s.summary?.score || 0), 0)
+        / siteSummaries.length
+      )
     : null;
 
-
-  /* applique la couleur en fonction du style */
+  /**
+   * Calculent couleur et mention selon le score RGAA
+   * Rappel => même principe que sur le score des audits
+   */
   function getScoreColor(score) {
-    if (score === 100) return "#22c55e";
-    if (score >= 50) return "#f97316";
-    return "#e63946";
+    if (score === 100) return "#22c55e"; // vert => totalement conforme
+    if (score >= 50) return "#f97316";  // orange => partiellement conforme
+    return "#e63946";                    // rouge => non conforme
   }
 
-  /* applique la mention pour le statut en fonction du score */
   function getScoreMention(score) {
     if (score === 100) return "Totalement conforme";
     if (score >= 50) return "Partiellement conforme";
@@ -112,13 +128,18 @@ function Dashboard() {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.dashboardContainer}>
+
+        {/* Sidebar : composant autonome, lit le store Redux lui-même via useSelector */}
         <Sidebar />
+
         <div className={styles.rightSection}>
+
+          {/* user.firstName vient du store Redux, dispatché lors du login */}
           <span className={styles.hello}>Hello {user.firstName} !</span>
           <h2 className={styles.title}>Bienvenue sur votre tableau de bord</h2>
           <p>Depuis cet espace, vous pouvez accéder à vos audits, gérer votre compte et configurer vos paramètres.</p>
 
-          {/* Stats globales */}
+          {/* Stats globales => données pour meubler, recalculé à chaque re-rendu */}
           <div className={styles.statsRow}>
             <div className={styles.statCard}>
               <span className={styles.statValue}>{uniqueSites.length}</span>
@@ -129,57 +150,75 @@ function Dashboard() {
               <span className={styles.statLabel}>Pages auditées</span>
             </div>
             <div className={styles.statCard}>
-              <span className={styles.statValue}>{averageScore !== null ? `${averageScore}%` : '-'}</span>
+              <span className={styles.statValue}>
+                {averageScore !== null ? `${averageScore}%` : '-'}
+              </span>
               <span className={styles.statLabel}>Score moyen</span>
             </div>
           </div>
 
-          {/* Mes sites */}
-          {audits.length > 0 && (
-  <>
-    {/* Mes sites */}
-    <section className={styles.section}>
-      <h3>Mes sites</h3>
-      {siteSummaries.length === 0 && <p>Aucun site audité pour le moment.</p>}
-      {[...siteSummaries]
-        .sort((a, b) => (a.summary?.score || 0) - (b.summary?.score || 0))
-        .map((siteData, index) => {
-          const score = siteData.summary.score;
-          return (
-            <div key={index} className={styles.auditSection}>
-              <div className={styles.auditRow}>
-                <span>{siteData.site.domain}</span>
-                <p role="status" className={styles.mention} style={{ color: getScoreColor(score) }}>
-                  <strong>{getScoreMention(score)}</strong>
-                </p>
-                <span style={{ color: getScoreColor(score) }}>{score}%</span>
-                <button
-                  onClick={() => router.push(`/sites/${siteData.site._id}`)} className="button button-action"
-                >
-                  Voir le détail
-                </button>
-              </div>
+          {/* Mes sites => siteSummaries rempli par useEffect #2 */}
+          <section className={styles.section}>
+            <h3>Mes sites</h3>
+
+            {/* Rendu conditionnel : si aucun site, message vide */}
+            {siteSummaries.length === 0 && (
+              <p>Aucun site audité pour le moment.</p>
+            )}
+
+            {/* .map() transforme chaque siteData en JSX => une carte par site */}
+            {siteSummaries.map((siteData, index) => {
+              // score défini ici dans le .map(), pas en dehors
+              const score = siteData.summary.score;
+              return (
+                <div key={index} className={styles.auditSection}>
+                  <div className={styles.auditRow}>
+                    <span>{siteData.site.domain}</span>
+                    {/* style inline : nécessaire ici car la couleur est dynamique */}
+                    <span
+                      role="status"
+                      className={styles.mention}
+                      style={{ color: getScoreColor(score) }}
+                    >
+                      <strong>{getScoreMention(score)}</strong>
+                    </span>
+                    <span style={{ color: getScoreColor(score) }}>
+                      {score}%
+                    </span>
+
+                    <button
+                      onClick={() => router.push(`/sites/${siteData.site._id}`)}
+                      className="button button-action"
+                    >
+                      Voir le détail
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+
+            <div className={styles.sectionFooter}>
+              <button
+                onClick={() => router.push('/mes-audits')}
+                className="button button-action"
+              >
+                Voir tous mes audits
+              </button>
             </div>
-          );
-        })}
-    </section>
+          </section>
 
-    <button
-      onClick={() => router.push(`/mes-audits`)} className="button button-action"
-    >
-      Voir tous mes audits
-    </button>
-  </>
-)}
+          {/* Rendu conditionnel : affiche le formulaire d'audit uniquement si aucun audit */}
+          {/* Props => variant="dashboard" adapte le style et le texte du bouton */}
+          {audits.length === 0 && <Analyse variant="dashboard" />}
 
-{/* Si aucun audit : invite à lancer un premier audit */}
-{audits.length === 0 && <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />}
         </div>
       </div>
+
+      {/* Footer en dehors du dashboardContainer => pleine largeur en bas */}
+      {/* Props => variant="dashboard" affiche une version simplifiée sans illustration */}
       <Footer variant="dashboard" />
     </div>
   );
-
 }
 
 export default Dashboard;
