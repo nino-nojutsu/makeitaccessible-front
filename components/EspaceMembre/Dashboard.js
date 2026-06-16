@@ -93,7 +93,10 @@ function Dashboard() {
    * Pas de useState redondant => recalculées à chaque re-rendu automatiquement
    */
 
-  // Déduplication des sites pour le compteur => même logique que dans useEffect #2
+  // Compter le nombre de sites distincts suivis par l'utilisateur
+  // => On déduit les sites depuis les audits (un audit = une page)
+  // => reduce parcourt tous les audits et ne garde qu'un exemplaire par site._id
+  // => Pas une vraie collection "sites" en base => une approximation suffisante pour le MVP
   const uniqueSites = audits.reduce((acc, audit) => {
     if (audit.site && !acc.find(s => s._id === audit.site._id)) {
       acc.push(audit.site);
@@ -104,9 +107,9 @@ function Dashboard() {
   // Score moyen des sites (basé sur les scores globaux fusionnés, pas les pages individuelles)
   const averageScore = siteSummaries.length > 0
     ? Math.round(
-        siteSummaries.reduce((sum, s) => sum + (s.summary?.score || 0), 0)
-        / siteSummaries.length
-      )
+      siteSummaries.reduce((sum, s) => sum + (s.summary?.score || 0), 0)
+      / siteSummaries.length
+    )
     : null;
 
   /**
@@ -142,10 +145,14 @@ function Dashboard() {
           {/* Stats globales => données pour meubler, recalculé à chaque re-rendu */}
           <div className={styles.statsRow}>
             <div className={styles.statCard}>
+
               <span className={styles.statValue}>{uniqueSites.length}</span>
               <span className={styles.statLabel}>Sites suivis</span>
             </div>
             <div className={styles.statCard}>
+               {/* audits.length = nombre total d'audits de l'utilisateur
+               => 1 audit = 1 page analysée
+               => directement disponible depuis le state audits rempli par useEffect #1 */}
               <span className={styles.statValue}>{audits.length}</span>
               <span className={styles.statLabel}>Pages auditées</span>
             </div>
