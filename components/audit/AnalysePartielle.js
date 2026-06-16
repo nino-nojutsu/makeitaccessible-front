@@ -21,7 +21,8 @@ function AnalysePartielle() {
         className={styles.mainAnalysePartielle}
       >
         <div>
-          <h2>Vous souhaitez voir la suite de votre analyse ?</h2>
+          <h2>Vous souhaitez voir de détaile de votre analyse ?</h2>
+          <h3>Et auditer l'ensemble de vos pages ?</h3>
           <p>
             Connectez-vous pour accéder au détail complet : résultats par
             critère RGAA, par type (violations, éléments incomplets, validés) et

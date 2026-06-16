@@ -135,41 +135,45 @@ function Dashboard() {
           </div>
 
           {/* Mes sites */}
-          <section className={styles.section}>
-            <h3>Mes sites</h3>
-            {[...siteSummaries]
-              /* On va trier les sites par niveau de score le plus bas */
-              .sort((site1, site2) => (site1.summary?.score || 0) - (site2.summary?.score || 0))
-              .map((siteData, index) => {
-                const score = siteData.summary.score;
-                return (
-                  <div key={index} className={styles.auditSection}>
-                    <div className={styles.auditRow}>
-                      <span>{siteData.site.domain}</span>
-                      <p role="status" className={styles.mention} style={{ color: getScoreColor(score) }}>
-                        <strong>{getScoreMention(score)}</strong>
-                      </p>
-                      <span style={{ color: getScoreColor(score) }}>{score}%</span>
-                      <button
-                        onClick={() => router.push(`/sites/${siteData.site._id}`)} className="button button-action"
-                      >
-                        Voir le détail
-                      </button>
-                    </div>
+          {audits.length > 0 && (
+  <>
+    {/* Mes sites */}
+    <section className={styles.section}>
+      <h3>Mes sites</h3>
+      {siteSummaries.length === 0 && <p>Aucun site audité pour le moment.</p>}
+      {[...siteSummaries]
+        .sort((a, b) => (a.summary?.score || 0) - (b.summary?.score || 0))
+        .map((siteData, index) => {
+          const score = siteData.summary.score;
+          return (
+            <div key={index} className={styles.auditSection}>
+              <div className={styles.auditRow}>
+                <span>{siteData.site.domain}</span>
+                <p role="status" className={styles.mention} style={{ color: getScoreColor(score) }}>
+                  <strong>{getScoreMention(score)}</strong>
+                </p>
+                <span style={{ color: getScoreColor(score) }}>{score}%</span>
+                <button
+                  onClick={() => router.push(`/sites/${siteData.site._id}`)} className="button button-action"
+                >
+                  Voir le détail
+                </button>
+              </div>
+            </div>
+          );
+        })}
+    </section>
 
-                  </div>
-                );
-              })}
+    <button
+      onClick={() => router.push(`/mes-audits`)} className="button button-action"
+    >
+      Voir tous mes audits
+    </button>
+  </>
+)}
 
-          </section>
-          <button
-            onClick={() => router.push(`/mes-audits`)} className="button button-action"
-          >
-            Voir tous mes audits
-          </button>
-
-          {/* Si aucun audit : invite à lancer un premier audit */}
-          {audits.length === 0 && <Analyse variant="dashboard" />}
+{/* Si aucun audit : invite à lancer un premier audit */}
+{audits.length === 0 && <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />}
         </div>
       </div>
       <Footer variant="dashboard" />

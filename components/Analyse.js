@@ -15,7 +15,7 @@ import homeStyles from "../styles/Home.module.css";
 import dashboardStyles from "../styles/Dashboard.module.css";
 import LoadingModal from "./modals/Loader.js";
 
-function Analyse({ variant = "home" }) {
+function Analyse({ variant = "home", buttonLabel }) {
   /** state **/
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
@@ -98,13 +98,13 @@ function Analyse({ variant = "home" }) {
     <>
       <div>
         <form
-          className={variant === "dashboard" ? styles.dashboardAnalyse : styles.mainAnalyse}
+          className={homeStyles.mainAnalyse}
           onSubmit={handleSubmit}
           role="search"
           aria-label="Tester d'accessibilité"
         >
           <input
-            className={variant === "dashboard" ? styles.inputAudit : styles.search}
+            className={homeStyles.search}
             id="url-input"
             name="url"
             type="url"
@@ -121,8 +121,8 @@ function Analyse({ variant = "home" }) {
             </div>
           }
 
-          <button className={variant === "dashboard" ? styles.button : styles.ctaSearch} type="submit">
-            {variant === "dashboard" ? "Effectuer mon premier audit" : "Analyser mon site →"}
+          <button className={homeStyles.ctaSearch} type="submit">
+            {buttonLabel || (variant === "dashboard" ? "Effectuer mon premier audit" : "Analyser mon site →")}
           </button>
         </form>
       </div>
