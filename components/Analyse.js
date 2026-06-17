@@ -76,7 +76,7 @@ function Analyse({ variant = "home", buttonLabel }) {
           dispatch(loadAudit({
             website: data.website,
             results: data.results,
-            tests: data.tests
+            tests: data.tests || null // Si pas connecté, tests sont undefined donc on renvoie null pour être raccord avec le reducer audit
           }));
           setModaleVisible(false);
           router.push('/audit');
