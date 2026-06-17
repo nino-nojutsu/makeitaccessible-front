@@ -55,7 +55,8 @@ function SignUp({ closeModal }) {
                   // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
                   dispatch(loadAudit({
                     website: audit.website,
-                    audit: data.audit
+                    results: data.results,
+                    tests: data.tests
                   }));
                 }
               }).catch((error) => console.error(error));

@@ -13,6 +13,7 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 function HeroAudit() {
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
+  console.log('audit', audit);
 
   // ouvrir/fermer les modales
   const [signIn, setSignIn] = useState(false);
