@@ -10,8 +10,7 @@ import SignUp from "../modals/SignUp";
 
 function HeroAudit() {
   const user = useSelector((state) => state.user.value);
-  const auditData = useSelector((state) => state.audit.value);
-  const audit = auditData?.audit;
+  const audit = useSelector((state) => state.audit.value);
 
   // ouvrir/fermer les modales
   const [signIn, setSignIn] = useState(false);

@@ -10,12 +10,7 @@ function SignIn({ closeModal }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const auditData = useSelector((store) => store.audit.value);
-  // console.log('auditData from SignIn', auditData);
-  const audit = auditData?.audit;
-  // console.log('audit from SignIn', audit);
-  const website = auditData?.website;
-  console.log('website from SignIn', website);
+  const audit = useSelector((store) => store.audit.value);
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
@@ -31,8 +26,8 @@ function SignIn({ closeModal }) {
       body: JSON.stringify({
         username: signInUsername,
         password: signInPassword,
-        websiteId: website?._id,
-        auditId: audit?.results?._id,
+        websiteId: audit.website._id,
+        auditId: audit.results._id,
       }),
     })
       .then((response) => response.json())
@@ -53,7 +48,7 @@ function SignIn({ closeModal }) {
                 if (data.result) {
                   // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
                   dispatch(loadAudit({
-                    website: website,
+                    website: audit.website,
                     audit: data.audit
                   }));
                 }

@@ -71,7 +71,8 @@ function Analyse() {
           // Charge les résultats de l'audit dans le store redux (reducer <audit>)
           dispatch(loadAudit({
             website: data.website,
-            audit: data.audit
+            results: data.results,
+            tests: data.tests
           }));
           router.push('/audit');
         } else {

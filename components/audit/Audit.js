@@ -12,19 +12,14 @@ function Audit() {
   const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
-  const auditData = useSelector((state) => state.audit.value);
-  console.log('auditData', auditData);
+  const audit = useSelector((state) => state.audit.value);
+  console.log('audit', audit);
 
   // Si un audit n'existe pas on redirige vers la home
-  if (auditData === null) {
+  if (audit === null) {
     router.push('/');
     return;
   }
-
-  // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
-  const audit = auditData.audit;
-  console.log('audit', audit);
-  const website = auditData.website;
 
   /** state **/
   const [selectedCat, setSelectedCat] = useState(''); // Images | Cadres | Couleurs | Tableaux | etc...

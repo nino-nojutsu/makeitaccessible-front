@@ -6,14 +6,11 @@ import { login } from "../../reducers/user";
 import { loadAudit } from "../../reducers/audit";
 
 function SignUp({ closeModal }) {
-  const [url, setUrl] = useState('');
+  const audit = useSelector((store) => store.audit.value);
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const auditData = useSelector((store) => store.audit.value);
-  const audit = auditData?.audit;
-  const website = auditData?.website;
-
+  const [url, setUrl] = useState('');
   const [signUpLastName, setSignUpLastName] = useState("");
   const [signUpFirstName, setSignUpFirstName] = useState("");
   const [signUpEmail, setSignUpEmail] = useState("");
@@ -34,8 +31,8 @@ function SignUp({ closeModal }) {
         email: signUpEmail,
         username: signUpUsername,
         password: signUpPassword,
-        auditId: audit?.results?._id,
-        websiteId: website?._id
+        auditId: audit.results._id,
+        websiteId: website._id
       }),
     })
       .then((response) => response.json())
@@ -57,7 +54,7 @@ function SignUp({ closeModal }) {
                 if (data.result) {
                   // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
                   dispatch(loadAudit({
-                    website: website,
+                    website: audit.website,
                     audit: data.audit
                   }));
                 }
