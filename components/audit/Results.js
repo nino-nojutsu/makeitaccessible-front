@@ -9,11 +9,15 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
 
   /** comportements **/
   const violationsRulesList = violations?.length > 0 && violations.map((testDoc, i) => {
-    return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.violations} selectedImpact={selectedImpact} alert={'error'} />;
+    if (testDoc.status !== 'validated') {
+      return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.violations} selectedImpact={selectedImpact} alert={'error'} />;
+    }
   });
 
   const incompleteRulesList = incomplete?.length > 0 && incomplete.map((testDoc, i) => {
-    return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.incomplete} selectedImpact={selectedImpact} alert={'warning'} />;
+    if (testDoc.status !== 'validated') {
+      return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.incomplete} selectedImpact={selectedImpact} alert={'warning'} />;
+    }
   });
 
   const passesRulesList = passes?.length > 0 && passes.map((testDoc, i) => {
