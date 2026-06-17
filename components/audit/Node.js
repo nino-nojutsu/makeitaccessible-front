@@ -23,7 +23,7 @@ function Node({ id, html, failureSummary, any, all }) {
       </div>
       <div className={styles.nodeFailureSummary}>
         <h5><FontAwesomeIcon aria-hidden="true" className={styles.iconInfoCircle} icon={faLightbulb} /> Appliquez les corrections suivantes : </h5>
-        {failureSummary}.
+        {failureSummary ? failureSummary : "Aucune information"}.
       </div>
       <div className={styles.nodeSuggestions}>
         <h5><FontAwesomeIcon aria-hidden="true" className={styles.iconInfoCircle} icon={faCircleQuestion} /> Mieux comprendre vos anomalies en suivant nos suggestions : </h5>

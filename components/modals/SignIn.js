@@ -11,9 +11,9 @@ function SignIn({ closeModal }) {
   const dispatch = useDispatch();
 
   const auditData = useSelector((store) => store.audit.value);
-  console.log('auditData from SignIn', auditData);
+  // console.log('auditData from SignIn', auditData);
   const audit = auditData?.audit;
-  console.log('audit from SignIn', audit);
+  // console.log('audit from SignIn', audit);
   const website = auditData?.website;
   console.log('website from SignIn', website);
 

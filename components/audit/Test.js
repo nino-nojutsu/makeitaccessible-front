@@ -16,9 +16,11 @@ const impactLabel = {
 };
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ testId, status, impact, tags, description, nodes, help, helpUrl }) {
+function Test({ testId, testStatus, alert, impact, tags, description, nodes, help, helpUrl }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+
+  // console.log('alert', alert);
 
   // console.log('user.token', user.token);
   // console.log('_id', _id);
@@ -55,7 +57,7 @@ function Test({ testId, status, impact, tags, description, nodes, help, helpUrl 
   /** affichage **/
   return (
     <div
-      className={`${styles.testTile} ${styles.status} ${styles[`status-${status}`]} ${styles[`impact-${impact}`]}`}
+      className={`${styles.testTile} ${styles.alert} ${styles[`alert-${alert}`]} ${styles[`impact-${impact}`]}`}
     >
       <div className={styles.rgaaTagTest}>
         {rgaaTagNumber}
@@ -65,7 +67,7 @@ function Test({ testId, status, impact, tags, description, nodes, help, helpUrl 
 
       <div className={styles.testContent}>
         <span className={styles.testStatus}>
-          {/*{status === 'success' &&
+          {/*{alert === 'success' &&
             <span className="badge badge-success">Validé</span>
           }*/}
           <span className={`badge badge-${impact === null ? "nc" : impact}`}>
@@ -78,10 +80,12 @@ function Test({ testId, status, impact, tags, description, nodes, help, helpUrl 
             {totalNodes} élément(s) concerné(s)
           </span>
           <div className={styles.testActionsButtons}>
-            <button 
-              className="button button-action" onClick={handleTestValidation}>
-              <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
-            </button>
+            {testStatus !== 'validated' && 
+              <button 
+                className="button button-action" onClick={handleTestValidation}>
+                <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
+              </button>
+            } 
             <button 
               type="button"
               aria-controls="modal-test-details"
@@ -110,7 +114,7 @@ function Test({ testId, status, impact, tags, description, nodes, help, helpUrl 
         width={800}
       >
         <TestDetails
-          status={status}
+          alert={alert}
           impact={impact}
           tags={tags}
           description={description}

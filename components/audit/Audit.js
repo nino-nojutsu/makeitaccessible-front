@@ -49,7 +49,7 @@ function Audit() {
     setSelectedImpact(value);
   }
 
-  let categoriesList, violations, incomplete, passes;
+  let categoriesList, violations, incomplete, passes, processed;
   if (user.token) {
     // 1. Filtrer par catégorie ou pas : soit on récupère les tests d'une catégorie si un catégorie est séléctionnée soit on stock tous les tests (ternaire)
     const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
@@ -63,6 +63,8 @@ function Audit() {
     incomplete = filteredByCat?.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
     // Depuis un filtrage de cat, récupère les passes (array non vide)
     passes = filteredByCat?.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
+    // Depuis un filtrage de cat, récupère les tests en status "validated" (array non vide)
+    processed = filteredByCat?.length > 0 && filteredByCat.filter(test => test.status === 'validated');
 
     // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
     categoriesList = audit.tests?.length > 0 && audit.tests.map((data, i) => {
@@ -117,7 +119,7 @@ function Audit() {
             {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
             {
               violations.length > 0 || incomplete.length > 0 ?
-                <Results violations={violations} incomplete={incomplete} passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} /> :
+                <Results violations={violations} incomplete={incomplete} passes={passes} processed={processed} selectedType={selectedType} selectedImpact={selectedImpact} /> :
                 <>
                   <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
                   <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />

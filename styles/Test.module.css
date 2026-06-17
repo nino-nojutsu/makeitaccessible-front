@@ -84,22 +84,22 @@
   color: var(--color-minor);
 }
 
-/* -- Status -- */
+/* -- Alert -- */
 
-.status {
+.alert {
   border-left-width: 6px;
   border-left-style: solid;
 }
 
-.status-error {
+.alert-error {
   border-left-color: var(--color-error);
 }
 
-.status-warning {
+.alert-warning {
   border-left-color: var(--color-warning);
 }
 
-.status-success {
+.alert-success {
   border-left-color: var(--color-success);
 }
 
