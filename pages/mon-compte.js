@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import MonCompte from '../components/MonCompte';
+import MonCompte from '../components/EspaceMembre/MonCompte';
 
 function MonComptePage() {
   return (

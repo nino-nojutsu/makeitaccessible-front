@@ -25,7 +25,7 @@ function SliceModop() {
           </li>
           <li className={styles.stepItem}>
             <div className={styles.stepIconWrapper}>
-                <span className={styles.stepNumber}>01</span>
+                <span className={styles.stepNumber}>02</span>
                 <div className={styles.iconBox}>
                   <FontAwesomeIcon icon={faGear} className={styles.icon} />
                 </div>
@@ -37,7 +37,7 @@ function SliceModop() {
           </li>
           <li className={styles.stepItem}>
             <div className={styles.stepIconWrapper}>
-                <span className={styles.stepNumber}>01</span>
+                <span className={styles.stepNumber}>03</span>
                 <div className={styles.iconBox}>
                   <FontAwesomeIcon icon={faDownload} className={styles.icon} />
                 </div>
@@ -49,7 +49,7 @@ function SliceModop() {
           </li>
           <li className={styles.stepItem}>
             <div className={styles.stepIconWrapper}>
-                <span className={styles.stepNumber}>01</span>
+                <span className={styles.stepNumber}>04</span>
                 <div className={styles.iconBox}>
                   <FontAwesomeIcon icon={faChartLine} className={styles.icon} />
                 </div>

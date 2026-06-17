@@ -16,10 +16,12 @@
   --color-bg:#ffffff;
   --color-bg-primary: #FAF9F7;
 
+
   /* Typography */
   --font-base:'Inter', sans-serif;
   --font-display:'Space Grotesk', sans-serif;
   --font-size-body: 1rem;
+  --font-size-xxl: 4rem;
   --font-size-large: 1.25rem;
   --font-size-medium: 1.065rem;
   --font-size-base: 1rem;
@@ -107,12 +109,9 @@ h3 {
   line-height: 40px;
 }
 
+button,
 a {
-  color: var(--color-primary);
-}
-
-a:hover {
-  color: var(--color-primary-hover);
+  cursor: pointer;
 }
 
 button {

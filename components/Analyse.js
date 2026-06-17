@@ -11,10 +11,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { loadAudit } from "../reducers/audit.js";
-import styles from "../styles/Home.module.css";
+import homeStyles from "../styles/Home.module.css";
+import dashboardStyles from "../styles/Dashboard.module.css";
 import LoadingModal from "./modals/Loader.js";
 
-function Analyse() {
+function Analyse({ variant = "home", buttonLabel }) {
   /** state **/
   // stocke l'URL saisie par l'utilisateur
   const [url, setUrl] = useState("");
@@ -23,6 +24,9 @@ function Analyse() {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector(state => state.user.value);
+
+  // Choix de la feuille de styles selon le contexte d'affichage
+  const styles = variant === "dashboard" ? dashboardStyles : homeStyles;
 
   /** comportements **/
   // Met à jour l'état à chaque lancement d'analyse
@@ -74,6 +78,7 @@ function Analyse() {
             results: data.results,
             tests: data.tests
           }));
+          setModaleVisible(false);
           router.push('/audit');
         } else {
           // Ferme la modale et affiche l'erreur
@@ -94,13 +99,13 @@ function Analyse() {
     <>
       <div>
         <form
-          className={styles.mainAnalyse}
+          className={homeStyles.mainAnalyse}
           onSubmit={handleSubmit}
           role="search"
           aria-label="Tester d'accessibilité"
         >
           <input
-            className={styles.search}
+            className={homeStyles.search}
             id="url-input"
             name="url"
             type="url"
@@ -117,8 +122,8 @@ function Analyse() {
             </div>
           }
 
-          <button className={styles.ctaSearch} type="submit">
-            Analyser mon site →
+          <button className={homeStyles.ctaSearch} type="submit">
+            {buttonLabel || (variant === "dashboard" ? "Effectuer mon premier audit" : "Analyser mon site →")}
           </button>
         </form>
       </div>
