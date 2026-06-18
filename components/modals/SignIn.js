@@ -1,4 +1,6 @@
 import styles from "../../styles/Header.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -15,6 +17,7 @@ function SignIn({ closeModal }) {
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setUrl(window.location);
@@ -74,6 +77,8 @@ function SignIn({ closeModal }) {
             router.push("/dashboard");
           }
           closeModal();
+        } else {
+          setError(data.error);
         }
       })
       .catch((error) => {
@@ -83,6 +88,16 @@ function SignIn({ closeModal }) {
 
   return (
     <>
+      {error && (
+        <div className="alert alert-error" role="alert">
+          <FontAwesomeIcon
+            aria-hidden="true"
+            icon={faExclamationTriangle}
+            size="sm"
+          />
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <label for="signInUsername">Nom d'utilisateur*</label>
         <input

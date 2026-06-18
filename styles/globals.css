@@ -300,16 +300,17 @@ button {
 /* -- Alert -- */
 .alert {
   display: inline-flex;
-  column-gap: .75rem;
+  column-gap: .5rem;
   align-items: center;
   border-radius: var(--border-radius-small);
-  padding: .5rem 1rem;
+  padding: .75rem 1rem;
   background-color: white;
-  border-width: 1px 1px 1px 4px;
+  border-width: 1px 1px 1px 5px;
   border-style: solid;
   border-color: var(--color-secondary);
   color: var(--color-secondary);
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .alert-error {
