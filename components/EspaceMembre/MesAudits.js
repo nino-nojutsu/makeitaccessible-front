@@ -11,6 +11,7 @@ function MesAudits() {
     const user = useSelector((state) => state.user.value);
 
     const [audits, setAudits] = useState([]);
+    const [sites, setSites] = useState([]);
     const [siteSummaries, setSiteSummaries] = useState([]);
 
     useEffect(() => {
@@ -28,6 +29,7 @@ function MesAudits() {
 
     useEffect(() => {
     if (!user.token || audits.length === 0) return;
+     console.log('useEffect #2 déclenché, audits:', audits.length);
 
     // 3. On évite de dupliquer les sites
     // reduce construit un tableau en n'ajoutant un site QUE s'il n'est pas déjà présent
@@ -62,6 +64,22 @@ function MesAudits() {
     });
   }, [audits, user.token]);
 
+  // permet de mettre à jour après suppression audit
+  const handleAuditDeleted = (auditId) => {
+  // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
+  setAudits(prev => prev.filter(a => a._id !== auditId));
+};
+
+
+  // permet de mettre à jour après suppression audit
+  const handleSiteDeleted = (sideId) => {
+  // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
+  setAudits(prev => prev.filter(a => a.site?._id !== siteId));
+};
+
+
+  
+
     return (
         <div className={styles.container}>
             <Sidebar />
@@ -70,7 +88,7 @@ function MesAudits() {
 
                 {audits.length > 0
                 // si audits, props qu'on va passer à ListAudits
-                    ? <ListAudits audits={audits} siteSummaries={siteSummaries} />
+                    ? <ListAudits audits={audits} siteSummaries={siteSummaries} onAuditDeleted={handleAuditDeleted} onSiteDeleted={handleSiteDeleted} />
                     // sinon on renvoie la variante d'Analyse dédiée à l'espace Dashboard
                     : <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />
                 }
