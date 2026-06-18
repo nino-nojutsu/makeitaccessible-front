@@ -31,13 +31,13 @@ export const auditSlice = createSlice({
     deleteAudit: (state, action) => {
       const deletedId = action.payload;
       if (state.value?.results?._id === deletedId) {
-        state.value = null;
+        state.value = initialState.value;
       }
     },
     deleteSite: (state, action) => {
       const deletedId = action.payload;
       if (state.value?.site?._id === deletedId) {
-        state.value = null;
+        state.value = initialState.value;
       }
     },
   }
