@@ -2,7 +2,7 @@ import styles from '../../styles/MesAudits.module.css';
 import { useRouter } from 'next/router';
 import { deleteAudit, deleteSite } from '../../reducers/audit.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { Progress, Collapse } from "antd";
+import { Progress } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -61,25 +61,15 @@ function ListAudits(props) {
       });
   };
 
-  // 1. Grouper les audits par site avec reduce
-  // acc = { siteId: { site, audits: [] } }
-  const auditsBySite = props.audits.reduce((acc, audit) => {
-    const siteId = audit.site?._id;
-    // Si l'audit n'a pas de site associé => on ignore et on retourne l'accumulateur tel quel
-    if (!siteId) return acc;
-
-    // Si ce site n'a pas encore de groupe => on l'initialise avec un tableau vide d'audits
-    if (!acc[siteId]) {
-      acc[siteId] = { site: audit.site, audits: [] };
-    }
-    // Le groupe existe déjà => on ajoute l'audit dans le tableau existant
-    acc[siteId].audits.push(audit);
-    return acc;
-  }, {});
+  // 1. Grouper les audits par site 
+  // Le tableau va grouper props.audits (la liste de tous tes audits passée en props depuis MesAudits)
+  // Règle de groupement = (audit) => audit.site?._id donc "groupe par l'id du site"
+  // Avec Object.groupBy, chaque groupe est directement un tableau 
+  const auditsGroupBySite = Object.groupBy(props.audits, (audit) => audit.site?._id);
 
   // 2. Trie les audits de chaque site du plus récent au plus ancien
-  Object.values(auditsBySite).forEach(group => {
-    group.audits.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  Object.values(auditsGroupBySite).forEach(auditsGroup => {
+    auditsGroup.sort((audit1, audit2) => new Date(audit2.createdAt) - new Date(audit1.createdAt));
   });
 
   return (
@@ -96,7 +86,12 @@ function ListAudits(props) {
         </div>
 
         {/* Lignes */}
-        {Object.values(auditsBySite).map(({ site, audits }) => {
+        {Object.values(auditsGroupBySite).map((auditsGroup) => {
+          const site = auditsGroup[0].site;
+          const audits = auditsGroup;
+          
+          if (!site) return null;
+
           const siteSummary = props.siteSummaries.find(s => s.site._id === site._id);
           const siteScore = siteSummary?.summary?.score;
           const siteColor = getScoreColor(siteScore);
