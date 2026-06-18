@@ -70,7 +70,7 @@
 
 .btnSubmitSignIn, .btnSubmitSignUp {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
   margin-top: 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-small);

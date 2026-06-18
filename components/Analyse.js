@@ -1,12 +1,12 @@
 /**
  ** Composant Analyse : le champ url est passé dans le body de la requête /audit en POST
  ** Récupère les résultats de l'audit si le backend a bien répondu (data.result à true)
- ** Enregistre les résultats de l'audit dans le store grace au reducer audit (grace à redux) 
+ ** Enregistre les résultats de l'audit dans le store grace au reducer audit (grace à redux)
  ** Le persisted store est enregistré dans le localStorage sous la cléf 'makeitaccessible' (grace à redux-persist)
  ** Redirige vers la page audit
  **/
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +23,7 @@ function Analyse({ variant = "home", buttonLabel }) {
   const [modaleVisible, setModaleVisible] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector(state => state.user.value);
+  const user = useSelector((state) => state.user.value);
 
   // Choix de la feuille de styles selon le contexte d'affichage
   const styles = variant === "dashboard" ? dashboardStyles : homeStyles;
@@ -44,7 +44,9 @@ function Analyse({ variant = "home", buttonLabel }) {
     // !urlCheck.test(url) = true si l'url ne correspond pas au format
     // .test() = méthode native RegExp, prend une string et retourne true/false selon si la regex matche ou pas
     if (!url || !urlCheck.test(url)) {
-      setError("L'URL doit commencer par https:// et contenir un domaine valide");
+      setError(
+        "L'URL doit commencer par https:// et contenir un domaine valide",
+      );
       return;
     }
 
@@ -64,7 +66,12 @@ function Analyse({ variant = "home", buttonLabel }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // Corps de la requête contenant l'URL saisie : nom et domain du site
-      body: JSON.stringify({ url, name: siteName[1], domain: siteDomain[1], token: user?.token }),
+      body: JSON.stringify({
+        url,
+        name: siteName[1],
+        domain: siteDomain[1],
+        token: user?.token,
+      }),
     })
       // Conversion de la réponse du serveur au format JSON
       .then((response) => response.json())
@@ -73,17 +80,21 @@ function Analyse({ variant = "home", buttonLabel }) {
         if (data.result) {
           // Finalisation de l'analyse et l'enregistrement dans le store
           // Charge les résultats de l'audit dans le store redux (reducer <audit>)
-          dispatch(loadAudit({
-            website: data.website,
-            results: data.results,
-            tests: data.tests || null // Si pas connecté, tests sont undefined donc on renvoie null pour être raccord avec le reducer audit
-          }));
+          dispatch(
+            loadAudit({
+              website: data.website,
+              results: data.results,
+              tests: data.tests || null, // Si pas connecté, tests sont undefined donc on renvoie null pour être raccord avec le reducer audit
+            }),
+          );
           setModaleVisible(false);
-          router.push('/audit');
+          router.push("/audit");
         } else {
           // Ferme la modale et affiche l'erreur
           setModaleVisible(false);
-          setError(data.error || "L'audit a échoué, veuillez ré-essayer plus tard");
+          setError(
+            data.error || "L'audit a échoué, veuillez ré-essayer plus tard",
+          );
         }
       })
       .catch((error) => {
@@ -92,44 +103,48 @@ function Analyse({ variant = "home", buttonLabel }) {
         setModaleVisible(false);
         setError("Impossible de contacter le serveur, veuillez réessayer.");
       });
-  }
+  };
 
   /** affichage **/
   return (
     <>
-      <div>
-        <form
-          className={homeStyles.mainAnalyse}
-          onSubmit={handleSubmit}
-          role="search"
-          aria-label="Tester d'accessibilité"
-        >
-          <input
-            className={homeStyles.search}
-            id="url-input"
-            name="url"
-            type="url"
-            aria-required="true"
-            placeholder="Url de votre site internet..."
-            value={url}
-            onChange={(e) => handleInputChange(e.target.value)}
-          />
+      <form
+        className={homeStyles.mainAnalyse}
+        onSubmit={handleSubmit}
+        role="search"
+        aria-label="Tester d'accessibilité"
+      >
+        <input
+          className={homeStyles.search}
+          id="url-input"
+          name="url"
+          type="url"
+          aria-required="true"
+          placeholder="Url de votre site internet..."
+          value={url}
+          onChange={(e) => handleInputChange(e.target.value)}
+        />
 
-          {error &&
-            <div className="alert alert-error" role="alert">
-              <FontAwesomeIcon aria-hidden="true" icon={faExclamationTriangle} size="sm" />
-              {error}
-            </div>
-          }
+        {error && (
+          <div className="alert alert-error" role="alert">
+            <FontAwesomeIcon
+              aria-hidden="true"
+              icon={faExclamationTriangle}
+              size="sm"
+            />
+            {error}
+          </div>
+        )}
 
-          <button className={homeStyles.ctaSearch} type="submit">
-            {buttonLabel || (variant === "dashboard" ? "Effectuer mon premier audit" : "Analyser mon site →")}
-          </button>
-        </form>
-      </div>
+        <button className={homeStyles.ctaSearch} type="submit">
+          {buttonLabel ||
+            (variant === "dashboard"
+              ? "Effectuer mon premier audit"
+              : "Analyser mon site →")}
+        </button>
+      </form>
 
       <LoadingModal isVisible={modaleVisible} />
-
     </>
   );
 }
