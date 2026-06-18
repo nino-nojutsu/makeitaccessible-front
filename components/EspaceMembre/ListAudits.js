@@ -1,17 +1,65 @@
 import styles from '../../styles/MesAudits.module.css';
 import { useRouter } from 'next/router';
-import { Progress } from "antd";
+import { deleteAudit, deleteSite } from '../../reducers/audit.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { Progress, Collapse } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function ListAudits(props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value);
 
   function getScoreColor(score) {
     if (score === 100) return "#22c55e";
     if (score >= 50) return "#f97316";
     return "#e63946";
   }
+
+  // SUPPRIMER UN SITE
+  const handleDeleteSite = (siteId) => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/sites/${siteId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: user.token }),
+    }).then(response => response.json())
+      .then(data => {
+        // Vide le store si le site supprimé est celui actuellement affiché sur /audit
+        dispatch(deleteSite(siteId));
+        // reload la page, l'action ne passe pas réellement par redux
+        if (data.result) {
+                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+                dispatch(deleteSite(siteId));
+                // call back pour modifier le statut du parent mes audits après suppression
+                props.onSiteDeleted(siteId);
+                // Recharge la page pour mettre à jour la liste
+                router.reload();
+            }
+      });
+  };
+
+   // SUPPRIMER UN AUDIT
+  const handleDeleteAudit = (auditId) => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${auditId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: user.token }),
+    }).then(response => response.json())
+      .then(data => {
+        // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+        dispatch(deleteAudit(auditId));
+        // reload la page, l'action ne passe pas réellement par redux
+        if (data.result) {
+                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+                dispatch(deleteAudit(auditId));
+                // call back pour modifier le statut du parent mes audits après suppression
+                props.onAuditDeleted(auditId);
+                // recharge la page après suppression
+                router.reload();
+            }
+      });
+  };
 
   // 1. Grouper les audits par site avec reduce
   // acc = { siteId: { site, audits: [] } }
@@ -60,7 +108,7 @@ function ListAudits(props) {
               <div className={styles.siteRow}>
                 <span>{site.name}</span>
                 <div className={styles.circleWrapperSite}>
-                  <Progress type="circle" percent={siteScore} strokeColor={siteColor} trailColor="#f1f1f1" size={30} strokeWidth={10}
+                  <Progress type="circle" percent={siteScore} strokeColor={siteColor} size={30} strokeWidth={10}
                     format={(percent) => (
                       <span style={{
                         color: siteColor,
@@ -91,7 +139,7 @@ function ListAudits(props) {
                   <button title="Télécharger le rapport du site">
                     <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
                   </button>
-                  <button title="Supprimer le site">
+                  <button title="Supprimer la le site" onClick={() => handleDeleteSite(site._id)}>
                     <FontAwesomeIcon icon={faTrash} aria-hidden="true" />
                   </button>
                 </div>
@@ -108,7 +156,7 @@ function ListAudits(props) {
                       <Progress type="circle" percent={score} strokeColor={color} trailColor="#f1f1f1" size={50} strokeWidth={10}
                         format={(percent) => (
                           <span style={{
-                            color: siteColor,
+                            color: color,
                             fontSize: "1rem",
                             fontWeight: 600,
                             display: "flex",
@@ -133,7 +181,7 @@ function ListAudits(props) {
                       <button title="Télécharger le rapport de la page">
                         <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
                       </button>
-                      <button title="Supprimer la page">
+                      <button title="Supprimer la page" onClick={() => handleDeleteAudit(audit._id)}>
                         <FontAwesomeIcon icon={faTrash} aria-hidden="true" />
                       </button>
                     </div>
