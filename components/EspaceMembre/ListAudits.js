@@ -1,8 +1,10 @@
 import styles from '../../styles/MesAudits.module.css';
 import { useRouter } from 'next/router';
+import { loadAudit } from '../../reducers/audit.js';
+import { useEffect, useState } from 'react';
 import { deleteAudit, deleteSite } from '../../reducers/audit.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { Progress, Collapse } from "antd";
+import { Progress } from "antd";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,6 +12,39 @@ function ListAudits(props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const { auditView } = router.query; 
+  const { siteView } = router.query; 
+
+  const handleAuditView = async (auditId) => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/audit/archive/${user.token}/${auditId}`
+    ).then(res => res.json());
+
+    if (data.result) {
+      dispatch(loadAudit({
+        website: data.results.site,
+        results: data.results,
+        tests: data.tests,
+      }));
+      router.push(`/archive/${auditId}`);
+    }
+  };
+
+  /* const handleSitetView = async (siteId) => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/sites/archive/${user.token}/${siteId}`
+    ).then(res => res.json());
+
+    if (data.result) {
+      dispatch(loadAudit({
+        audit: data.results.audit,
+        results: data.results,
+        tests: data.tests,
+      }));
+      router.push(`/archive/${siteId}`);
+    }
+  };*/
+
 
   function getScoreColor(score) {
     if (score === 100) return "#22c55e";
@@ -29,17 +64,17 @@ function ListAudits(props) {
         dispatch(deleteSite(siteId));
         // reload la page, l'action ne passe pas réellement par redux
         if (data.result) {
-                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-                dispatch(deleteSite(siteId));
-                // call back pour modifier le statut du parent mes audits après suppression
-                props.onSiteDeleted(siteId);
-                // Recharge la page pour mettre à jour la liste
-                router.reload();
-            }
+          // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+          dispatch(deleteSite(siteId));
+          // call back pour modifier le statut du parent mes audits après suppression
+          props.onSiteDeleted(siteId);
+          // Recharge la page pour mettre à jour la liste
+          router.reload();
+        }
       });
   };
 
-   // SUPPRIMER UN AUDIT
+  // SUPPRIMER UN AUDIT
   const handleDeleteAudit = (auditId) => {
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${auditId}`, {
       method: 'DELETE',
@@ -51,35 +86,25 @@ function ListAudits(props) {
         dispatch(deleteAudit(auditId));
         // reload la page, l'action ne passe pas réellement par redux
         if (data.result) {
-                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-                dispatch(deleteAudit(auditId));
-                // call back pour modifier le statut du parent mes audits après suppression
-                props.onAuditDeleted(auditId);
-                // recharge la page après suppression
-                router.reload();
-            }
+          // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+          dispatch(deleteAudit(auditId));
+          // call back pour modifier le statut du parent mes audits après suppression
+          props.onAuditDeleted(auditId);
+          // recharge la page après suppression
+          router.reload();
+        }
       });
   };
 
-  // 1. Grouper les audits par site avec reduce
-  // acc = { siteId: { site, audits: [] } }
-  const auditsBySite = props.audits.reduce((acc, audit) => {
-    const siteId = audit.site?._id;
-    // Si l'audit n'a pas de site associé => on ignore et on retourne l'accumulateur tel quel
-    if (!siteId) return acc;
-
-    // Si ce site n'a pas encore de groupe => on l'initialise avec un tableau vide d'audits
-    if (!acc[siteId]) {
-      acc[siteId] = { site: audit.site, audits: [] };
-    }
-    // Le groupe existe déjà => on ajoute l'audit dans le tableau existant
-    acc[siteId].audits.push(audit);
-    return acc;
-  }, {});
+  // 1. Grouper les audits par site 
+  // Le tableau va grouper props.audits (la liste de tous tes audits passée en props depuis MesAudits)
+  // Règle de groupement = (audit) => audit.site?._id donc "groupe par l'id du site"
+  // Avec Object.groupBy, chaque groupe est directement un tableau 
+  const auditsGroupBySite = Object.groupBy(props.audits, (audit) => audit.site?._id);
 
   // 2. Trie les audits de chaque site du plus récent au plus ancien
-  Object.values(auditsBySite).forEach(group => {
-    group.audits.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  Object.values(auditsGroupBySite).forEach(auditsGroup => {
+    auditsGroup.sort((audit1, audit2) => new Date(audit2.createdAt) - new Date(audit1.createdAt));
   });
 
   return (
@@ -96,7 +121,12 @@ function ListAudits(props) {
         </div>
 
         {/* Lignes */}
-        {Object.values(auditsBySite).map(({ site, audits }) => {
+        {Object.values(auditsGroupBySite).map((auditsGroup) => {
+          const site = auditsGroup[0].site;
+          const audits = auditsGroup;
+
+          if (!site) return null;
+
           const siteSummary = props.siteSummaries.find(s => s.site._id === site._id);
           const siteScore = siteSummary?.summary?.score;
           const siteColor = getScoreColor(siteScore);
@@ -131,18 +161,6 @@ function ListAudits(props) {
                     {new Date(audits[0].createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </span>
-
-                <div className={styles.actionButtons}>
-                  <button title="Voir le détail">
-                    <FontAwesomeIcon icon={faEye} aria-hidden="true" />
-                  </button>
-                  <button title="Télécharger le rapport du site">
-                    <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
-                  </button>
-                  <button title="Supprimer la le site" onClick={() => handleDeleteSite(site._id)}>
-                    <FontAwesomeIcon icon={faTrash} aria-hidden="true" />
-                  </button>
-                </div>
               </div>
 
               {/* Lignes audits */}
@@ -175,7 +193,7 @@ function ListAudits(props) {
                       {new Date(audit.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     <div className={styles.actionButtons}>
-                      <button title="Voir le détail">
+                      <button title="Voir le détail" onClick={() => handleAuditView(audit._id)}>
                         <FontAwesomeIcon icon={faEye} aria-hidden="true" />
                       </button>
                       <button title="Télécharger le rapport de la page">
@@ -194,6 +212,6 @@ function ListAudits(props) {
       </div>
     </main>
   );
-}
+};
 
 export default ListAudits;

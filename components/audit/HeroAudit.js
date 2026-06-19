@@ -10,7 +10,7 @@ import SignUp from "../modals/SignUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
-function HeroAudit() {
+function HeroAudit({ isArchive }) {
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
   console.log('audit', audit);
@@ -28,9 +28,11 @@ function HeroAudit() {
     <section className={styles.analyseHero} aria-label="Relancer un audit et voir le score global de mon audit">
 
       {/* Barre de recherche => appel composant analyse */}
-      <div className={styles.analyseWrapper}>
-        <Analyse />
-      </div>
+      {!isArchive && (
+        <div className={styles.analyseWrapper}>
+          <Analyse />
+        </div>
+      )}
 
       {/* Carte score global */}
       <div className={styles.scoreCard} aria-label="Score global et export">
