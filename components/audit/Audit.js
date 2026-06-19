@@ -8,7 +8,7 @@ import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
 
-function Audit() {
+function Audit({ isArchive }) {
   const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
@@ -86,7 +86,7 @@ function Audit() {
   /** affichage **/
   return (
     <>
-      <HeroAudit />
+      <HeroAudit isArchive={isArchive} />
       {user.token ? (
         <div className={styles.auditContainer}>
           {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
