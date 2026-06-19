@@ -1,5 +1,7 @@
 import styles from '../../styles/MesAudits.module.css';
 import { useRouter } from 'next/router';
+import { loadAudit } from '../../reducers/audit.js';
+import { useEffect, useState } from 'react';
 import { deleteAudit, deleteSite } from '../../reducers/audit.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { Progress } from "antd";
@@ -10,6 +12,24 @@ function ListAudits(props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
+  const { auditView } = router.query; 
+
+  const handleAuditView = async (auditId) => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/audit/archive/${user.token}/${auditId}`
+    ).then(res => res.json());
+
+    if (data.result) {
+      dispatch(loadAudit({
+        website: data.results.site,
+        results: data.results,
+        tests: data.tests,
+      }));
+      router.push(`/archive/${auditId}`);
+    }
+  };
+
+
 
   function getScoreColor(score) {
     if (score === 100) return "#22c55e";
@@ -29,17 +49,17 @@ function ListAudits(props) {
         dispatch(deleteSite(siteId));
         // reload la page, l'action ne passe pas réellement par redux
         if (data.result) {
-                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-                dispatch(deleteSite(siteId));
-                // call back pour modifier le statut du parent mes audits après suppression
-                props.onSiteDeleted(siteId);
-                // Recharge la page pour mettre à jour la liste
-                router.reload();
-            }
+          // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+          dispatch(deleteSite(siteId));
+          // call back pour modifier le statut du parent mes audits après suppression
+          props.onSiteDeleted(siteId);
+          // Recharge la page pour mettre à jour la liste
+          router.reload();
+        }
       });
   };
 
-   // SUPPRIMER UN AUDIT
+  // SUPPRIMER UN AUDIT
   const handleDeleteAudit = (auditId) => {
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${auditId}`, {
       method: 'DELETE',
@@ -51,13 +71,13 @@ function ListAudits(props) {
         dispatch(deleteAudit(auditId));
         // reload la page, l'action ne passe pas réellement par redux
         if (data.result) {
-                // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-                dispatch(deleteAudit(auditId));
-                // call back pour modifier le statut du parent mes audits après suppression
-                props.onAuditDeleted(auditId);
-                // recharge la page après suppression
-                router.reload();
-            }
+          // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
+          dispatch(deleteAudit(auditId));
+          // call back pour modifier le statut du parent mes audits après suppression
+          props.onAuditDeleted(auditId);
+          // recharge la page après suppression
+          router.reload();
+        }
       });
   };
 
@@ -89,7 +109,7 @@ function ListAudits(props) {
         {Object.values(auditsGroupBySite).map((auditsGroup) => {
           const site = auditsGroup[0].site;
           const audits = auditsGroup;
-          
+
           if (!site) return null;
 
           const siteSummary = props.siteSummaries.find(s => s.site._id === site._id);
@@ -170,7 +190,7 @@ function ListAudits(props) {
                       {new Date(audit.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     <div className={styles.actionButtons}>
-                      <button title="Voir le détail">
+                      <button title="Voir le détail" onClick={() => handleAuditView(audit._id)}>
                         <FontAwesomeIcon icon={faEye} aria-hidden="true" />
                       </button>
                       <button title="Télécharger le rapport de la page">
@@ -189,6 +209,6 @@ function ListAudits(props) {
       </div>
     </main>
   );
-}
+};
 
 export default ListAudits;
