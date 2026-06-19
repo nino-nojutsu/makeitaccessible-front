@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Hashtag from '../../components/EspaceMembre/AuditViewPage';
+import Audit from '../../components/audit/Audit';
 
 function AuditViewPage() {
   const router = useRouter();
@@ -9,9 +9,9 @@ function AuditViewPage() {
   return (
     <>
       <Head>
-        <title>Détail de l'audit {site.name}/ MakeItAccessible</title>
+        <title>{audit}/ MakeItAccessible</title>
       </Head>
-      <Hashtag />
+      <Audit isArchive={true} />
     </>
   );
 }
