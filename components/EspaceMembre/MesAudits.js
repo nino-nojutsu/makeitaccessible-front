@@ -6,6 +6,8 @@ import Sidebar from './Sidebar.js';
 import Footer from '../nav/Footer.js';
 import Analyse from '../Analyse.js';
 import ListAudits from './ListAudits.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function MesAudits() {
   const user = useSelector((state) => state.user.value);
@@ -45,39 +47,50 @@ function MesAudits() {
 
   // permet de mettre à jour après suppression audit
   const handleAuditDeleted = (auditId) => {
-  // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
-  setAudits(prev => prev.filter(a => a._id !== auditId));
-};
+    // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
+    setAudits(prev => prev.filter(a => a._id !== auditId));
+  };
 
 
   // permet de mettre à jour après suppression audit
   const handleSiteDeleted = (siteId) => {
-  // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
-  setAudits(prev => prev.filter(a => a.site?._id !== siteId));
-};
+    // Met à jour audits localement => déclenche useEffect #2 => recalcule siteSummaries
+    setAudits(prev => prev.filter(a => a.site?._id !== siteId));
+  };
 
 
+  return (
+    <div className={styles.container}>
+      <Sidebar />
+      <div className={styles.rightSection}>
+        <h1>Mes derniers rapports</h1>
+        <div role="search" aria-label="rechercher un audit">
+          <div>
+            <FontAwesomeIcon
+              icon={faSearch}
+              aria-hidden="true"
+            />
+            <input
+              id="search-audit-input"
+              name="search-audit"
+              type="text"
+              placeholder="...Rechercher un audit"
+            />
 
-
-  
-
-    return (
-        <div className={styles.container}>
-            <Sidebar />
-            <div className={styles.rightSection}>
-                <h1>Mes derniers rapports</h1>
-
-                {audits.length > 0
-                // si audits, props qu'on va passer à ListAudits
-                    ? <ListAudits audits={audits} siteSummaries={siteSummaries} onAuditDeleted={handleAuditDeleted} onSiteDeleted={handleSiteDeleted} />
-                    // sinon on renvoie la variante d'Analyse dédiée à l'espace Dashboard
-                    : <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />
-                }
-
-                <Footer variant="dashboard" />
-            </div>
+          </div>
         </div>
-    );
+
+        {audits.length > 0
+          // si audits, props qu'on va passer à ListAudits
+          ? <ListAudits audits={audits} siteSummaries={siteSummaries} onAuditDeleted={handleAuditDeleted} onSiteDeleted={handleSiteDeleted} />
+          // sinon on renvoie la variante d'Analyse dédiée à l'espace Dashboard
+          : <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />
+        }
+
+        <Footer variant="dashboard" />
+      </div>
+    </div>
+  );
 }
 
 export default MesAudits;

@@ -13,6 +13,7 @@ function ListAudits(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   const { auditView } = router.query; 
+  const { siteView } = router.query; 
 
   const handleAuditView = async (auditId) => {
     const data = await fetch(
@@ -29,6 +30,20 @@ function ListAudits(props) {
     }
   };
 
+  /* const handleSitetView = async (siteId) => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/sites/archive/${user.token}/${siteId}`
+    ).then(res => res.json());
+
+    if (data.result) {
+      dispatch(loadAudit({
+        audit: data.results.audit,
+        results: data.results,
+        tests: data.tests,
+      }));
+      router.push(`/archive/${siteId}`);
+    }
+  };*/
 
 
   function getScoreColor(score) {
@@ -146,18 +161,6 @@ function ListAudits(props) {
                     {new Date(audits[0].createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </span>
-
-                <div className={styles.actionButtons}>
-                  <button title="Voir le détail">
-                    <FontAwesomeIcon icon={faEye} aria-hidden="true" />
-                  </button>
-                  <button title="Télécharger le rapport du site">
-                    <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
-                  </button>
-                  <button title="Supprimer la le site" onClick={() => handleDeleteSite(site._id)}>
-                    <FontAwesomeIcon icon={faTrash} aria-hidden="true" />
-                  </button>
-                </div>
               </div>
 
               {/* Lignes audits */}

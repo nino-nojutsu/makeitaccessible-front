@@ -4,20 +4,20 @@ import { useSelector } from 'react-redux';
 import Sidebar from './Sidebar.js';
 
 function MonCompte() {
-    const [signUpLastName, setSignUpLastName] = useState('');
-    const [signUpFirstName, setSignUpFirstName] = useState('');
-    const [signUpEmail, setSignUpEmail] = useState('');
-    const [signUpUsername, setSignUpUsername] = useState('');
+    const [modifyLastName, setModifyLastName] = useState('');
+    const [modifyFirstName, setModifyFirstName] = useState('');
+    const [modifyEmail, setModifyEmail] = useState('');
+    const [modifyUsername, setModifyUsername] = useState('');
     const [signUpPassword, setSignUpPassword] = useState('');
 
     const user = useSelector((state) => state.user.value);
 
     const handleSubmit = () => {
         const body = {
-            firstName: signUpFirstName,
-            lastName: signUpLastName,
-            email: signUpEmail,
-            username: signUpUsername,
+            firstName: modifyFirstName,
+            lastName: modifyLastName,
+            email: modifyEmail,
+            username: modifyUsername,
             token: user.token,
         };
 
@@ -47,33 +47,34 @@ function MonCompte() {
     return (
         <div className={styles.container}>
             <Sidebar />
-            <div className={styles.rightSection}>
-                <h2 className={styles.title}>Modifier mon compte</h2>
-                <div className={styles.card}>
-                    <div className={styles.field}>
-                        <label>Nom</label>
-                        <input type="text" placeholder="Entrez votre nom" onChange={(e) => setSignUpLastName(e.target.value)} value={signUpLastName} className={styles.inputSignUp} />
+            <div className={styles.layout}>
+                    <h2>Modifier mon compte</h2>
+                    <div className={styles.box}>
+                        <div className={styles.field}>
+                            <label>Nom</label>
+                            <input type="text" placeholder="Entrez votre nom" onChange={(e) => setModifyLastName(e.target.value)} value={modifyLastName} className={styles.inputSignUp} />
+                        </div>
+                        <div className={styles.field}>
+                            <label>Prénom</label>
+                            <input type="text" placeholder="Entrez votre prénom" onChange={(e) => setModifyFirstName(e.target.value)} value={modifyFirstName} className={styles.inputSignUp} />
+                        </div>
+                        <div>
+                            <label className={styles.field}>Email</label>
+                            <input type="email" placeholder="Entrez votre email" onChange={(e) => setModifyEmail(e.target.value)} value={modifyEmail} className={styles.inputSignUp} />
+                        </div>
+                        <div>
+                            <label className={styles.field}>Nom d'utilisateur</label>
+                            <input type="text" placeholder="Entrez votre nom d'utilisateur" onChange={(e) => setModifyUsername(e.target.value)} value={modifyUsername} className={styles.inputSignUp} />
+                        </div>
+                        <div>
+                            <label className={styles.field}>Mot de passe</label>
+                            <input type="password" placeholder="Entrez votre mot de passe" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} className={styles.inputSignUp} />
+                        </div>
+                        <button className={styles.button} onClick={handleSubmit}>Modifier mon compte</button>
+                        <button className={styles.buttonDelete}>Supprimer mon compte</button>
                     </div>
-                    <div className={styles.field}>
-                        <label>Prénom</label>
-                        <input type="text" placeholder="Entrez votre prénom" onChange={(e) => setSignUpFirstName(e.target.value)} value={signUpFirstName} className={styles.inputSignUp} />
-                    </div>
-                    <div className={styles.field}>
-                        <label>Email</label>
-                        <input type="email" placeholder="Entrez votre email" onChange={(e) => setSignUpEmail(e.target.value)} value={signUpEmail} className={styles.inputSignUp} />
-                    </div>
-                    <div className={styles.field}>
-                        <label>Nom d'utilisateur</label>
-                        <input type="text" placeholder="Entrez votre nom d'utilisateur" onChange={(e) => setSignUpUsername(e.target.value)} value={signUpUsername} className={styles.inputSignUp} />
-                    </div>
-                    <div className={styles.field}>
-                        <label>Mot de passe</label>
-                        <input type="password" placeholder="Entrez votre mot de passe" onChange={(e) => setSignUpPassword(e.target.value)} value={signUpPassword} className={styles.inputSignUp} />
-                    </div>
-                    <button className={styles.button} onClick={handleSubmit}>Modifier mon compte</button>
                 </div>
             </div>
-        </div>
     );
 }
 
