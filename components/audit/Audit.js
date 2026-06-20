@@ -14,7 +14,7 @@ function Audit() {
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
-  console.log('audit', audit);
+  // console.log('audit', audit);
 
   // Si un audit n'existe pas on redirige vers la home
   if (audit === null) {
@@ -106,20 +106,14 @@ function Audit() {
           )}
 
           <div className={styles.auditResults}>
+            {
+              <ImpactBlocks tests={audit.tests} />
+            }
+            
             {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
             {
               (violations.length > 0 || incomplete.length > 0) &&
               <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
-            }
-
-            {
-              <ImpactBlocks
-              violations={violations}
-              incomplete={incomplete}
-              passes={passes}
-              processed={processed}
-              tests={audit.tests}
-              />
             }
 
             {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}

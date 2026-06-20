@@ -1,66 +1,109 @@
 import styles from "../styles/ImpactBlocks.module.css";
 
 function ImpactBlocks(props) {
-
   const impactLabelCount = {
     critiques: 0,
     majeurs: 0,
+    moderes: 0,
     mineurs: 0,
     nonTestables: 0,
   };
+  const sepCriticalList = [];
+  const sepSeriousList = [];
+  const sepModerateList = [];
+  const sepMinorList = [];
+  let styleSep = { 'backgroundColor': '#111827' }
+  const sepCritical = <span style={styleSep}></span>;
 
-  // Violations regroupées par niveau d'importance
-  props.violations?.forEach((categorie) => {
+  props.tests.forEach((rule) => {
+    // console.log("rule", rule);
 
-    categorie.violations?.forEach((violation) => {
+    // Violations regroupées par niveau d'importance
+    const totalRulesType = [
+      ...rule.violations,
+      ...rule.incomplete,
+      ...rule.passes,
+    ];
+    // console.log('totalRulesType', totalRulesType);
 
-      if (violation.impact === "critical") {
-        impactLabelCount.critiques = impactLabelCount.critiques + 1
+    totalRulesType.forEach((item) => {
+      if (item.impact === "critical") {
+        styleSep = { 'backgroundColor': '#700000' }
+        impactLabelCount.critiques = impactLabelCount.critiques + 1;
+        sepCriticalList.push(sepCritical);
       }
-      if (
-        violation.impact === "serious" ||
-        violation.impact === "moderate"
-      ) {
+      if (item.impact === "serious") {
+        styleSep = { 'backgroundColor': '#DC2626' }
         impactLabelCount.majeurs++;
+        sepSeriousList.push(sepCritical);
       }
-      if (violation.impact === "minor") {
-        impactLabelCount.mineurs = impactLabelCount.mineurs + 1
+      if (item.impact === "moderate") {
+        styleSep = { 'backgroundColor': '#ff7b00' }
+        impactLabelCount.moderes = impactLabelCount.moderes + 1;
+        sepModerateList.push(sepCritical);
+      }
+      if (item.impact === "minor") {
+        styleSep = { 'backgroundColor': '#d9b206' }
+        impactLabelCount.mineurs = impactLabelCount.mineurs + 1;
+        sepMinorList.push(sepCritical);
       }
     });
-  });
-
-  // Tests incomplets
-  props.incomplete?.forEach((categorie) => {
-
-    categorie.incomplete?.forEach(() => {
-      impactLabelCount.nonTestables++;
-    });
-
   });
 
   return (
     <div className={styles.impactContainer}>
-
       <div className={`${styles.impactBlock} ${styles.critical}`}>
-        <span>Critiques</span>
-        <strong>{impactLabelCount.critiques}</strong>
+        <span className={styles.impactCriticity}>critiques</span>
+
+        <strong className={styles.impactCounter}>
+          {impactLabelCount.critiques}
+          <span className={styles.impactText}>anomalie(s)</span>
+        </strong>
+        <span className={styles.sepList}>
+          {sepCriticalList}
+        </span>
       </div>
 
       <div className={`${styles.impactBlock} ${styles.serious}`}>
-        <span>Majeurs</span>
-        <strong>{impactLabelCount.majeurs}</strong>
+        <span className={styles.impactCriticity}>majeurs</span>
+
+        <strong className={styles.impactCounter}>
+          {impactLabelCount.majeurs}
+          <span className={styles.impactText}>anomalie(s)</span>
+        </strong>
+
+        <span className={styles.sepList}>
+          {sepSeriousList}
+        </span>
+      </div>
+
+      <div className={`${styles.impactBlock} ${styles.moderate}`}>
+        <span className={styles.impactCriticity}>Modérés</span>
+
+        <strong className={styles.impactCounter}>
+          {impactLabelCount.moderes}
+          <span className={styles.impactText}>anomalie(s)</span>
+          {sepCriticalList}
+        </strong>
+
+        <span className={styles.sepList}>
+          {sepModerateList}
+        </span>
       </div>
 
       <div className={`${styles.impactBlock} ${styles.minor}`}>
-        <span>Mineurs</span>
-        <strong>{impactLabelCount.mineurs}</strong>
-      </div>
+        <span className={styles.impactCriticity}>mineurs</span>
 
-      <div className={`${styles.impactBlock} ${styles.incomplete}`}>
-        <span>Non testables</span>
-        <strong>{impactLabelCount.nonTestables}</strong>
-      </div>
+        <strong className={styles.impactCounter}>
+          {impactLabelCount.mineurs}
+          <span className={styles.impactText}>anomalie(s)</span>
+          {sepCriticalList}
+        </strong>
 
+        <span className={styles.sepList}>
+          {sepMinorList}
+        </span>
+      </div>
     </div>
   );
 }
