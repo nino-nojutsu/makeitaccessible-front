@@ -3,10 +3,10 @@ import styles from "../styles/ImpactBlocks.module.css";
 function ImpactBlocks(props) {
 
   const impactLabelCount = {
-    Critiques: 0,
-    Majeurs: 0,
-    Mineurs: 0,
-    Nontestables: 0,
+    critiques: 0,
+    majeurs: 0,
+    mineurs: 0,
+    nonTestables: 0,
   };
 
   // Violations regroupées par niveau d'importance
@@ -15,16 +15,16 @@ function ImpactBlocks(props) {
     categorie.violations?.forEach((violation) => {
 
       if (violation.impact === "critical") {
-        impactLabelCount.Critiques = impactLabelCount.Critiques + 1
+        impactLabelCount.critiques = impactLabelCount.critiques + 1
       }
       if (
         violation.impact === "serious" ||
         violation.impact === "moderate"
       ) {
-        impactLabelCount.Majeurs++;
+        impactLabelCount.majeurs++;
       }
       if (violation.impact === "minor") {
-        impactLabelCount.Mineurs = impactLabelCount.Mineurs + 1
+        impactLabelCount.mineurs = impactLabelCount.mineurs + 1
       }
     });
   });
@@ -33,7 +33,7 @@ function ImpactBlocks(props) {
   props.incomplete?.forEach((categorie) => {
 
     categorie.incomplete?.forEach(() => {
-      impactLabelCount.Nontestables++;
+      impactLabelCount.nonTestables++;
     });
 
   });
@@ -43,22 +43,22 @@ function ImpactBlocks(props) {
 
       <div className={`${styles.impactBlock} ${styles.critical}`}>
         <span>Critiques</span>
-        <strong>{impactLabelCount.Critiques}</strong>
+        <strong>{impactLabelCount.critiques}</strong>
       </div>
 
       <div className={`${styles.impactBlock} ${styles.serious}`}>
         <span>Majeurs</span>
-        <strong>{impactLabelCount.Majeurs}</strong>
+        <strong>{impactLabelCount.majeurs}</strong>
       </div>
 
       <div className={`${styles.impactBlock} ${styles.minor}`}>
         <span>Mineurs</span>
-        <strong>{impactLabelCount.Mineurs}</strong>
+        <strong>{impactLabelCount.mineurs}</strong>
       </div>
 
       <div className={`${styles.impactBlock} ${styles.incomplete}`}>
         <span>Non testables</span>
-        <strong>{impactLabelCount.Nontestables}</strong>
+        <strong>{impactLabelCount.nonTestables}</strong>
       </div>
 
     </div>
