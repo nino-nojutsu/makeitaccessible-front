@@ -52,7 +52,7 @@ function Score() {
                 <div>
                     {/*TODO: @nina Intégrer logique de calcul dans le back*/}
                     <p role="status" className={styles.mention} style={{ color: getScoreColor(score) }}><strong>{mention}</strong></p>
-                    <p><strong>{audit.results.summary.violations} anomalies</strong> sur 106 critères</p>
+                    <p><strong>{audit?.results?.summary?.violations} anomalies</strong> sur 106 critères</p>
                     {/* Le && pour si incomplete est 0, on n'affiche pas le <p> */}
                     {audit?.results?.summary?.incomplete > 0 && (
                         <p className={styles.mentionIncomplet}>Dont {audit.results.summary.incomplete} test(s) à vérifier</p>

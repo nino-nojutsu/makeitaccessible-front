@@ -3,6 +3,7 @@ import headerStyles from "../../styles/Header.module.css";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import Analyse from '../Analyse';
+import { useRouter } from 'next/router';
 import Score from './Score';
 import { Modal } from "antd";
 import SignIn from "../modals/SignIn";
@@ -10,7 +11,9 @@ import SignUp from "../modals/SignUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
-function HeroAudit() {
+function HeroAudit({ isArchive }) {
+  const router = useRouter();
+
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
   console.log('audit', audit);
@@ -28,9 +31,11 @@ function HeroAudit() {
     <section className={styles.analyseHero} aria-label="Relancer un audit et voir le score global de mon audit">
 
       {/* Barre de recherche => appel composant analyse */}
-      <div className={styles.analyseWrapper}>
-        <Analyse />
-      </div>
+      {!isArchive && (
+        <div className={styles.analyseWrapper}>
+          <Analyse />
+        </div>
+      )}
 
       {/* Carte score global */}
       <div className={styles.scoreCard} aria-label="Score global et export">
@@ -46,12 +51,22 @@ function HeroAudit() {
               minute: "2-digit"
             })}
           </time>
+          <div className={styles.sectionMore}>
           <p className={styles.url} aria-label={`Site audité : ${audit.results.url}`}>{audit.results.url}</p>
-          {user.token && <button className={styles.auditButton} type="button">Voir audit complet</button>}
-                          <div className={styles.tooltip} aria-label="En savoir plus sur le score" type="button">
-                    <FontAwesomeIcon icon={faCircleInfo} aria-hidden="true" />
-                    <p className={styles.tooltipText} role="tooltip">l'audit ne porte jamais sur toutes les pages d'un site, mais sur un échantillon représentatif de 15 à 20 pages minimum (plus sur les sites complexes). Pour des sites plus volumineux/complexes, on monte à un échantillon de 40 à 80 pages.</p>
-                </div>
+          {user.token && (
+            <button
+              className={styles.auditButton}
+              type="button"
+              onClick={() => router.push('/mes-audits')}
+            >
+              Voir audit complet
+            </button>
+          )}
+          <div className={styles.tooltip} aria-label="En savoir plus sur le score" type="button">
+            <FontAwesomeIcon icon={faCircleInfo} aria-hidden="true" />
+            <p className={styles.tooltipText} role="tooltip">l'audit ne porte jamais sur toutes les pages d'un site, mais sur un échantillon représentatif de 15 à 20 pages minimum (plus sur les sites complexes). Pour des sites plus volumineux/complexes, on monte à un échantillon de 40 à 80 pages.</p>
+          </div>
+          </div>
         </section>
 
         {user.token ? (

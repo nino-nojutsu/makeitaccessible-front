@@ -21,7 +21,9 @@ function SignUp({ closeModal }) {
     setUrl(window.location);
   }, []);
 
-  const handleRegister = () => {
+  const handleRegister = (event) => {
+    event.preventDefault();
+
     fetch(`${process.env.NEXT_PUBLIC_URL}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,8 +33,8 @@ function SignUp({ closeModal }) {
         email: signUpEmail,
         username: signUpUsername,
         password: signUpPassword,
-        auditId: audit.results._id,
-        websiteId: website._id
+        auditId: audit?.results?._id,
+        websiteId: audit?.website?._id
       }),
     })
       .then((response) => response.json())
@@ -74,8 +76,12 @@ function SignUp({ closeModal }) {
   };
 
   return (
-    <>
-      <label for="signUpLastname">Nom</label>
+    <form
+        onSubmit={handleRegister}
+        className={styles.formSignUp}
+        role="register"
+        aria-label="Tester d'accessibilité">
+      <label for="signUpLastname">Nom*</label>
       <input
         id="signUpLastname"
         type="text"
@@ -84,9 +90,10 @@ function SignUp({ closeModal }) {
         value={signUpLastName}
         className={styles.inputSignUp}
         autoComplete="on"
+        required
       />
 
-      <label for="signUpFirstname">Prénom</label>
+      <label for="signUpFirstname">Prénom*</label>
       <input
         id="signUpFirstname"
         type="text"
@@ -95,9 +102,10 @@ function SignUp({ closeModal }) {
         value={signUpFirstName}
         className={styles.inputSignUp}
         autoComplete="on"
+        required
       />
 
-      <label for="signUpEmail">Email</label>
+      <label for="signUpEmail">Email*</label>
       <input
         id="signUpEmail"
         type="email"
@@ -106,9 +114,10 @@ function SignUp({ closeModal }) {
         value={signUpEmail}
         className={styles.inputSignUp}
         autoComplete="on"
+        required
       />
 
-      <label for="signUpUsername">Nom d'utilisateur</label>
+      <label for="signUpUsername">Nom d'utilisateur*</label>
       <input
         id="signUpUsername"
         type="text"
@@ -117,9 +126,10 @@ function SignUp({ closeModal }) {
         value={signUpUsername}
         className={styles.inputSignUp}
         autoComplete="on"
+        required
       />
 
-      <label for="signUpPassword">Mot de passe</label>
+      <label for="signUpPassword">Mot de passe*</label>
       <input
         id="signUpPassword"
         type="password"
@@ -127,12 +137,13 @@ function SignUp({ closeModal }) {
         onChange={(e) => setSignUpPassword(e.target.value)}
         value={signUpPassword}
         className={styles.inputSignUp}
+        required
       />
 
-      <button onClick={handleRegister} className={styles.btnSubmitSignUp}>
+      <button type="submit" className={styles.btnSubmitSignUp}>
         S'inscrire
       </button>
-    </>
+    </form>
   );
 }
 

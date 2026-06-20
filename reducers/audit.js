@@ -27,9 +27,22 @@ export const auditSlice = createSlice({
       });
 
       state.value.tests = [...testsList];
-    }
-  },
+    },
+    deleteAudit: (state, action) => {
+      const deletedId = action.payload;
+      if (state.value?.results?._id === deletedId) {
+        state.value = initialState.value;
+      }
+    },
+    deleteSite: (state, action) => {
+      const deletedId = action.payload;
+      if (state.value?.site?._id === deletedId) {
+        state.value = initialState.value;
+      }
+    },
+  }
 });
 
-export const { loadAudit, validateTest } = auditSlice.actions;
+export const { loadAudit, validateTest, deleteAudit, deleteSite } = auditSlice.actions;
+
 export default auditSlice.reducer;

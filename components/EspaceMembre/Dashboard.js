@@ -1,16 +1,16 @@
+/**
+ * Dashboard => Composant principal de l'espace membre
+ * Précisions => Props : passage de variant à <Analyse> et <Footer>
+ */
+
 import styles from '../../styles/Dashboard.module.css';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Sidebar from './Sidebar.js';
 import Footer from '../nav/Footer.js';
-import Link from 'next/link';
 import Analyse from '../Analyse.js';
 
-/**
- * Dashboard => Composant principal de l'espace membre
- * Précisions => Props : passage de variant à <Analyse> et <Footer>
- */
 function Dashboard() {
 
   /** store Redux **/
@@ -27,9 +27,10 @@ function Dashboard() {
 
   /**
    * 1. Récupère tous les audits de l'utilisateur
-   * useEffect #1 => Se déclenche au montage + à chaque fois que user.token change
+   * useEffect 1 => Se déclenche au montage + à chaque fois que user.token change
    * => Si user.token est null (non connecté), on sort immédiatement
    */
+
   useEffect(() => {
     if (!user.token) return;
 
@@ -41,36 +42,24 @@ function Dashboard() {
       .then((res) => res.json())
       .then((data) => {
         // On appelle le setter pour mettre à jour le state
-        // => React détecte le changement et re-rend le composant
-        // => Ce changement déclenche aussi useEffect #2
+        // => une fois les données reçues, on les stocke dans le state
+        // ce qui déclenche automatiquement useEffect 2 qui calcule les scores des sites
         if (data.result) setAudits(data.audits);
       });
   }, [user.token]);
 
   /**
    * 2. Pour chaque site unique, récupère le score global
-   * useEffect #2 :
-   * => Se déclenche automatiquement quand audits change (rempli par useEffect #1)
+   * useEffect 2 => Se déclenche automatiquement quand audits change (rempli par useEffect 1)
    */
   useEffect(() => {
     if (!user.token || audits.length === 0) return;
 
     // 3. On évite de dupliquer les sites
-    // reduce construit un tableau en n'ajoutant un site QUE s'il n'est pas déjà présent
-    // Précision => acc = accumulateur (tableau en cours de construction)
-    // Pour chaque audit, on cherche si son site._id est déjà dans acc
-    const uniqueSites = audits.reduce((acc, audit) => {
-      if (
-        audit.site &&
-        !acc.find(site => site._id === audit.site._id)
-      ) {
-        acc.push(audit.site);
-      }
-      return acc;
-    }, []);
-
-    // On extrait uniquement les _id pour les passer aux requêtes suivantes
-    const uniqueSiteIds = uniqueSites.map(site => site._id);
+    // Object.groupBy => trier les audits dans les bons sites
+    // Object.keys
+    // => récupérer uniquement le site
+    const uniqueSiteIds = Object.keys(Object.groupBy(audits, (audit) => audit.site?._id));
 
     // Promise.all => lance toutes les requêtes en parallèle
     Promise.all(
@@ -88,29 +77,21 @@ function Dashboard() {
     });
   }, [audits, user.token]);
 
-  /**
-   * Données pour meubler
-   * Pas de useState redondant => recalculées à chaque re-rendu automatiquement
-   */
+  // DONNEES POUR MEUBLER
 
-  // Compter le nombre de sites distincts suivis par l'utilisateur
+  // Compter le nombre de sites suivis par l'utilisateur
   // => On déduit les sites depuis les audits (un audit = une page)
-  // => reduce parcourt tous les audits et ne garde qu'un exemplaire par site._id
-  // => Pas une vraie collection "sites" en base => une approximation suffisante pour le MVP
-  const uniqueSites = audits.reduce((acc, audit) => {
-    if (audit.site && !acc.find(s => s._id === audit.site._id)) {
-      acc.push(audit.site);
-    }
-    return acc;
-  }, []);
+  const uniqueSitesOfUser = Object.keys(Object.groupBy(audits, (audit) => audit.site?._id));
 
-  // Score moyen des sites (basé sur les scores globaux fusionnés, pas les pages individuelles)
+  // On additionne tous les scores un par un avec une boucle
+  let totalScore = 0;
+  for (const sites of siteSummaries) {
+    totalScore += sites.summary?.score || 0;
+  }
+  // On divise par le nombre de sites pour obtenir la moyenne
   const averageScore = siteSummaries.length > 0
-    ? Math.round(
-      siteSummaries.reduce((sum, s) => sum + (s.summary?.score || 0), 0)
-      / siteSummaries.length
-    )
-    : null;
+    ? Math.round(totalScore / siteSummaries.length)
+    : 0;
 
   /**
    * Calculent couleur et mention selon le score RGAA
@@ -146,13 +127,13 @@ function Dashboard() {
           <div className={styles.statsRow}>
             <div className={styles.statCard}>
 
-              <span className={styles.statValue}>{uniqueSites.length}</span>
+              <span className={styles.statValue}>{uniqueSitesOfUser.length}</span>
               <span className={styles.statLabel}>Sites suivis</span>
             </div>
             <div className={styles.statCard}>
-               {/* audits.length = nombre total d'audits de l'utilisateur
+              {/* audits.length = nombre total d'audits de l'utilisateur
                => 1 audit = 1 page analysée
-               => directement disponible depuis le state audits rempli par useEffect #1 */}
+               => directement disponible depuis le state audits rempli par useEffect 1 */}
               <span className={styles.statValue}>{audits.length}</span>
               <span className={styles.statLabel}>Pages auditées</span>
             </div>
