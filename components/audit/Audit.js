@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
+import ImpactBlocks from '../ImpactBlocks.js';
 
 function Audit() {
   const router = useRouter();
@@ -109,6 +110,16 @@ function Audit() {
             {
               (violations.length > 0 || incomplete.length > 0) &&
               <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
+            }
+
+            {
+              <ImpactBlocks
+              violations={violations}
+              incomplete={incomplete}
+              passes={passes}
+              processed={processed}
+              tests={audit.tests}
+              />
             }
 
             {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
