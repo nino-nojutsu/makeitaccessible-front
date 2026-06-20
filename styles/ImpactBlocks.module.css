@@ -1,0 +1,90 @@
+.impactContainer {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.impactBlock {
+  display: flex;
+  flex-direction: column;
+  column-gap: 2rem;
+  background-color: white;
+  box-shadow: var(--box-shadow-small);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.impactBlock .impactCriticity {
+  font-family: var(--font-display);
+  color: #728DA1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: var(--font-size-very-small);
+  font-weight: 800;
+}
+
+.impactBlock .impactText {
+  color: var(--color-secondary);
+  font-size: calc(var(--font-size-large) - 1px)
+}
+
+.impactBlock strong {
+  display: flex;
+  align-items: baseline;
+  column-gap: 0.35rem;
+  font-size: 40px;
+}
+
+.critical > * {
+  color: var(--color-critical);
+}
+
+.critical > .sep {
+  background-color: var(--color-critical-bg);
+}
+
+.serious > * {
+  color: var(--color-serious);
+}
+
+.serious > .sep {
+  background-color: var(--color-serious-bg);
+}
+
+.moderate > * {
+  color: var(--color-moderate);
+}
+
+.moderate > .sep {
+  background-color: var(--color-moderate-bg);
+}
+
+.minor > * {
+  color: var(--color-minor);
+}
+
+.minor > .sep {
+  background-color: var(--color-minor-bg);
+}
+
+.noTestable > * {
+  color: var(--color-secondary);
+}
+
+.noTestable > .sep {
+  background-color: var(--color-secondary-bg);
+}
+
+.sepList {
+  display: flex;
+  column-gap: .45rem;
+}
+
+.sepList span {
+  width: 10px;
+  height: 22px;
+  border-radius: var(--border-radius-large);
+}

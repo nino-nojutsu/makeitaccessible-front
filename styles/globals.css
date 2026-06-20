@@ -26,6 +26,7 @@
   --font-size-medium: 1.065rem;
   --font-size-base: 1rem;
   --font-size-small: 0.85rem;
+  --font-size-very-small: 0.75rem;
 
   /* Border */
   --border-radius: 8px;
@@ -50,12 +51,12 @@
   /* State impact */
   --color-critical: #700000;
   --color-critical-bg: #ee7878;
-  --color-serious: var(--color-error);
-  --color-serious-bg: var(--color-error-bg);
-  --color-moderate: #D97706;
-  --color-moderate-bg: #FEF3C7;
+  --color-serious: #DC2626;
+  --color-serious-bg: #ffc6c6;
+  --color-moderate: #ff7b00;
+  --color-moderate-bg: #ffdda9;
   --color-minor: #d9b206;
-  --color-minor-bg: #fffbd8;
+  --color-minor-bg: #fff7b0;
   --color-validated: var(--color-success);
   --color-validated-bg: var(--color-success-bg);
   --color-nc: var(--color-secondary);

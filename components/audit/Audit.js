@@ -7,13 +7,14 @@ import { useState } from 'react';
 import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
+import ImpactBlocks from '../ImpactBlocks.js';
 
 function Audit({ isArchive }) {
   const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
-  console.log('audit', audit);
+  // console.log('audit', audit);
 
   // Si un audit n'existe pas on redirige vers la home
   if (audit === null) {
@@ -105,6 +106,10 @@ function Audit({ isArchive }) {
           )}
 
           <div className={styles.auditResults}>
+            {
+              <ImpactBlocks tests={audit.tests} />
+            }
+            
             {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
             {
               (violations.length > 0 || incomplete.length > 0) &&
