@@ -243,6 +243,7 @@
   background: none;
   border: none;
   padding: 0;
+  margin: 3px;
 }
 
 .tooltipText {
@@ -301,6 +302,10 @@
 
 .url {
   font-size: var(--font-size-large);
+}
+
+.sectionMore {
+  display: block;
 }
 
 .auditButton {
