@@ -1,4 +1,16 @@
-/* -- Test Tilte -- */
+/* -- Test Container -- */
+
+.testContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.ignoreButton {
+  margin-top: 1.75rem;
+}
+
+/* -- Test Tile -- */
 
 .testTile {
   display: flex;
@@ -95,6 +107,10 @@
 .alert {
   border-left-width: 6px;
   border-left-style: solid;
+}
+
+.alert-default {
+  border-left-color: var(--color-light-grey);
 }
 
 .alert-error {
