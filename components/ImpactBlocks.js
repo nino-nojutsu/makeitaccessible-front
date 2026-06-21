@@ -14,7 +14,7 @@ function ImpactBlocks(props) {
   const sepMinorList = [];
   let styleSep = { 'backgroundColor': '#111827' }
 
-  props.tests?.forEach((rule) => {
+  props.tests.forEach((rule) => {
     // console.log("rule", rule);
 
     // Violations regroupées par niveau d'importance
