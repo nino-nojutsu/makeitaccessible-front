@@ -13,9 +13,8 @@ function ImpactBlocks(props) {
   const sepModerateList = [];
   const sepMinorList = [];
   let styleSep = { 'backgroundColor': '#111827' }
-  const sepCritical = <span style={styleSep}></span>;
 
-  props.tests.forEach((rule) => {
+  props.tests?.forEach((rule) => {
     // console.log("rule", rule);
 
     // Violations regroupées par niveau d'importance
@@ -26,26 +25,26 @@ function ImpactBlocks(props) {
     ];
     // console.log('totalRulesType', totalRulesType);
 
-    totalRulesType.forEach((item) => {
+    totalRulesType.forEach((item, index) => {
       if (item.impact === "critical") {
-        styleSep = { 'backgroundColor': '#700000' }
-        impactLabelCount.critiques = impactLabelCount.critiques + 1;
-        sepCriticalList.push(sepCritical);
+        styleSep = { 'backgroundColor': '#d30000' }
+        impactLabelCount.critiques++;
+        sepCriticalList.push(<span key={impactLabelCount.critiques} style={styleSep}></span>);
       }
       if (item.impact === "serious") {
-        styleSep = { 'backgroundColor': '#DC2626' }
+        styleSep = { 'backgroundColor': '#fc5a5a' }
         impactLabelCount.majeurs++;
-        sepSeriousList.push(sepCritical);
+        sepSeriousList.push(<span key={impactLabelCount.majeurs} style={styleSep}></span>);
       }
       if (item.impact === "moderate") {
         styleSep = { 'backgroundColor': '#ff7b00' }
-        impactLabelCount.moderes = impactLabelCount.moderes + 1;
-        sepModerateList.push(sepCritical);
+        impactLabelCount.moderes++;
+        sepModerateList.push(<span key={impactLabelCount.moderes} style={styleSep}></span>);
       }
       if (item.impact === "minor") {
         styleSep = { 'backgroundColor': '#d9b206' }
-        impactLabelCount.mineurs = impactLabelCount.mineurs + 1;
-        sepMinorList.push(sepCritical);
+        impactLabelCount.mineurs++;
+        sepMinorList.push(<span key={impactLabelCount.mineurs} style={styleSep}></span>);
       }
     });
   });
@@ -93,7 +92,7 @@ function ImpactBlocks(props) {
 
       <div className={`${styles.impactBlock} ${styles.minor}`}>
         <span className={styles.impactCriticity}>mineurs</span>
-
+        
         <strong className={styles.impactCounter}>
           {impactLabelCount.mineurs}
           <span className={styles.impactText}>anomalie(s)</span>

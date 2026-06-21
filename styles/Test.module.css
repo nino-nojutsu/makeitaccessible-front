@@ -21,10 +21,14 @@
 
 .testStatus {
   display: flex;
-  row-gap: .5rem;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: .5rem;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.testStatus p {
+  flex-basis: 100%;
 }
 
 .testActions {
@@ -40,10 +44,12 @@
   column-gap: .5rem;
   align-items: center;
   white-space: nowrap;
+  margin-left: auto;
 }
 
 .totalNodesTest {
-  color: rgb(165, 165, 165);
+  color: #a5a5a5;
+  white-space: nowrap;
 }
 
 .rgaaTagTest {
