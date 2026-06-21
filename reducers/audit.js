@@ -17,7 +17,7 @@ export const auditSlice = createSlice({
       state.value.results = action.payload.results;
       state.value.tests = action.payload.tests;
     },
-    validateTest: (state, action) => {
+    updateTest: (state, action) => {
       // Récupère l'index concerné par la maj validated retourné par le back et envoyé dans le dispatch
       const index = state.value.tests.findIndex(test => test._id === action.payload._id);
       // Mets à jour le test concerné grace à l'index trouvé dans le tableau de tests 
@@ -38,6 +38,6 @@ export const auditSlice = createSlice({
   }
 });
 
-export const { loadAudit, validateTest, deleteAudit, deleteSite } = auditSlice.actions;
+export const { loadAudit, updateTest, deleteAudit, deleteSite } = auditSlice.actions;
 
 export default auditSlice.reducer;
