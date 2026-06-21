@@ -61,7 +61,7 @@ function Audit({ isArchive }) {
     passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
     // Depuis un filtrage de cat, récupère les tests si au moins une de ses rules est en status "validated" (et cela quelque soit le type)
     processed = filteredByCat.length > 0 && filteredByCat.filter(test => {
-      return test.violations.some(rule => rule.status === 'validated')
+      return test.violations.some(rule => rule.status === 'validated' || rule.status === 'ignored')
     });
 
     // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
