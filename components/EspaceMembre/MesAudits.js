@@ -13,11 +13,10 @@ function MesAudits() {
   const user = useSelector((state) => state.user.value);
   const [audits, setAudits] = useState([]);
   const [siteSummaries, setSiteSummaries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    if (!user?.token) return;
-
-    // 1. Récupère tous les audits
+  // Fonction réutilisable : récupère tous les audits + leurs résumés par site
+  const fetchAllAudits = () => {
     fetch(`${process.env.NEXT_PUBLIC_URL}/audit/all`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -28,9 +27,7 @@ function MesAudits() {
         if (!data.result) return;
         setAudits(data.audits);
 
-        // 2. Dédoublonne les siteIds et fetch les summaries en parallèle
         const uniqueSiteIds = Object.keys(Object.groupBy(data.audits, a => a.site?._id));
-
         const results = await Promise.all(
           uniqueSiteIds.map(siteId =>
             fetch(`${process.env.NEXT_PUBLIC_URL}/sites/${siteId}/audit-summary`, {
@@ -40,10 +37,34 @@ function MesAudits() {
             }).then(r => r.json())
           )
         );
-
         setSiteSummaries(results.filter(r => r.result));
       });
+  };
+
+
+  // useEffect 1 => charge tous les audits au montage du composant
+  useEffect(() => {
+    if (!user?.token) return;
+    fetchAllAudits();
   }, [user?.token]);
+
+  // useEffect 2 => pour rechercher un audit (et réaffiche tout si le champ est vidé avec le site)
+  useEffect(() => {
+    if (!user?.token) return;
+
+    if (!searchTerm) {
+      fetchAllAudits(); // champ vidé => retour à la liste complète
+      return;
+    }
+
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/search/${user.token}?search=${searchTerm}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setAudits(data.result ? data.search : []);
+      })
+      .catch((error) => console.error('Erreur lors de la recherche :', error));
+  }, [searchTerm, user?.token]);
+  
 
   // permet de mettre à jour après suppression audit
   const handleAuditDeleted = (auditId) => {
@@ -59,33 +80,48 @@ function MesAudits() {
   };
 
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
       <Sidebar />
       <div className={styles.rightSection}>
         <h1>Mes derniers rapports</h1>
-        <div role="search" aria-label="rechercher un audit">
+        <div role="search" aria-label="rechercher un audit" className={styles.searchBar}>
           <div>
             <FontAwesomeIcon
               icon={faSearch}
               aria-hidden="true"
+               className={styles.searchIcon}
             />
+            <label htmlFor="search-audit-input" className={styles.visuallyHidden}>
+              Rechercher un audit
+            </label>
             <input
               id="search-audit-input"
               name="search-audit"
               type="text"
               placeholder="...Rechercher un audit"
+              onChange={handleSearchChange}
             />
 
           </div>
         </div>
 
-        {audits.length > 0
-          // si audits, props qu'on va passer à ListAudits
-          ? <ListAudits audits={audits} siteSummaries={siteSummaries} onAuditDeleted={handleAuditDeleted} onSiteDeleted={handleSiteDeleted} />
-          // sinon on renvoie la variante d'Analyse dédiée à l'espace Dashboard
-          : <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />
-        }
+        {audits.length > 0 ? (
+          <ListAudits
+            audits={audits}
+            siteSummaries={siteSummaries}
+            onAuditDeleted={handleAuditDeleted}
+            onSiteDeleted={handleSiteDeleted}
+          />
+        ) : searchTerm ? (
+          <p className="alert alert-error"> Aucun audit ne correspond à votre recherche.</p>
+        ) : (
+          <Analyse variant="dashboard" buttonLabel="Lancer mon premier audit !" />
+        )}
 
         <Footer variant="dashboard" />
       </div>
