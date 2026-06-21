@@ -2,30 +2,42 @@ import styles from "../../styles/Rules.module.css";
 import Rules from "./Rules.js";
 
 // Results embarque les 3 tableaux typés (violations, incomplete, passes filtrés en amont ou pas par catégorie depuis le composant Audit)
-// selectedType va nous permettre d'afficher le type de Rules filtrés et affichera la section correspondante selon le filtre du type sélectionné
+// On extrait uniquement les tableau violations/incomplete/passes de chaque testDoc pour le passer à Rules.
+// selectedType va nous permettre d'afficher le type de Rules filtrés et affichera la section correspondante selon le type sélectionné dans le filtre
 function Results({ violations, incomplete, passes, processed, selectedType, selectedImpact }) {
-  // console.log('violations', violations);
-  // console.log('selectedImpact', selectedImpact);
-
   /** comportements **/
-  const violationsRulesList = violations?.length > 0 && violations.map((testDoc, i) => {
-    if (testDoc.status !== 'validated') {
-      return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.violations} selectedImpact={selectedImpact} alert={'error'} />;
-    }
+
+  /* Groupe les rules par violations */
+  const violationsRulesList = violations.length > 0 && violations.map((testDoc, i) => {
+    const rules = [
+      ...testDoc.violations.filter(rule => rule.status !== 'validated')
+    ]
+    return <Rules key={i} testId={testDoc._id} type="violations" category={testDoc.category} rules={rules} selectedImpact={selectedImpact} alert={'error'} />;
   });
 
-  const incompleteRulesList = incomplete?.length > 0 && incomplete.map((testDoc, i) => {
-    if (testDoc.status !== 'validated') {
-      return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.incomplete} selectedImpact={selectedImpact} alert={'warning'} />;
-    }
+  /* Groupe les rules par incomplete */
+  const incompleteRulesList = incomplete.length > 0 && incomplete.map((testDoc, i) => {
+    const rules = [
+      ...testDoc.incomplete.filter(rule => rule.status !== 'validated')
+    ]
+    return <Rules key={i} testId={testDoc._id} type="incomplete" category={testDoc.category} rules={rules} selectedImpact={selectedImpact} alert={'warning'} />;
   });
 
-  const passesRulesList = passes?.length > 0 && passes.map((testDoc, i) => {
-    return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.passes} selectedImpact={selectedImpact} alert={'success'} />;
+  /* Groupe les rules par passes */
+  const passesRulesList = passes.length > 0 && passes.map((testDoc, i) => {
+    const rules = [
+      ...testDoc.passes.filter(rule => rule.status !== 'validated')
+    ]
+    return <Rules key={i} testId={testDoc._id} type="passes" category={testDoc.category} rules={testDoc.passes} selectedImpact={selectedImpact} alert={'success'} />;
   });
 
-  const processedRulesList = processed?.length > 0 && processed.map((testDoc, i) => {
-    return <Rules key={i} testId={testDoc._id} testStatus={testDoc.status} category={testDoc.category} rules={testDoc.passes} selectedImpact={selectedImpact} alert={'success'} />;
+  /* Groupe les rules traitées (validées) */
+  const processedRulesList = processed.length > 0 && processed.map((testDoc, i) => {
+    const rules = [
+      ...testDoc.violations.filter(rule => rule.status === 'validated'),
+      ...testDoc.incomplete.filter(rule => rule.status === 'validated')
+    ];
+    return <Rules key={i} testId={testDoc._id} type="processed" category={testDoc.category} rules={rules} selectedImpact={selectedImpact} alert={'success'} />;
   });
 
   /** affichage **/
@@ -33,8 +45,8 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
     case "processed": 
       return (
         <>
-          <h3>Processed</h3>
-          {}
+          <h3>Anomalies traitées</h3>
+          {processedRulesList ? processedRulesList : 'Pas de résultats'}
         </>
       )
     case "violations":
@@ -65,21 +77,21 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
       return (
         <>
           {
-            processed?.length > 0 && 
+            processed.length > 0 && 
             <><h3>Anomalies traitées</h3> {processedRulesList}</>
           }
           {
-            violations?.length > 0 && 
+            violations.length > 0 && 
             <><h3>Anomalies</h3> {violationsRulesList}</>
           }
 
           {
-            incomplete?.length > 0 &&
+            incomplete.length > 0 &&
             <><h3>Anomalies incomplètes</h3> {incompleteRulesList}</>
           }
 
           {
-            passes?.length > 0 &&
+            passes.length > 0 &&
             <><h3>Validées</h3> {passesRulesList}</>
           }
         </>

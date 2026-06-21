@@ -16,14 +16,9 @@ const impactLabel = {
 };
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
-function Test({ testId, testStatus, alert, impact, tags, description, nodes, help, helpUrl }) {
+function Test({ testId, type, ruleId, status, impact, tags, description, nodes, help, helpUrl, alert }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
-
-  // console.log('alert', alert);
-
-  // console.log('user.token', user.token);
-  // console.log('_id', _id);
 
   /** state **/
   const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
@@ -33,11 +28,12 @@ function Test({ testId, testStatus, alert, impact, tags, description, nodes, hel
     fetch(`${process.env.NEXT_PUBLIC_URL}/test/validate`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: user.token, testId }),
+      body: JSON.stringify({ token: user.token, testId, ruleId, type }),
     }).then(response => response.json())
       .then(data => {
         if (data.result) {
-          dispatch(validateTest(testId));
+          dispatch(validateTest(data.testDoc));
+          setTestDetailsModalVisible(false);
         }
       });
   }
@@ -67,12 +63,12 @@ function Test({ testId, testStatus, alert, impact, tags, description, nodes, hel
 
       <div className={styles.testContent}>
         <span className={styles.testStatus}>
-          {/*{alert === 'success' &&
-            <span className="badge badge-success">Validé</span>
-          }*/}
           <span className={`badge badge-${impact === null ? "nc" : impact}`}>
             {impact === null ? "Impact non communiqué" : impactLabel[impact]}
           </span>
+          {alert === 'success' &&
+            <span className="badge badge-success">Validé</span>
+          }
           <p>{description}.</p>
         </span>
         <span className={styles.testActions}>
@@ -80,7 +76,7 @@ function Test({ testId, testStatus, alert, impact, tags, description, nodes, hel
             {totalNodes} élément(s) concerné(s)
           </span>
           <div className={styles.testActionsButtons}>
-            {testStatus !== 'validated' && 
+            {status !== 'validated' && 
               <button 
                 className="button button-action" onClick={handleTestValidation}>
                 <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
@@ -99,11 +95,11 @@ function Test({ testId, testStatus, alert, impact, tags, description, nodes, hel
       </div>
 
       <Modal
-        onConfirm={() => setTestDetailsModalVisible(false)}
         onCancel={() => setTestDetailsModalVisible(false)}
         open={testDetailsModalVisible}
         footer={[
-          <Button key="submit" type="primary" className="button button-success button-with-fa-icon" onClick={() => handleTestValidation}>
+          status !== 'validated' &&
+          <Button key="submit" aria-label="Marquer comme résolu" type="primary" className="button button-success button-with-fa-icon" onClick={handleTestValidation}>
             <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faCheck} /> Marqué comme résolu
           </Button>,
           <Button key="back" aria-label="Fermer" onClick={() => setTestDetailsModalVisible(false)}>
