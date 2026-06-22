@@ -5,14 +5,13 @@ import Test from './Test.js';
 // Rules reçoit une catégorie et ses règles axe-core filtrées par type
 // Affiche le titre de la catégorie + la liste des règles (liste de composants Test.js)
 
-function Rules({ testId, testStatus, category, rules, selectedImpact, alert, nodes }) {
+function Rules({ testId, type, category, rules, selectedImpact, alert }) {
   // Filtre par impact si un impact est sélectionné (critical, major, minor)
   const filteredByImpact = selectedImpact !== 'all' ? rules.filter(rule => rule.impact === selectedImpact) : rules;
 
   const rulesList = filteredByImpact.map((rule, i) => {
-    // console.log('rule', rule);
     // Composant Test d'une règle Axe-core => Cette règle Axe-core a t-elle passé le test ?
-    return <Test key={i} testId={testId} testStatus={testStatus} alert={alert} {...rule} />
+    return <Test key={i} testId={testId} type={type} ruleId={rule.id} alert={alert} {...rule} />
   });
   /** affichage **/
   return (

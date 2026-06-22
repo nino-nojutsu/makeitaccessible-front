@@ -7,13 +7,14 @@ import { useState } from 'react';
 import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
+import ImpactBlocks from '../ImpactBlocks.js';
 
 function Audit({ isArchive }) {
   const router = useRouter();
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
-  console.log('audit', audit);
+  // console.log('audit', audit);
 
   // Si un audit n'existe pas on redirige vers la home
   if (audit === null) {
@@ -45,24 +46,26 @@ function Audit({ isArchive }) {
   }
 
   let categoriesList, violations, incomplete, passes, processed;
-  if (user.token) {
+  if (user.token && audit.tests !== null) {
     // 1. Filtrer par catégorie ou pas : soit on récupère les tests d'une catégorie si un catégorie est séléctionnée soit on stock tous les tests (ternaire)
     const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
     // console.log('filteredByCat', filteredByCat);
 
     // 2. Pré-filtrage par type à partir des catégories filtrées (par catégorie sélectionnée ou toutes catégories confondues)
-
+    //
     // Depuis un filtrage de cat, récupère les violations (array non vide)
-    violations = filteredByCat?.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
+    violations = filteredByCat.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
     // Depuis un filtrage de cat, récupère les incomplete (array non vide)
-    incomplete = filteredByCat?.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
+    incomplete = filteredByCat.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
     // Depuis un filtrage de cat, récupère les passes (array non vide)
-    passes = filteredByCat?.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
-    // Depuis un filtrage de cat, récupère les tests en status "validated" (array non vide)
-    processed = filteredByCat?.length > 0 && filteredByCat.filter(test => test.status === 'validated');
+    passes = filteredByCat.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
+    // Depuis un filtrage de cat, récupère les tests si au moins une de ses rules est en status "validated" (et cela quelque soit le type)
+    processed = filteredByCat.length > 0 && filteredByCat.filter(test => {
+      return test.violations.some(rule => rule.status === 'validated' || rule.status === 'ignored' || rule.status === 'reviewed')
+    });
 
     // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
-    categoriesList = audit.tests?.length > 0 && audit.tests.map((data, i) => {
+    categoriesList = audit.tests.length > 0 && audit.tests.map((data, i) => {
       // Affiche la class isSelected ou pas
       const isSelected = data.category === selectedCat;
       // Compte le nombre total d'anomalie : incomplete + violations
@@ -87,10 +90,10 @@ function Audit({ isArchive }) {
   return (
     <>
       <HeroAudit isArchive={isArchive} />
-      {user.token ? (
+      {user.token && audit.tests !== null ? (
         <div className={styles.auditContainer}>
           {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
-          {categoriesList.length > 0 && (
+          {categoriesList !== undefined && categoriesList.length > 0 && (
             <aside role="navigation" className={styles.categoriesList}>
               <ol className={styles.listGroup}>
                 {categoriesList}
@@ -105,6 +108,10 @@ function Audit({ isArchive }) {
           )}
 
           <div className={styles.auditResults}>
+            {
+              audit.tests.length > 0 && <ImpactBlocks tests={audit.tests} />
+            }
+            
             {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
             {
               (violations.length > 0 || incomplete.length > 0) &&

@@ -15,6 +15,9 @@
   --color-base: #1a1a1a;
   --color-bg:#ffffff;
   --color-bg-primary: #FAF9F7;
+  --color-light-grey: #cacaca;
+  --color-grey: #7d7d7d;
+  --color-dark-grey: #101010;
 
 
   /* Typography */
@@ -26,6 +29,7 @@
   --font-size-medium: 1.065rem;
   --font-size-base: 1rem;
   --font-size-small: 0.85rem;
+  --font-size-very-small: 0.75rem;
 
   /* Border */
   --border-radius: 8px;
@@ -48,14 +52,14 @@
   --color-info-bg: #addaff;
 
   /* State impact */
-  --color-critical: #700000;
-  --color-critical-bg: #ee7878;
-  --color-serious: var(--color-error);
-  --color-serious-bg: var(--color-error-bg);
-  --color-moderate: #D97706;
-  --color-moderate-bg: #FEF3C7;
+  --color-critical: #d30000;
+  --color-critical-bg: #f68787;
+  --color-serious: #fc5a5a;
+  --color-serious-bg: #ffc6c6;
+  --color-moderate: #ff7b00;
+  --color-moderate-bg: #ffdda9;
   --color-minor: #d9b206;
-  --color-minor-bg: #fffbd8;
+  --color-minor-bg: #fff7b0;
   --color-validated: var(--color-success);
   --color-validated-bg: var(--color-success-bg);
   --color-nc: var(--color-secondary);
@@ -184,6 +188,20 @@ button {
   border-color: color-mix(in oklab, var(--color-success), black 10%);
 }
 
+.button-link {
+  border: unset;
+  padding: unset;
+  background: unset;
+  transition: opacity linear .1s;
+}
+
+.button-link:hover,
+.button-link:focus {
+  background: unset;
+  opacity: 0.7;
+  transition: opacity linear .1s;
+}
+
 /* -- Badges -- */
 .badge {
   display: inline-flex;
@@ -193,7 +211,7 @@ button {
   background-color: var(--color-secondary-bg);
   color: var(--color-secondary);
   font-size: var(--font-size-small);
-  padding: .15rem .5rem;
+  padding: .15rem .5rem .25rem;
 }
 
 .badge:before {
@@ -202,8 +220,35 @@ button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-top: 1px;
+  margin-top: 3px;
   background-color: var(--color-secondary);
+}
+
+.badge-default {
+  background-color: #d6d6d6;
+  color: #7f7f7f
+}
+
+.badge-default:before {
+  background-color: #7f7f7f;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary)
+}
+
+.badge-primary:before {
+  background-color: var(--color-primary);
+}
+
+.badge-secondary {
+  background-color: var(--color-secondary-hover);
+  color: white
+}
+
+.badge-secondary:before {
+  background-color: white;
 }
 
 .badge-error {
@@ -311,6 +356,21 @@ button {
   color: var(--color-secondary);
   margin-bottom: 1rem;
   width: 100%;
+}
+
+.alert-default {
+  border-color: var(--color-light-grey);
+  color: var(--color-light-grey);
+}
+
+.alert-primary {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.alert-secondary {
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
 }
 
 .alert-error {

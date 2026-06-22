@@ -57,7 +57,6 @@ function SignIn({ closeModal }) {
             fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${data.auditId}`)
               .then((response) => response.json())
               .then((data) => {
-                console.log("data", data);
                 if (data.result) {
                   // Enregistre dans le store redux (reducer <audit>), les données du website et de la totalité des résultats (results + tests) de l'audit retournés par le back
                   dispatch(
