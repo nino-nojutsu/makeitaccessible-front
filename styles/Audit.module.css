@@ -372,9 +372,6 @@
   justify-content: center;
   align-items: center;  
   text-align: center;
-  margin: 50px auto; 
-  padding: 50px;
-  border-radius: var(--border-radius-large);
-  box-shadow: var( --box-shadow-large);
-  width: 50%;
+  margin: 3rem auto; 
+  width: 40%;
 }
