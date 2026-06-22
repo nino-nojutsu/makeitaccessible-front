@@ -26,9 +26,9 @@ function HeroAudit({ isArchive }) {
   const handleCancelSignUp = () => setSignUp(false);
 
   /** comportements **/
-  const handleGeneratePDF = () => {
+  /* const handleGeneratePDF = () => {
     window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf`, '_blank');
-  }
+  } */
 
   /** affichage **/
   return (
@@ -74,7 +74,7 @@ function HeroAudit({ isArchive }) {
 
         {user.token ? (
           <section aria-label="Options d'export" className={styles.download}>
-            <button className={styles.downloadPDF} type="button" onClick={handleGeneratePDF}>
+            <button className={styles.downloadPDF} type="button">
               <svg
                 width={20}
                 height={20}
