@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import SignIn from '../components/SignIn';
+import SignIn from '../components/modals/SignIn';
 
 function SignInPage() {
   return (

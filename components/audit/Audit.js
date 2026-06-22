@@ -4,8 +4,9 @@ import Results from './Results.js';
 import Category from './Category.js';
 import Tests from './Tests.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Filters from './Filters.js';
+import Charts from '../charts.js';
 
 function Audit() {
   // Récupère les infos de l'audit depuis le store redux (key makeitaccessible stocké en localStorage)
@@ -14,12 +15,19 @@ function Audit() {
   const router = useRouter();
 
   // Si un audit n'existe pas on redirige vers la home
+  useEffect(() => {
+    if (auditData === null) {
+      router.replace('/');
+    }
+  }, [auditData, router]);
+
   if (auditData === null) {
-    router.push('/');
+    return null;
   }
 
   // Variables qui nous servira à manipuler plus facilement les résultats de l'audit et les infos du website
-  const audit = auditData.audit;
+  const audit = auditData.audit || {};
+  const tests = Array.isArray(audit.tests) ? audit.tests : [];
   const website = auditData.website;
   // console.log('audit.tests', audit.tests);
 
@@ -46,23 +54,26 @@ function Audit() {
     setSelectedImpact(value);
   }
 
-  let categoriesList, violations, incomplete, passes;
+  let categoriesList = [];
+  let violations = [];
+  let incomplete = [];
+  let passes = [];
   if (user.token) {
     // 1. Filtrer par catégorie ou pas : soit on récupère les tests d'une catégorie si un catégorie est séléctionnée soit on stock tous les tests (ternaire)
-    const filteredByCat = selectedCat ? audit.tests.filter(test => test.category === selectedCat) : audit.tests;
+    const filteredByCat = selectedCat ? tests.filter(test => test.category === selectedCat) : tests;
     // console.log('filteredByCat', filteredByCat);
 
     // 2. Pré-filtrage par type à partir des catégories filtrées (par catégorie sélectionnée ou toutes catégories confondues)
 
     // Depuis un filtrage de cat, récupère les violations (array non vide)
-    violations = filteredByCat?.length > 0 && filteredByCat.filter(test => test.violations.length > 0);
+    violations = filteredByCat.filter(test => test.violations.length > 0);
     // Depuis un filtrage de cat, récupère les incomplete (array non vide)
-    incomplete = filteredByCat?.length > 0 && filteredByCat.filter(test => test.incomplete.length > 0);
+    incomplete = filteredByCat.filter(test => test.incomplete.length > 0);
     // Depuis un filtrage de cat, récupère les passes (array non vide)
-    passes = filteredByCat?.length > 0 && filteredByCat.filter(test => test.passes.length > 0);
+    passes = filteredByCat.filter(test => test.passes.length > 0);
 
     // On crée un tableau de composants Category + Inverse Data Flow passé en props (handleFilteredByCat) depuis audit.tests
-    categoriesList = audit.tests?.length > 0 && audit.tests.map((data, i) => {
+    categoriesList = tests.map((data, i) => {
       // Affiche la class isSelected ou pas
       const isSelected = data.category === selectedCat;
       // Compte le nombre total d'anomalie : incomplete + violations
@@ -119,6 +130,7 @@ function Audit() {
                 <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />
               </>
             }
+            <Charts audit={audit} tests={tests} website={website} user={user} />
         </div>
       </div> : 'Todo: Afficher le block Hero du résume + Input Analyse Component + 5 blocs par criticité'}
     </>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { login } from '../../reducers/user';
+import API_BASE_URL from '../../utils/api';
 
   function SignUp({ closeModal }) {
 
@@ -16,7 +17,7 @@ import { login } from '../../reducers/user';
       const [signUpPassword, setSignUpPassword] = useState('');
 
     const handleRegister = () => {
-      fetch('http://localhost:3000/users/signup', {
+      fetch(`${API_BASE_URL}/users/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

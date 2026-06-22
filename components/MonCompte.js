@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
+import API_BASE_URL from '../utils/api';
 
 function MonCompte() {
     
@@ -30,7 +31,7 @@ function MonCompte() {
             body.password = signUpPassword;
         }
 
-        fetch('http://localhost:3000/users/user', {
+        fetch(`${API_BASE_URL}/users/user`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { login } from '../../reducers/user';
+import API_BASE_URL from '../../utils/api';
 
 function SignIn({ closeModal }) {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ function SignIn({ closeModal }) {
     const [signInPassword, setSignInPassword] = useState("");
 
      const handleSubmit = () => {
-    fetch("http://localhost:3000/users/signin", {
+    fetch(`${API_BASE_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,11 +56,11 @@ function SignIn({ closeModal }) {
       />
       <button onClick={() => handleSubmit()}  className={styles.btnSubmitSignIn}>Se connecter</button>
       <button 
-      onClick={() => window.location.href = 'http://localhost:3000/auth/google'} 
+      onClick={() => window.location.href = `${API_BASE_URL}/auth/google`} 
       className={styles.btnSubmitGoogleSignIn}
       >
         <img
-        src="/google-logo.png"
+        src="/images/google-logo.png"
         alt="Google"
         className={styles.googleIcon}
         />

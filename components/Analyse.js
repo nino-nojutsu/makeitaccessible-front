@@ -13,6 +13,7 @@ import { loadAudit } from "../reducers/audit.js";
 import styles from "../styles/Home.module.css";
 import "antd/dist/antd.css";
 import LoadingModal from "./modals/Loader.js";
+import API_BASE_URL from "../utils/api.js";
 
 function Analyse() {
   /** state **/
@@ -56,7 +57,7 @@ function Analyse() {
     const siteName = url.match(/https?:\/\/(?:www\.)?([^/]+)/);
 
     // Envoie les informations du site au backend en webservice pour lancer l'analyse
-    fetch(`${process.env.NEXT_PUBLIC_URL}/audit`, {
+    fetch(`${API_BASE_URL}/audit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // Corps de la requête contenant l'URL saisie : nom et domain du site
@@ -71,7 +72,10 @@ function Analyse() {
           // Charge les résultats de l'audit dans le store redux (reducer <audit>)
           dispatch(loadAudit({
             website: data.website,
-            audit: data.audit
+            audit: {
+              ...data.results,
+              tests: data.tests || [],
+            },
           }));
           router.push('/audit');
         } else {
