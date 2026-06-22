@@ -1,0 +1,208 @@
+/* -- Test Tilte -- */
+
+.testTile {
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
+  background-color: white;
+  box-shadow: var(--box-shadow-small);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.testContent {
+  display: flex;
+  column-gap: 5rem;
+  width: 100%;
+}
+
+.testStatus {
+  display: flex;
+  row-gap: .5rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.testActions {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  row-gap: 1rem;
+  margin-left: auto;
+}
+
+.testActionsButtons {
+  display: flex;
+  column-gap: .5rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.totalNodesTest {
+  color: rgb(165, 165, 165);
+}
+
+.rgaaTagTest {
+  position: relative;
+  align-content: center;
+  background-color: var(--color-secondary-bg);
+  color: var(--color-secondary);
+  padding: .5rem;
+  border-radius: var(--border-radius);
+  width: 4rem;
+  height: 4rem;
+  text-align: center;
+}
+
+.rgaaTagTest span {
+  font-size: calc(var(--font-size-small) - 2px);
+  padding: 0.25rem;
+  border-radius: 0 var(--border-radius) 0 var(--border-radius)
+}
+
+.impact-critical .rgaaTagTest {
+  background-color: var(--color-critical-bg);
+  color: var(--color-critical);
+}
+
+.impact-serious .rgaaTagTest {
+  background-color: var(--color-serious-bg);
+  color: var(--color-serious);
+}
+
+.impact-moderate .rgaaTagTest {
+  background-color: var(--color-moderate-bg);
+  color: var(--color-moderate);
+}
+
+.impact-minor .rgaaTagTest {
+  background-color: var(--color-minor-bg);
+  color: var(--color-minor);
+}
+
+/* -- Alert -- */
+
+.alert {
+  border-left-width: 6px;
+  border-left-style: solid;
+}
+
+.alert-error {
+  border-left-color: var(--color-error);
+}
+
+.alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.alert-success {
+  border-left-color: var(--color-success);
+}
+
+/* -- Test Details -- */
+.testInfos {
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.testAdvice {
+  font-size: var(--font-size-medium);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.testAdviceBlock {
+  background-color: #f3f3f3;
+  border: 1px solid #ebebeb;
+  border-radius: var(--border-radius);
+  padding: .75rem 1.25rem;
+}
+
+.testAdviceBlock h5 {
+  font-size: .75rem;
+  font-family: var(--font-base);
+  color: #6B7280;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+
+.testRgaaNumber {
+  font-size: var(--font-size-base);
+}
+
+/* -- Tabs Details -- */
+
+.tabsContainer {
+  margin-top: 2rem;
+}
+
+.tabsContainer h4 {
+  font-size: .75rem;
+  font-family: var(--font-base);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+
+.testTabsNodes {
+  margin-top: 1rem;
+}
+
+/* -- Nodes -- */
+.nodeContainer {
+  margin-top: .75rem;
+}
+
+.nodeContainer h5 {
+  font-size: .75rem;
+  font-family: var(--font-base);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+
+.nodeHtml, .nodeFailureSummary {
+  margin-bottom: 1.5rem;
+}
+
+.nodeHtml {
+  position: relative;
+  border: 1px solid var(--color-error);
+  background-color: white;
+  border-radius: var(--border-radius-small);
+  padding: 1.5rem 1rem 1rem 1rem;
+}
+
+.nodeHtml h5 {
+  position: absolute;
+  top: 0;
+  font-family: var(--font-display);
+  line-height: 1;
+  margin: -14px 0 0;
+  color: white;
+  background-color: var(--color-error);
+  margin-bottom: 1.5rem;
+  padding: .45rem 0.75rem;
+  border-radius: var(--border-radius-small);
+}
+
+.nodeHtmlCode {
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-small);
+  padding: 1rem;
+}
+
+/* -- Suggestions -- */
+.nodeSuggestions small {
+  display: block;
+  margin-top: .5rem;
+}

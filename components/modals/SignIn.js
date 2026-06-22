@@ -1,76 +1,129 @@
-import styles from '../../styles/Header.module.css';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { login } from '../../reducers/user';
-import API_BASE_URL from '../../utils/api';
+import styles from "../../styles/Header.module.css";
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../reducers/user";
+import { loadAudit } from "../../reducers/audit";
+import API_BASE_URL from "../../utils/api";
 
 function SignIn({ closeModal }) {
-    const dispatch = useDispatch();
-    const router = useRouter();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const audit = useSelector((store) => store.audit.value);
 
-    const [signInUsername, setSignInUsername] = useState("");
-    const [signInPassword, setSignInPassword] = useState("");
+  const [signInUsername, setSignInUsername] = useState("");
+  const [signInPassword, setSignInPassword] = useState("");
 
-     const handleSubmit = () => {
+  const loadUserAudit = (auditId) => {
+    fetch(`${API_BASE_URL}/audit/${auditId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(
+            loadAudit({
+              website: audit.website,
+              results: data.results,
+              tests: data.tests || [],
+            }),
+          );
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
     fetch(`${API_BASE_URL}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: signInUsername,
         password: signInPassword,
+        websiteId: audit?.website?._id,
+        auditId: audit?.results?._id,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-         console.log(data);
         if (data.result) {
-            setSignInUsername("");
-            setSignInPassword("");
-            dispatch(login({ token: data.token, username: signInUsername }));
-             closeModal?.();
-            router.push('/dashboard');
+          dispatch(
+            login({
+              token: data.token,
+              firstName: data.firstName,
+              username: data.username || signInUsername,
+            }),
+          );
 
+          setSignInUsername("");
+          setSignInPassword("");
+
+          if (data.auditId) {
+            loadUserAudit(data.auditId);
+          }
+
+          closeModal?.();
+
+          if (router.pathname !== "/audit") {
+            router.push("/dashboard");
+          }
         } else {
-          alert(data.error);
+          alert(data.error || "Connexion impossible");
         }
       })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
   return (
-    <>
-    <div>
-      <label>Nom d'utilisateur</label>
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="signInUsername">Nom d'utilisateur*</label>
       <input
-          type="username"
-          placeholder="Entrer votre nom d'utilisateur"
-          onChange={(e) => setSignInUsername(e.target.value)}
-          value={signInUsername} className={styles.inputSignIn}
+        id="signInUsername"
+        type="text"
+        placeholder="Entrer votre nom d'utilisateur"
+        onChange={(e) => setSignInUsername(e.target.value)}
+        value={signInUsername}
+        className={styles.inputSignIn}
+        autoComplete="username"
+        required
       />
-      <label>Mot de passe</label>
+
+      <label htmlFor="signInPassword">Mot de passe*</label>
       <input
+        id="signInPassword"
         type="password"
         placeholder="Entrez votre mot de passe"
         onChange={(e) => setSignInPassword(e.target.value)}
         value={signInPassword}
         className={styles.inputSignIn}
+        autoComplete="current-password"
+        required
       />
-      <button onClick={() => handleSubmit()}  className={styles.btnSubmitSignIn}>Se connecter</button>
-      <button 
-      onClick={() => window.location.href = `${API_BASE_URL}/auth/google`} 
-      className={styles.btnSubmitGoogleSignIn}
+
+      <button type="submit" className={styles.btnSubmitSignIn}>
+        Se connecter
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          window.location.href = `${API_BASE_URL}/auth/google`;
+        }}
+        className={styles.btnSubmitGoogleSignIn}
       >
-        <img
-        src="/images/google-logo.png"
-        alt="Google"
-        className={styles.googleIcon}
+        <Image
+          src="/images/icon-google-connect.svg"
+          alt="Se connecter avec Google"
+          width={26}
+          height={26}
         />
         Se connecter avec Google
-        </button>
-        </div>
-        </>
-        );
-      }
+      </button>
+    </form>
+  );
+}
 
 export default SignIn;
-
-      

@@ -250,86 +250,9 @@ function Charts({ audit = {}, tests = [], website = {}, user = {} }) {
       </header>
 
       <div className={styles.content}>
-        <Card className={styles.topBar} bodyStyle={{ padding: 0 }}>
-          <div className={styles.logoBlock}>
-            <span className={styles.logoMark} aria-hidden="true" />
-            <Text strong className={styles.logoText}>
-              MakeIt<span>Accessible</span>
-            </Text>
-          </div>
+        
 
-          <Space size={8} className={styles.userBlock}>
-            <Avatar size={32}>{avatarLetter}</Avatar>
-            <Text>{userName}</Text>
-            <Divider type="vertical" />
-            <Button type="link" className={styles.logoutButton}>
-              Se deconnecter
-            </Button>
-          </Space>
-        </Card>
-
-        <Row justify="center" gutter={[16, 16]} className={styles.searchRow}>
-          <Col xs={24} md={13}>
-            <Input size="large" value={auditedUrl} readOnly />
-          </Col>
-          <Col xs={24} md={5}>
-            <Button type="primary" size="large" block className={styles.auditButton}>
-              Auditer mon site →
-            </Button>
-          </Col>
-        </Row>
-
-        <Card className={styles.summaryCard}>
-          <Row align="middle" gutter={[32, 32]}>
-            <Col xs={24} md={15}>
-              <div className={styles.scoreBlock}>
-                <Progress
-                  type="circle"
-                  percent={score}
-                  width={148}
-                  strokeWidth={9}
-                  strokeColor={hasViolations ? '#dc2626' : '#159f02'}
-                  trailColor="#e9edf2"
-                  format={() => (
-                    <span className={styles.scoreText}>
-                      <strong>{score}%</strong>
-                      <span>RGAA</span>
-                    </span>
-                  )}
-                />
-
-                <div className={styles.statusBlock}>
-                  <Title level={2}>{statusLabel}</Title>
-                  <Text strong>{violations} anomalies</Text>
-                  <Text> sur {totalCriteria} criteres</Text>
-                </div>
-
-                <Divider type="vertical" className={styles.summaryDivider} />
-
-                <div className={styles.auditMeta}>
-                  <Text type="secondary">Audit du {formatDate(audit.createdAt)}</Text>
-                  <Text strong>{auditedUrl}</Text>
-                </div>
-              </div>
-            </Col>
-
-            <Col xs={24} md={9}>
-              <div className={styles.downloadBlock}>
-                <Button type="primary" size="large" block className={styles.downloadPrimary}>
-                  Telecharger au format PDF
-                </Button>
-                <div className={styles.orSeparator}>
-                  <span />
-                  <Text strong>OU</Text>
-                  <span />
-                </div>
-                <Button size="large" block className={styles.downloadSecondary}>
-                  Telecharger au format CSV
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Card>
+        
 
         <Tabs defaultActiveKey="details" className={styles.tabs}>
           <TabPane tab="Details des anomalies" key="details" />

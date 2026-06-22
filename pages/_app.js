@@ -17,7 +17,23 @@ import audit from '../reducers/audit';
 // Persistance du store dans le localStorage pour que les données suivent aux rechargements
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import storage from 'redux-persist/lib/storage';
+import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
+
+const createNoopStorage = () => ({
+  getItem() {
+    return Promise.resolve(null);
+  },
+  setItem(_key, value) {
+    return Promise.resolve(value);
+  },
+  removeItem() {
+    return Promise.resolve();
+  },
+});
+
+const storage = typeof window !== 'undefined'
+  ? createWebStorage('local')
+  : createNoopStorage();
 
 // Combinaison des reducers
 const reducers = combineReducers({ user, audit });
@@ -32,7 +48,7 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-const dashboardRoutes = ['/mes-audits', '/mon-compte', '/parametres'];
+const dashboardRoutes = ['/dashboard', '/mes-audits', '/mon-compte', '/parametres'];
 
 function App({ Component, pageProps }) {
    const router = useRouter(); // ← ajouté
@@ -41,9 +57,10 @@ function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <div className="container">
+        <div className={isDashboard ? '' : 'container'}>
           <Head>
-            <title>Make It Accessible</title>
+            <title>MakeItAccessible</title>
+            <link rel="icon" href="/favicon-makeitaccessible.svg" type="image/svg" sizes="32x32" />
           </Head>
           {!isDashboard && <Header />} {/* Affiche le Header uniquement si on n'est pas sur une page du dashboard */}
           <Component {...pageProps} />
