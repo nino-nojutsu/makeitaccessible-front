@@ -1,4 +1,6 @@
 import styles from "../../styles/Header.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +18,7 @@ function SignUp({ closeModal }) {
   const [signUpEmail, setSignUpEmail] = useState("");
   const [signUpUsername, setSignUpUsername] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
+  const [error, setError] = useState("");
 
   const loadUserAudit = (auditId) => {
     fetch(`${API_BASE_URL}/audit/${auditId}`)
@@ -36,6 +39,7 @@ function SignUp({ closeModal }) {
 
   const handleRegister = (event) => {
     event.preventDefault();
+    setError("");
 
     fetch(`${API_BASE_URL}/users/signup`, {
       method: "POST",
@@ -77,85 +81,99 @@ function SignUp({ closeModal }) {
             router.push("/dashboard");
           }
         } else {
-          alert(data.error || "Inscription impossible");
+          setError(data.error || "Inscription impossible");
         }
       })
       .catch((error) => {
         console.error(error);
+        setError("Impossible de contacter le serveur.");
       });
   };
 
   return (
-    <form
-      onSubmit={handleRegister}
-      className={styles.formSignUp}
-      role="register"
-      aria-label="Creer un compte"
-    >
-      <label htmlFor="signUpLastname">Nom*</label>
-      <input
-        id="signUpLastname"
-        type="text"
-        placeholder="Entrez votre nom"
-        onChange={(e) => setSignUpLastName(e.target.value)}
-        value={signUpLastName}
-        className={styles.inputSignUp}
-        autoComplete="family-name"
-        required
-      />
+    <>
+      {error && (
+        <div className="alert alert-error" role="alert">
+          <FontAwesomeIcon
+            aria-hidden="true"
+            icon={faExclamationTriangle}
+            size="sm"
+          />
+          {error}
+        </div>
+      )}
 
-      <label htmlFor="signUpFirstname">Prenom*</label>
-      <input
-        id="signUpFirstname"
-        type="text"
-        placeholder="Entrez votre prenom"
-        onChange={(e) => setSignUpFirstName(e.target.value)}
-        value={signUpFirstName}
-        className={styles.inputSignUp}
-        autoComplete="given-name"
-        required
-      />
+      <form
+        onSubmit={handleRegister}
+        className={styles.formSignUp}
+        role="register"
+        aria-label="Creer un compte"
+      >
+        <label htmlFor="signUpLastname">Nom*</label>
+        <input
+          id="signUpLastname"
+          type="text"
+          placeholder="Entrez votre nom"
+          onChange={(e) => setSignUpLastName(e.target.value)}
+          value={signUpLastName}
+          className={styles.inputSignUp}
+          autoComplete="family-name"
+          required
+        />
 
-      <label htmlFor="signUpEmail">Email*</label>
-      <input
-        id="signUpEmail"
-        type="email"
-        placeholder="Entrez votre email"
-        onChange={(e) => setSignUpEmail(e.target.value)}
-        value={signUpEmail}
-        className={styles.inputSignUp}
-        autoComplete="email"
-        required
-      />
+        <label htmlFor="signUpFirstname">Prenom*</label>
+        <input
+          id="signUpFirstname"
+          type="text"
+          placeholder="Entrez votre prenom"
+          onChange={(e) => setSignUpFirstName(e.target.value)}
+          value={signUpFirstName}
+          className={styles.inputSignUp}
+          autoComplete="given-name"
+          required
+        />
 
-      <label htmlFor="signUpUsername">Nom d'utilisateur*</label>
-      <input
-        id="signUpUsername"
-        type="text"
-        placeholder="Entrez votre nom d'utilisateur"
-        onChange={(e) => setSignUpUsername(e.target.value)}
-        value={signUpUsername}
-        className={styles.inputSignUp}
-        autoComplete="username"
-        required
-      />
+        <label htmlFor="signUpEmail">Email*</label>
+        <input
+          id="signUpEmail"
+          type="email"
+          placeholder="Entrez votre email"
+          onChange={(e) => setSignUpEmail(e.target.value)}
+          value={signUpEmail}
+          className={styles.inputSignUp}
+          autoComplete="email"
+          required
+        />
 
-      <label htmlFor="signUpPassword">Mot de passe*</label>
-      <input
-        id="signUpPassword"
-        type="password"
-        placeholder="Entrez votre mot de passe"
-        onChange={(e) => setSignUpPassword(e.target.value)}
-        value={signUpPassword}
-        className={styles.inputSignUp}
-        autoComplete="new-password"
-        required
-      />
+        <label htmlFor="signUpUsername">Nom d'utilisateur*</label>
+        <input
+          id="signUpUsername"
+          type="text"
+          placeholder="Entrez votre nom d'utilisateur"
+          onChange={(e) => setSignUpUsername(e.target.value)}
+          value={signUpUsername}
+          className={styles.inputSignUp}
+          autoComplete="username"
+          required
+        />
 
-      <button type="submit" className={styles.btnSubmitSignUp}>
-        S'inscrire
-      </button>
-    </form>
+        <label htmlFor="signUpPassword">Mot de passe*</label>
+        <input
+          id="signUpPassword"
+          type="password"
+          placeholder="Entrez votre mot de passe"
+          onChange={(e) => setSignUpPassword(e.target.value)}
+          value={signUpPassword}
+          className={styles.inputSignUp}
+          autoComplete="new-password"
+          required
+        />
+
+        <button type="submit" className={styles.btnSubmitSignUp}>
+          S'inscrire
+        </button>
+      </form>
+    </>
   );
 }
 

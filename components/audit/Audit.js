@@ -47,47 +47,43 @@ function Audit({ isArchive }) {
     setSelectedImpact(value);
   };
 
-  let categoriesList = [];
-  let violations = [];
-  let incomplete = [];
-  let passes = [];
-  let processed = [];
+  const filteredByCat = selectedCat
+    ? tests.filter((test) => test.category === selectedCat)
+    : tests;
 
-  if (user.token) {
-    const filteredByCat = selectedCat
-      ? tests.filter((test) => test.category === selectedCat)
-      : tests;
+  const violations = filteredByCat.filter((test) => test.violations.length > 0);
+  const incomplete = filteredByCat.filter((test) => test.incomplete.length > 0);
+  const passes = filteredByCat.filter((test) => test.passes.length > 0);
+  const processed = filteredByCat.filter((test) =>
+    test.violations.some((rule) =>
+      ["validated", "ignored", "reviewed"].includes(rule.status),
+    ),
+  );
 
-    violations = filteredByCat.filter((test) => test.violations.length > 0);
-    incomplete = filteredByCat.filter((test) => test.incomplete.length > 0);
-    passes = filteredByCat.filter((test) => test.passes.length > 0);
-    processed = filteredByCat.filter((test) => test.status === "validated");
+  const categoriesList = tests.map((data, i) => {
+    const isSelected = data.category === selectedCat;
+    const totalIssues = data.incomplete.length + data.violations.length;
+    const totalPasses = data.passes.length;
+    const hasInapplicable =
+      data.inapplicable.length > 0 && totalIssues + totalPasses === 0;
 
-    categoriesList = tests.map((data, i) => {
-      const isSelected = data.category === selectedCat;
-      const totalIssues = data.incomplete.length + data.violations.length;
-      const totalPasses = data.passes.length;
-      const hasInapplicable =
-        data.inapplicable.length > 0 && totalIssues + totalPasses === 0;
-
-      return (
-        <Category
-          key={i}
-          category={data.category}
-          handleFilteredByCat={handleFilteredByCat}
-          className={isSelected ? styles.isSelected : null}
-          totalIssues={totalIssues}
-          totalPasses={totalPasses}
-          hasInapplicable={hasInapplicable}
-        />
-      );
-    });
-  }
+    return (
+      <Category
+        key={i}
+        category={data.category}
+        handleFilteredByCat={handleFilteredByCat}
+        className={isSelected ? styles.isSelected : null}
+        totalIssues={totalIssues}
+        totalPasses={totalPasses}
+        hasInapplicable={hasInapplicable}
+      />
+    );
+  });
 
   return (
     <>
       <HeroAudit isArchive={isArchive} />
-      {user.token ? (
+      {user.token && tests.length > 0 ? (
         <div className={styles.auditContainer}>
           {categoriesList.length > 0 && (
             <aside role="navigation" className={styles.categoriesList}>

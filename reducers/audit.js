@@ -17,16 +17,11 @@ export const auditSlice = createSlice({
       state.value.results = action.payload.results;
       state.value.tests = action.payload.tests;
     },
-    validateTest: (state, action) => {
-      // Mets à jour le tableau tests d'un audit (attention !! state.value = state audit qui contient une propriété audit => à ne pas)
-      const testsList = state.value.tests.map(test => {
-        if (test._id === action.payload) {
-          test.status = 'validated'
-        }
-        return test;
-      });
-
-      state.value.tests = [...testsList];
+    updateTest: (state, action) => {
+      // Récupère l'index concerné par la maj validated retourné par le back et envoyé dans le dispatch
+      const index = state.value.tests.findIndex(test => test._id === action.payload._id);
+      // Mets à jour le test concerné grace à l'index trouvé dans le tableau de tests 
+      state.value.tests[index] = action.payload;
     },
     deleteAudit: (state, action) => {
       const deletedId = action.payload;
@@ -43,6 +38,6 @@ export const auditSlice = createSlice({
   }
 });
 
-export const { loadAudit, validateTest, deleteAudit, deleteSite } = auditSlice.actions;
+export const { loadAudit, updateTest, deleteAudit, deleteSite } = auditSlice.actions;
 
 export default auditSlice.reducer;

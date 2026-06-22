@@ -1,4 +1,6 @@
 import styles from "../../styles/Header.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -14,6 +16,7 @@ function SignIn({ closeModal }) {
 
   const [signInUsername, setSignInUsername] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
+  const [error, setError] = useState("");
 
   const loadUserAudit = (auditId) => {
     fetch(`${API_BASE_URL}/audit/${auditId}`)
@@ -34,6 +37,7 @@ function SignIn({ closeModal }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setError("");
 
     fetch(`${API_BASE_URL}/users/signin`, {
       method: "POST",
@@ -69,60 +73,74 @@ function SignIn({ closeModal }) {
             router.push("/dashboard");
           }
         } else {
-          alert(data.error || "Connexion impossible");
+          setError(data.error || "Connexion impossible");
         }
       })
       .catch((error) => {
         console.error(error);
+        setError("Impossible de contacter le serveur.");
       });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="signInUsername">Nom d'utilisateur*</label>
-      <input
-        id="signInUsername"
-        type="text"
-        placeholder="Entrer votre nom d'utilisateur"
-        onChange={(e) => setSignInUsername(e.target.value)}
-        value={signInUsername}
-        className={styles.inputSignIn}
-        autoComplete="username"
-        required
-      />
+    <>
+      {error && (
+        <div className="alert alert-error" role="alert">
+          <FontAwesomeIcon
+            aria-hidden="true"
+            icon={faExclamationTriangle}
+            size="sm"
+          />
+          {error}
+        </div>
+      )}
 
-      <label htmlFor="signInPassword">Mot de passe*</label>
-      <input
-        id="signInPassword"
-        type="password"
-        placeholder="Entrez votre mot de passe"
-        onChange={(e) => setSignInPassword(e.target.value)}
-        value={signInPassword}
-        className={styles.inputSignIn}
-        autoComplete="current-password"
-        required
-      />
-
-      <button type="submit" className={styles.btnSubmitSignIn}>
-        Se connecter
-      </button>
-
-      <button
-        type="button"
-        onClick={() => {
-          window.location.href = `${API_BASE_URL}/auth/google`;
-        }}
-        className={styles.btnSubmitGoogleSignIn}
-      >
-        <Image
-          src="/images/icon-google-connect.svg"
-          alt="Se connecter avec Google"
-          width={26}
-          height={26}
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="signInUsername">Nom d'utilisateur*</label>
+        <input
+          id="signInUsername"
+          type="text"
+          placeholder="Entrer votre nom d'utilisateur"
+          onChange={(e) => setSignInUsername(e.target.value)}
+          value={signInUsername}
+          className={styles.inputSignIn}
+          autoComplete="username"
+          required
         />
-        Se connecter avec Google
-      </button>
-    </form>
+
+        <label htmlFor="signInPassword">Mot de passe*</label>
+        <input
+          id="signInPassword"
+          type="password"
+          placeholder="Entrez votre mot de passe"
+          onChange={(e) => setSignInPassword(e.target.value)}
+          value={signInPassword}
+          className={styles.inputSignIn}
+          autoComplete="current-password"
+          required
+        />
+
+        <button type="submit" className={styles.btnSubmitSignIn}>
+          Se connecter
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.href = `${API_BASE_URL}/auth/google`;
+          }}
+          className={styles.btnSubmitGoogleSignIn}
+        >
+          <Image
+            src="/images/icon-google-connect.svg"
+            alt="Se connecter avec Google"
+            width={26}
+            height={26}
+          />
+          Se connecter avec Google
+        </button>
+      </form>
+    </>
   );
 }
 

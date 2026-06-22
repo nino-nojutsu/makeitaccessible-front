@@ -6,11 +6,9 @@ import Suggestion from "./Suggestion.js";
 function Node({ id, html, failureSummary, any, all }) {
   /** comportement **/
   const suggestions = [...any, ...all];
-  const suggestionsList = suggestions.map(suggestion => {
-    return <Suggestion data={suggestion.data} message={suggestion.message} />
+  const suggestionsList = suggestions.map((suggestion, index) => {
+    return <Suggestion key={index} data={suggestion.data} message={suggestion.message} />
   });
-
-  console.log('suggestionsList', suggestionsList);
 
   /** affichage **/
   return (
