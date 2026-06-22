@@ -9,19 +9,19 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
 
   /* Groupe les rules par violations */
   const violationsRulesList = violations.length > 0 && violations.map((testDoc, i) => {
-    const rules = testDoc.violations.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored');
+    const rules = testDoc.violations.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored' && rule.status !== 'reviewed');
     return <Rules key={i} testId={testDoc._id} type="violations" category={testDoc.category} rules={rules} selectedImpact={selectedImpact} alert={'error'} />;
   });
 
   /* Groupe les rules par incomplete */
   const incompleteRulesList = incomplete.length > 0 && incomplete.map((testDoc, i) => {
-    const rules = testDoc.incomplete.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored');
+    const rules = testDoc.incomplete.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored' && rule.status !== 'reviewed');
     return <Rules key={i} testId={testDoc._id} type="incomplete" category={testDoc.category} rules={rules} selectedImpact={selectedImpact} alert={'warning'} />;
   });
 
   /* Groupe les rules par passes */
   const passesRulesList = passes.length > 0 && passes.map((testDoc, i) => {
-    const rules = testDoc.passes.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored');
+    const rules = testDoc.passes.filter(rule => rule.status !== 'validated' && rule.status !== 'ignored' && rule.status !== 'reviewed');
     return <Rules key={i} testId={testDoc._id} type="passes" category={testDoc.category} rules={testDoc.passes} selectedImpact={selectedImpact} alert={'success'} />;
   });
 
@@ -35,10 +35,15 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
       ...testDoc.violations.filter(rule => rule.status === 'ignored'),
       ...testDoc.incomplete.filter(rule => rule.status === 'ignored')
     ];
+    const rulesReviewed = [
+      ...testDoc.violations.filter(rule => rule.status === 'reviewed'),
+      ...testDoc.incomplete.filter(rule => rule.status === 'reviewed')
+    ];
     return (
       <>
-        <Rules key={i} testId={testDoc._id} type="processed" category={testDoc.category} rules={rulesValidated} selectedImpact={selectedImpact} alert={'success'} />
-        <Rules key={i} testId={testDoc._id} type="processed" category={testDoc.category} rules={rulesIgnored} selectedImpact={selectedImpact} alert={'default'} />
+        <Rules key={`${i}-validated`} testId={testDoc._id} type="processed" category={testDoc.category} rules={rulesValidated} selectedImpact={selectedImpact} alert='success' />
+        <Rules key={`${i}-ignored`} testId={testDoc._id} type="processed" category={testDoc.category} rules={rulesIgnored} selectedImpact={selectedImpact} alert='default' />
+        <Rules key={`${i}-reviewed`} testId={testDoc._id} type="processed" category={testDoc.category} rules={rulesReviewed} selectedImpact={selectedImpact} alert='secondary' />
       </>
     )
   });

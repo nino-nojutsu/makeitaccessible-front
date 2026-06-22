@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "../../styles/Test.module.css";
 import { Input } from "antd";
 
-function TestIgnore(props) {
+function TestReview(props) {
   /** state **/
 
   /** comportement **/
@@ -11,17 +11,17 @@ function TestIgnore(props) {
   /** affichage **/
   return (
     <>
-      <h3>Retirer ce critère</h3>
+      <h3>Ecrire un commentaire</h3>
       <TextArea
         rows={8}
         cols={12}
-        placeholder="Veuillez renseigner la raison d'ignorer cette anomalie"
-        aria-label="Veuillez renseigner la raison d'ignorer cette anomalie"
+        placeholder="Veuillez écrire un comment pertinent"
+        aria-label="Veuillez écrire un comment pertinent"
         maxLength={300}
-        onChange={(e) => props.handleCommentIgnoreValue(e.target.value)}
+        onChange={(e) => props.handleCommentReviewValue(e.target.value)}
       />
     </>
   );
 }
 
-export default TestIgnore;
+export default TestReview;

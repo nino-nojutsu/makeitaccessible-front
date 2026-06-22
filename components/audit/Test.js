@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateTest } from "../../reducers/audit";
 import TestDetails from "./TestDetails.js";
 import TestIgnore from "./TestIgnore.js";
+import TestReview from "./TestReview.js";
 
 // Impact de criticité (obligé de traduire car axe-core les envoie en anglais :/ alors que la locale est bien fr en back)
 const impactLabel = {
@@ -19,7 +20,6 @@ const impactLabel = {
 
 // Test affiche une seule règle axe-core (description, impact, html, etc....)
 function Test({ testId, type, ruleId, status, comment, impact, tags, description, nodes, help, helpUrl, alert }) {
-  console.log('comment', comment);
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
   const dispatch = useDispatch();
@@ -27,7 +27,9 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
   /** state **/
   const [testDetailsModalVisible, setTestDetailsModalVisible] = useState(false);
   const [testIgnoreModalVisible, setTestIgnoreModalVisible] = useState(false);
+  const [testReviewModalVisible, setTestReviewModalVisible] = useState(false);
   const [commentIgnore, setCommentIgnore] = useState('');
+  const [commentReview, setCommentReview] = useState('');
 
   /** comportements **/
   // Fonction déclenchée au click qui appelle PUT /ignore pour mettre à jour le status en 'validated' dans la rule du type concerné dans le testDoc en cours
@@ -46,7 +48,7 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
   }
 
   // Inverse Data Flow pour mettre à jour le state commentIgnore depuis la valeur récupérée dans le textarea géré depuis son enfant TestIgnore
-  const handleCommentValue = (comment) => {
+  const handleCommentIgnoreValue = (comment) => {
     setCommentIgnore(comment);
   }
 
@@ -61,6 +63,26 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
         if (data.result) {
           dispatch(updateTest(data.testDoc));
           setTestIgnoreModalVisible(false);
+        }
+      });
+  }
+
+  // Inverse Data Flow pour mettre à jour le state commentReview depuis la valeur récupérée dans le textarea géré depuis son enfant TestIgnore
+  const handleCommentReviewValue = (comment) => {
+    setCommentReview(comment);
+  }
+
+  // Fonction déclenchée au click qui appelle PUT /review pour mettre à jour le status en 'reviewed' et ajouter le commentaire dans la rule du type concerné dans le testDoc en cours
+  const handleSendTestReview = () => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/test/review`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: user.token, testId, ruleId, type, commentReview }),
+    }).then(response => response.json())
+      .then(data => {
+        if (data.result) {
+          dispatch(updateTest(data.testDoc));
+          setTestReviewModalVisible(false);
         }
       });
   }
@@ -99,6 +121,9 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
             {status === 'ignored' &&
               <span className="badge badge-default">Ignoré</span>
             }
+            {status === 'reviewed' &&
+              <span className="badge badge-secondary">Commenté</span>
+            }
             <p>{description}.</p>
             {comment && 
               <p><small>Commentaire : {comment}</small></p>
@@ -109,7 +134,7 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
               {totalNodes} élément(s) concerné(s)
             </span>
             <div className={styles.testActionsButtons}>
-              {status !== 'validated' && status !== 'ignored' &&
+              {status !== 'validated' && status !== 'ignored' && status !== 'reviewed' &&
                 <button 
                   className="button button-action" onClick={handleTestValidation}>
                   <FontAwesomeIcon aria-hidden="true" icon={faCheck} size="xs" /> Marquer comme résolu
@@ -156,7 +181,7 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
           />
         </Modal>
       </div>
-      {status !== 'validated' && status !== 'ignored' &&
+      {status !== 'validated' && status !== 'ignored' && status !== 'reviewed' &&
         <>
           <button className="button button-link" onClick={() => setTestIgnoreModalVisible(true)}>
             <Tooltip title="Ignorer le test">
@@ -179,10 +204,34 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
             centered
             width={800}
           >
-            <TestIgnore handleCommentValue={handleCommentValue}  />
+            <TestIgnore handleCommentIgnoreValue={handleCommentIgnoreValue}  />
+          </Modal>
+        
+          <button className="button button-link" onClick={() => setTestReviewModalVisible(true)}>
+            <Tooltip title="Ecrire un commentaire">
+              <FontAwesomeIcon className={styles.reviewButton} aria-label="Ecrire un commentaire" aria-hidden="true" icon={faComment} size="lg" />
+            </Tooltip>
+          </button>
+        
+          <Modal
+            onCancel={() => setTestReviewModalVisible(false)}
+            open={testReviewModalVisible}
+            footer={[
+              status !== 'validated' &&
+              <Button key="submit" aria-label="Ecrire un commentaire" type="primary" className="button button-success button-with-fa-icon" onClick={handleSendTestReview}>
+                <FontAwesomeIcon className={styles.faCircleCheck} aria-hidden="true" icon={faComment} /> Ecrire un commentaire
+              </Button>,
+              <Button key="back" aria-label="Fermer" onClick={() => setTestReviewModalVisible(false)}>
+                Fermer
+              </Button>,
+            ]}
+            centered
+            width={800}
+          >
+            <TestReview handleCommentReviewValue={handleCommentReviewValue}  />
           </Modal>
         </>
-      } 
+      }
     </div>
   );
 }
