@@ -13,23 +13,26 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 function HeroAudit({ isArchive }) {
   const router = useRouter();
-
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
-  console.log('audit', audit);
 
-  // ouvrir/fermer les modales
+  /** states **/
+  // states ouvrir/fermer les modales de connection/inscription
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
 
-  // fermeture
+  // Fermeture des modales de connexion/inscription
   const handleCancelSignIn = () => setSignIn(false);
   const handleCancelSignUp = () => setSignUp(false);
 
+  /** comportements **/
+  /* const handleGeneratePDF = () => {
+    window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf`, '_blank');
+  } */
 
+  /** affichage **/
   return (
     <section className={styles.analyseHero} aria-label="Relancer un audit et voir le score global de mon audit">
-
       {/* Barre de recherche => appel composant analyse */}
       {!isArchive && (
         <div className={styles.analyseWrapper}>
