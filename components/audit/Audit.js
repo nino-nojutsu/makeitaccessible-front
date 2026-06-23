@@ -8,6 +8,7 @@ import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
 import ImpactBlocks from '../ImpactBlocks.js';
+import Charts from './Charts.js';
 
 function Audit({ isArchive }) {
   const router = useRouter();
@@ -110,6 +111,16 @@ function Audit({ isArchive }) {
           <div className={styles.auditResults}>
             {
               audit.tests.length > 0 && <ImpactBlocks tests={audit.tests} />
+            }
+            {
+              audit.tests.length > 0 && (
+                <Charts
+                  audit={audit.results}
+                  tests={audit.tests}
+                  website={audit.website}
+                  user={user}
+                />
+              )
             }
             
             {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
