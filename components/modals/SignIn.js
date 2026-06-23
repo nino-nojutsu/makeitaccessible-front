@@ -123,6 +123,7 @@ function SignIn({ closeModal }) {
           Se connecter
         </button>
         <button
+          type="button"
           onClick={() =>
             (window.location.href = `${process.env.NEXT_PUBLIC_URL}/auth/google`)
           }
