@@ -8,7 +8,11 @@ import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
 import ImpactBlocks from '../ImpactBlocks.js';
+import { Tabs } from 'antd';
 import Charts from './Charts.js';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faAlignLeft } from "@fortawesome/free-solid-svg-icons";
 
 function Audit({ isArchive }) {
   const router = useRouter();
@@ -91,55 +95,62 @@ function Audit({ isArchive }) {
   return (
     <>
       <HeroAudit isArchive={isArchive} />
+
       {user.token && audit.tests !== null ? (
-        <div className={styles.auditContainer}>
-          {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
-          {categoriesList !== undefined && categoriesList.length > 0 && (
-            <aside role="navigation" className={styles.categoriesList}>
-              <ol className={styles.listGroup}>
-                {categoriesList}
-              </ol>
-              {
-                selectedCat &&
-                <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>
-                  Afficher tous les résultats
-                </span>
-              }
-            </aside>
-          )}
+        <Tabs
+          className="antdCustomTabs"
+          defaultActiveKey="1"
+          type="card"
+          size="large">
+          <Tabs.TabPane tab={<><FontAwesomeIcon icon={faFileLines} aria-hidden="true" /> Détail des anomalies</>} key="tab-1">
+            <div className={styles.auditContainer}>
+              {/* Composant Catégorie qui filtre par thématique (Images, Cadres, Couleurs, etc...) */}
+              {categoriesList !== undefined && categoriesList.length > 0 && (
+                <aside role="navigation" className={styles.categoriesList}>
+                  <ol className={styles.listGroup}>
+                    {categoriesList}
+                  </ol>
+                  {
+                    selectedCat &&
+                    <span className={styles.showAll} onClick={() => handleFilteredByCat('allCats')}>
+                      Afficher tous les résultats
+                    </span>
+                  }
+                </aside>
+              )}
 
-          <div className={styles.auditResults}>
-            {
-              audit.tests.length > 0 && <ImpactBlocks tests={audit.tests} />
-            }
-            {
-              audit.tests.length > 0 && (
-                <Charts
-                  audit={audit.results}
-                  tests={audit.tests}
-                  website={audit.website}
-                  user={user}
-                />
-              )
-            }
-            
-            {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
-            {
-              (violations.length > 0 || incomplete.length > 0) &&
-              <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
-            }
+              <div className={styles.auditResults}>
+                { audit.tests.length > 0 && <ImpactBlocks tests={audit.tests} /> }
+                
+                {/* Composant Filtres qui filtre par type et par criticité (passage par les idf handleFilteredByType et handleFilteredByImpact) */}
+                {
+                  (violations.length > 0 || incomplete.length > 0) &&
+                  <Filters handleFilteredByType={handleFilteredByType} handleFilteredByImpact={handleFilteredByImpact} selectedCat={selectedCat} />
+                }
 
-            {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
-            {
-              violations.length > 0 || incomplete.length > 0 ?
-                <Results violations={violations} incomplete={incomplete} passes={passes} processed={processed} selectedType={selectedType} selectedImpact={selectedImpact} /> :
-                <>
-                  <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
-                  <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />
-                </>
+                {/* Composant Results qui gère le switch entre les 3 sections (groupe les tests par violations, incomplete et passes) selon les filtres sélectionnés avec selectedType et selectedImpact */}
+                {
+                  violations.length > 0 || incomplete.length > 0 ?
+                    <Results violations={violations} incomplete={incomplete} passes={passes} processed={processed} selectedType={selectedType} selectedImpact={selectedImpact} /> :
+                    <>
+                      <div className={styles.noResults}>Nous n'avons pas trouvé d'anomalies pour cette thématique. <br />Bravo ! 😊</div>
+                      <Results passes={passes} selectedType={selectedType} selectedImpact={selectedImpact} />
+                    </>
+                }
+              </div>
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab={<><FontAwesomeIcon icon={faAlignLeft} aria-hidden="true" /> Voir la synthèse</>} key="tab-2">
+            { audit.tests.length > 0 && 
+              <Charts
+                audit={audit.results}
+                tests={audit.tests}
+                website={audit.website}
+                user={user}
+              />
             }
-          </div>
-        </div>
+          </Tabs.TabPane>
+        </Tabs>
       ) : (
       <AnalysePartielle />
     )}

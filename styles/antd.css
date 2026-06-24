@@ -25,7 +25,7 @@
 
 /* Tabs */
 .ant-tabs-tab {
-  max-width: 10rem;
+  max-width: 15em;
 }
 
 .ant-tabs-tab-btn {
@@ -44,4 +44,32 @@
 .ant-tabs-dropdown-menu-item > span {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active, 
+.ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+  background-color: var(--color-bg-primary);
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab, 
+.ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab {
+  border: 2px solid #e3e3e3;
+}
+
+.ant-tabs-top > .ant-tabs-nav::before, 
+.ant-tabs-bottom > .ant-tabs-nav::before, 
+.ant-tabs-top > div > .ant-tabs-nav::before, 
+.ant-tabs-bottom > div > .ant-tabs-nav::before {
+  border: 1px solid #e3e3e3;
+}
+
+.ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab-active, 
+.ant-tabs-card.ant-tabs-top > div > .ant-tabs-nav .ant-tabs-tab-active {
+    border-bottom-color: var(--color-bg-primary);
+}
+
+/* AntDesign Custom Tabs */
+.antdCustomTabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--color-base);
+  font-weight: 500;
 }

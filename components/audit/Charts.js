@@ -245,26 +245,9 @@ function Charts({ audit = {}, tests = [], website = {}, user = {} }) {
 
   return (
     <main className={styles.page}>
-      <header className={styles.heroTitle}>
-        GRAPHIQUE DE SYNTHESE DES ANOMALIES
-      </header>
-
       <div className={styles.content}>
-        
-
-        
-
-        <Tabs defaultActiveKey="details" className={styles.tabs}>
-          <TabPane tab="Details des anomalies" key="details" />
-          <TabPane tab="Voir la synthese" key="summary" />
-        </Tabs>
-
         {categoryData.length > 0 && <CategoryChart categoryData={categoryData} />}
         {criteriaData.length > 0 && <CriteriaChart criteriaData={criteriaData} />}
-
-        <Card className={styles.footerCard} bodyStyle={{ padding: 18 }}>
-          <Text strong>© MakeItAccessible - 2026</Text>
-        </Card>
       </div>
     </main>
   );
