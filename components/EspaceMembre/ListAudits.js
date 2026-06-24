@@ -52,46 +52,22 @@ function ListAudits(props) {
     return "#e63946";
   }
 
-  // SUPPRIMER UN SITE
-  const handleDeleteSite = (siteId) => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/sites/${siteId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: user.token }),
-    }).then(response => response.json())
-      .then(data => {
-        // Vide le store si le site supprimé est celui actuellement affiché sur /audit
-        dispatch(deleteSite(siteId));
-        // reload la page, l'action ne passe pas réellement par redux
-        if (data.result) {
-          // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-          dispatch(deleteSite(siteId));
-          // call back pour modifier le statut du parent mes audits après suppression
-          props.onSiteDeleted(siteId);
-          // Recharge la page pour mettre à jour la liste
-          router.reload();
-        }
-      });
-  };
-
   // SUPPRIMER UN AUDIT
-  const handleDeleteAudit = (auditId) => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${auditId}`, {
+  const handleDeleteAudit = (id) => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: user.token }),
     }).then(response => response.json())
       .then(data => {
         // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-        dispatch(deleteAudit(auditId));
+        dispatch(deleteAudit(id));
         // reload la page, l'action ne passe pas réellement par redux
         if (data.result) {
           // Vide le store si l'audit supprimé est celui actuellement affiché sur /audit
-          dispatch(deleteAudit(auditId));
+          dispatch(deleteAudit(id));
           // call back pour modifier le statut du parent mes audits après suppression
-          props.onAuditDeleted(auditId);
-          // recharge la page après suppression
-          router.reload();
+          props.onAuditDeleted(id);
         }
       });
   };

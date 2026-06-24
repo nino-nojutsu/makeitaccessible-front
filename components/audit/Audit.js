@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Filters from './Filters.js';
 import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
-import ImpactBlocks from '../ImpactBlocks.js';
+import ImpactBlocks from './ImpactBlocks.js';
 import { Tabs } from 'antd';
 import Charts from './Charts.js';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
