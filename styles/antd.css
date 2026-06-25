@@ -73,3 +73,10 @@
   color: var(--color-base);
   font-weight: 500;
 }
+
+/* Printing */
+@media print {
+  .ant-tabs-top > .ant-tabs-nav {
+    display: none;
+  }
+}

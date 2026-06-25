@@ -202,6 +202,12 @@ button {
   transition: opacity linear .1s;
 }
 
+@media print {
+  .button-link {
+    display: none;
+  }
+}
+
 /* -- Badges -- */
 .badge {
   display: inline-flex;
