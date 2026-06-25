@@ -32,7 +32,7 @@ function HeroAudit({ isArchive }) {
 
   /** affichage **/
   return (
-    <section className={styles.analyseHero} aria-label="Relancer un audit et voir le score global de mon audit">
+    <section className={`${styles.analyseHero} hero-audit`} aria-label="Relancer un audit et voir le score global de mon audit">
       {/* Barre de recherche => appel composant analyse */}
       {!isArchive && (
         <div className={styles.analyseWrapper}>
