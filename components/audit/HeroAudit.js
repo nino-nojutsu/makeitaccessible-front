@@ -15,6 +15,7 @@ function HeroAudit({ isArchive }) {
   const router = useRouter();
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
+  console.log('audit', audit);
 
   /** states **/
   // states ouvrir/fermer les modales de connection/inscription
@@ -27,8 +28,20 @@ function HeroAudit({ isArchive }) {
 
   /** comportements **/
   const handleGeneratePDF = () => {    
-    window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.id}`, '_blank');
+    window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, '_blank');
   }
+
+  /* const handleGeneratePDF = () => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/pdf' },
+    }).then((response) => response.blob())
+      .then((blob) => {
+         const url = URL.createObjectURL(blob);
+         window.open(url, '_blank');
+       })
+      .catch((error) => console.error(error));
+  } */
 
   /** affichage **/
   return (
@@ -62,7 +75,7 @@ function HeroAudit({ isArchive }) {
               type="button"
               onClick={() => router.push('/mes-audits')}
             >
-              Voir audit complet
+              Voir mes audits
             </button>
           )}
           <div className={styles.tooltip} aria-label="En savoir plus sur le score" type="button">
