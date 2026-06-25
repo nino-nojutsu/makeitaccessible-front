@@ -47,6 +47,12 @@
   margin-left: auto;
 }
 
+@media print {
+  .testActions {
+    display: none;
+  }
+}
+
 .testActionsButtons {
   display: flex;
   column-gap: .5rem;
@@ -70,12 +76,13 @@
   width: 4rem;
   height: 4rem;
   text-align: center;
+  font-weight: 600;
 }
 
 .rgaaTagTest span {
   font-size: calc(var(--font-size-small) - 2px);
   padding: 0.25rem;
-  border-radius: 0 var(--border-radius) 0 var(--border-radius)
+  border-radius: 0 var(--border-radius) 0 var(--border-radius);
 }
 
 .impact-critical .rgaaTagTest {

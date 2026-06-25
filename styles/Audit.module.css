@@ -56,6 +56,12 @@
   top: 1rem;
 }
 
+@media print {
+  .categoriesList {
+    display: none;
+  }
+}
+
 .categoriesList ol {
   list-style: none;
   padding-left: unset;
@@ -261,6 +267,12 @@
   margin: 3px;
 }
 
+@media print {
+  .tooltip {
+    display: none;
+  }
+}
+
 .tooltipText {
   visibility: hidden;
   opacity: 0;
@@ -335,6 +347,12 @@
   margin-top: 5px;
 }
 
+@media print {
+  .auditButton {
+    display: none;
+  }
+}
+
 .auditButton:hover {
   font-weight: 700;
 }
@@ -347,6 +365,12 @@
   align-items: center;
   gap: 10px;
   margin: 20px 20px 20px 50px;  
+}
+
+@media print {
+  .download {
+    display: none;
+  }
 }
 
 .downloadPDF,

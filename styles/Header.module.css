@@ -11,6 +11,12 @@
   margin-bottom: 1rem;
 }
 
+@media print {
+  .header {
+    display: none;
+  }
+}
+
 .favicon {
   width: 100%;
   height: auto;

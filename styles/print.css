@@ -1,0 +1,48 @@
+/* ==========================================================================
+   PRINT STYLESHEET — print.css
+   Source : https://www.sitepoint.com/css-printer-friendly-pages/
+   ========================================================================== */
+
+@media print {
+  /* Reset pour l'impression */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact; /* Chrome, Safari, Edge */
+    print-color-adjust: exact; /* Firefox, standard W3C */
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+  }
+
+  /* Règles de page — @page (CSS Paged Media) */
+
+  /* Toutes les pages */
+  @page {
+    margin: 1cm 0.5cm;
+    size: A4 portrait;
+    background-color: #faf9f7;
+  }
+
+  /* Utilitaires */
+
+  h1, h2, h3, h4 {
+    break-after: avoid; /* interdit un saut APRÈS le titre */
+  }
+
+  /* Forcer un saut de page manuellement via une classe */
+  .page-break-before {
+    break-before: always;
+  }
+  .page-break-after {
+    break-after: always;
+  }
+  .no-break {
+    break-inside: avoid;
+  }
+
+  /* Masquer explicitement un élément à l'impression */
+  .no-print {
+    display: none !important;
+  }
+}

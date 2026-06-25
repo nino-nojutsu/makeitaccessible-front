@@ -15,6 +15,7 @@ function HeroAudit({ isArchive }) {
   const router = useRouter();
   const user = useSelector((state) => state.user.value);
   const audit = useSelector((state) => state.audit.value);
+  console.log('audit', audit);
 
   /** states **/
   // states ouvrir/fermer les modales de connection/inscription
@@ -26,8 +27,22 @@ function HeroAudit({ isArchive }) {
   const handleCancelSignUp = () => setSignUp(false);
 
   /** comportements **/
+  const handleGeneratePDF = () => {    
+    //window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, '_blank');
+    // For the demoday
+    window.print();
+  }
+
   /* const handleGeneratePDF = () => {
-    window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf`, '_blank');
+    fetch(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/pdf' },
+    }).then((response) => response.blob())
+      .then((blob) => {
+         const url = URL.createObjectURL(blob);
+         window.open(url, '_blank');
+       })
+      .catch((error) => console.error(error));
   } */
 
   /** affichage **/
@@ -62,7 +77,7 @@ function HeroAudit({ isArchive }) {
               type="button"
               onClick={() => router.push('/mes-audits')}
             >
-              Voir audit complet
+              Voir mes audits
             </button>
           )}
           <div className={styles.tooltip} aria-label="En savoir plus sur le score" type="button">
@@ -74,7 +89,7 @@ function HeroAudit({ isArchive }) {
 
         {user.token ? (
           <section aria-label="Options d'export" className={styles.download}>
-            <button className={styles.downloadPDF} type="button">
+            <button className={styles.downloadPDF} type="button" onClick={handleGeneratePDF}>
               <svg
                 width={20}
                 height={20}
@@ -87,6 +102,7 @@ function HeroAudit({ isArchive }) {
               </svg>
               Télécharger au format PDF
             </button>
+            {/*
             <p>— OU —</p>
             <button className={styles.downloadCSV} type="button">
               <svg
@@ -102,6 +118,7 @@ function HeroAudit({ isArchive }) {
               </svg>
               Télécharger au format CSV
             </button>
+            */}
           </section>
         ) : (
           // Non connecté
