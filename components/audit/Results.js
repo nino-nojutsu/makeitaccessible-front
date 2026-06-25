@@ -54,14 +54,14 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
       return (
         <>
           <h3>Anomalies traitées</h3>
-          {processedRulesList ? processedRulesList : 'Pas de résultats'}
+          {processedRulesList ? processedRulesList : <div className={styles.noResults}>Pas de résultats 😊</div>}
         </>
       )
     case "violations":
       return (
         <>
           <h3>Anomalies</h3> 
-          {violationsRulesList ? violationsRulesList : 'Pas de résultats'}
+          {violationsRulesList ? violationsRulesList : <div className={styles.noResults}>Pas de résultats 😊</div>}
         </>
       )
       break;
@@ -69,7 +69,7 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
       return (
         <>
           <h3>Anomalies incomplètes</h3> 
-          {incompleteRulesList ? incompleteRulesList : 'Pas de résultats'}
+          {incompleteRulesList ? incompleteRulesList : <div className={styles.noResults}>Pas de résultats 😊</div>}
         </>
       )
       break;
@@ -77,7 +77,7 @@ function Results({ violations, incomplete, passes, processed, selectedType, sele
       return (
         <>
           <h3>Validées</h3> 
-          {passesRulesList ? passesRulesList : 'Pas de résultats'}
+          {passesRulesList ? passesRulesList : <div className={styles.noResults}>Pas de résultats 😊</div>}
         </>
       )
       break;
