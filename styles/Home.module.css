@@ -155,8 +155,6 @@
   flex-direction: column;
 }
 
-<<<<<<< Updated upstream
-=======
 .mainAnalyse:after {
   content: '';
   background-image: url('../public/images/illustration_business_analysis.svg');
@@ -175,7 +173,6 @@
   }
 }
 
->>>>>>> Stashed changes
 .search {
   width: 100%;
   height: 50px;
