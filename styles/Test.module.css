@@ -47,6 +47,12 @@
   margin-left: auto;
 }
 
+@media print {
+  .testActions {
+    display: none;
+  }
+}
+
 .testActionsButtons {
   display: flex;
   column-gap: .5rem;

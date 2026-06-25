@@ -5,6 +5,12 @@
   gap: 0;
 }
 
+@media print {
+  .footerWrapper {
+    display: none;
+  }
+}
+
 .footer {
   width: 100%;
   background-color: var(--color-bg);

@@ -1,6 +1,7 @@
 import "antd/dist/antd.css";
 import "../styles/antd.css";
 import '../styles/globals.css'
+import "../styles/print.css";
 import { useRouter } from 'next/router';
 import Head from 'next/head'
 import Header from '../components/nav/Header';

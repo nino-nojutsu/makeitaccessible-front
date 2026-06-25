@@ -28,7 +28,9 @@ function HeroAudit({ isArchive }) {
 
   /** comportements **/
   const handleGeneratePDF = () => {    
-    window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, '_blank');
+    //window.open(`${process.env.NEXT_PUBLIC_URL}/audit/generate-pdf/${user.token}/${audit.results._id}`, '_blank');
+    // For the demoday
+    window.print();
   }
 
   /* const handleGeneratePDF = () => {
@@ -100,6 +102,7 @@ function HeroAudit({ isArchive }) {
               </svg>
               Télécharger au format PDF
             </button>
+            {/*
             <p>— OU —</p>
             <button className={styles.downloadCSV} type="button">
               <svg
@@ -115,6 +118,7 @@ function HeroAudit({ isArchive }) {
               </svg>
               Télécharger au format CSV
             </button>
+            */}
           </section>
         ) : (
           // Non connecté
