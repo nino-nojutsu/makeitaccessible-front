@@ -478,8 +478,8 @@ button {
 
 /* -- Override -- */
 .hero-audit form:after {
-  width: 13rem;
-  height: 13rem;
-  top: -2.75rem;
-  right: -4rem;
+  width: 11vw;
+  height: 11vw;
+  top: -2.25rem;
+  right: -8rem;
 }

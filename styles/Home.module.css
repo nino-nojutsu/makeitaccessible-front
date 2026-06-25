@@ -162,8 +162,8 @@
   top: -4rem;
   right: -6rem;
   z-index: -1;
-  width: 15rem;
-  height: 15rem;
+  width: 15vw;
+  height: 15vw;
   background-size: contain;
 }
 
