@@ -148,10 +148,23 @@
 /* --  Analyse -- */
 
 .mainAnalyse {
+  position: relative;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+}
+
+.mainAnalyse:after {
+  content: '';
+  background-image: url('../public/images/illustration_business_analysis.svg');
+  position: absolute;
+  top: -4rem;
+  right: -6rem;
+  z-index: -1;
+  width: 15rem;
+  height: 15rem;
+  background-size: contain;
 }
 
 @media print {
@@ -168,6 +181,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   border-radius: 5px;
   padding: 20px 15px;
+  background-color: rgba(255, 255, 255, .9);
 }
 
 .ctaSearch {

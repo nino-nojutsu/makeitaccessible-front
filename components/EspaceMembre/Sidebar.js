@@ -1,5 +1,4 @@
 import styles from "../../styles/Dashboard.module.css";
-import Image from "next/image";
 import Link from "next/link";
 import { logout } from "../../reducers/user";
 import { useRouter } from "next/router";
@@ -19,11 +18,12 @@ function Sidebar() {
     <div className={styles.leftSection}>
       <div>
         <Link href="/">
-          <Image
+          <img
             src="/images/logo-white-MakeItAccessible.svg"
             alt="Logo"
             width={150}
             height={30}
+            className={styles.logoImage}
           />
         </Link>
 

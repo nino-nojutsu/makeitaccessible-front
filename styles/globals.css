@@ -475,3 +475,11 @@ button {
   vertical-align: -0.125em;
   width: var(--fa-width, 1.25em);
 }
+
+/* -- Override -- */
+.hero-audit form:after {
+  width: 13rem;
+  height: 13rem;
+  top: -2.75rem;
+  right: -4rem;
+}

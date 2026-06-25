@@ -109,7 +109,7 @@ function Analyse({ variant = "home", buttonLabel }) {
   return (
     <>
       <form
-        className={homeStyles.mainAnalyse}
+        className={variant === 'dashboard' ? dashboardStyles.mainAnalyse : homeStyles.mainAnalyse}
         onSubmit={handleSubmit}
         role="search"
         aria-label="Tester d'accessibilité"
