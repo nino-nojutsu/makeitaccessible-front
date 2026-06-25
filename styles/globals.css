@@ -78,7 +78,7 @@
   --container-wide:           100vw;
 
   /* -- FontAwesome -- */
-  --fa-width: 1em;
+  --fa-width: 1.4em;
   --fa-display: 'block';
 }
 
@@ -470,7 +470,7 @@ button {
 .svg-inline--fa {
   box-sizing: content-box;
   display: var(--fa-display, inline-block);
-  height: 1em;
+  height: 1.4em;
   overflow: visible;
   vertical-align: -0.125em;
   width: var(--fa-width, 1.25em);

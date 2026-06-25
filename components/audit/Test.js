@@ -126,7 +126,7 @@ function Test({ testId, type, ruleId, status, comment, impact, tags, description
             }
             <p>{description}.</p>
             {comment && 
-              <p><small>Commentaire : {comment}</small></p>
+              <p><em>“Commentaire : {comment}”</em></p>
             }
           </span>
           <span className={styles.testActions}>
