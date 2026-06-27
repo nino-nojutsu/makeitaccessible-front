@@ -33,7 +33,7 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-const dashboardRoutes = ['/dashboard', '/mes-audits', '/mon-compte', '/parametres'];
+const dashboardRoutes = ['/dashboard', '/mes-audits', '/mon-compte'];
 
 function App({ Component, pageProps }) {
    const router = useRouter(); // ← ajouté
