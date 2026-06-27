@@ -1,4 +1,4 @@
-import styles from "../../styles/impactBlocks.module.css";
+import styles from "../../styles/ImpactBlocks.module.css";
 
 function ImpactBlocks(props) {
   const impactLabelCount = {
