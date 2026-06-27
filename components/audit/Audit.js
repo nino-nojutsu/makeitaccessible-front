@@ -9,10 +9,11 @@ import HeroAudit from './HeroAudit.js';
 import AnalysePartielle from './AnalysePartielle.js';
 import ImpactBlocks from './ImpactBlocks.js';
 import { Tabs } from 'antd';
-import Charts from './Charts.js';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import ChartsData from './ChartsData.js';
+
 
 function Audit({ isArchive }) {
   const router = useRouter();
@@ -89,6 +90,8 @@ function Audit({ isArchive }) {
         totalPasses={totalPasses}
         hasInapplicable={hasInapplicable} />
     });
+
+    // console.log('audit.tests', audit.tests);
   }
 
   /** affichage **/
@@ -142,12 +145,7 @@ function Audit({ isArchive }) {
           </Tabs.TabPane>
           <Tabs.TabPane tab={<><FontAwesomeIcon icon={faAlignLeft} aria-hidden="true" /> Voir la synthèse</>} key="tab-2">
             { audit.tests.length > 0 && 
-              <Charts
-                audit={audit.results}
-                tests={audit.tests}
-                website={audit.website}
-                user={user}
-              />
+              <ChartsData tests={audit.tests} />
             }
           </Tabs.TabPane>
         </Tabs>
